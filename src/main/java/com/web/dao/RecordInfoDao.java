@@ -29,7 +29,7 @@ public class RecordInfoDao extends BaseDao {
      */
     public List<RECORD_INFO> searchRECORD_INFO(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append(" from RECORD_INFO where 1=1");
+        sql.append("select * from RECORD_INFO where 1=1");
 
         if(map.containsKey("name") && !"".equals(map.get("name"))){
             sql.append(" and name like '%").append(map.get("name")).append("%'");
