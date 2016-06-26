@@ -1,9 +1,7 @@
 package com.web.service;
 
-import com.web.dao.DemoDao;
 import com.web.dao.RecordInfoDao;
-import com.web.entity.Demo;
-import com.web.entity.RECORD_INFO;
+import com.web.entity.RecordInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,11 @@ public class RecordInfoService {
     @Autowired
     public RecordInfoDao recordInfoDao;
 
-    public List<RECORD_INFO> searchRECORD_INFO(Map map){
+    public List<Map> searchRECORD_INFO(Map map){
         return recordInfoDao.searchRECORD_INFO(map);
+    }
+
+    public RecordInfo getRecordInfoById(int id){
+        return (RecordInfo) recordInfoDao.getObjectById(id,RecordInfo.class);
     }
 }

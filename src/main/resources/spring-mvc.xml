@@ -33,6 +33,10 @@
 	<!-- 开启注解 -->
 	<mvc:annotation-driven />
 
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+
+
 	<!-- 静态资源(js/image)的访问 -->
 	<mvc:resources location="/js/" mapping="/js/**" />
 	<mvc:resources location="/images/" mapping="/images/**" />

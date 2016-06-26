@@ -2,9 +2,7 @@ package com.web.dao;
 
 
 import com.common.BaseDao;
-import com.web.entity.Demo;
-import com.web.entity.RECORD_INFO;
-import org.hibernate.Query;
+import com.web.entity.RecordInfo;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -27,14 +25,14 @@ public class RecordInfoDao extends BaseDao {
      * @param map
      * @return
      */
-    public List<RECORD_INFO> searchRECORD_INFO(Map map) {
+    public List<Map> searchRECORD_INFO(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from RECORD_INFO where 1=1");
+        sql.append("select t.com_name,t.user_type,t.address from RECORD_INFO t where 1=1");
 
         if(map.containsKey("name") && !"".equals(map.get("name"))){
-            sql.append(" and name like '%").append(map.get("name")).append("%'");
+            sql.append(" and t.name like '%").append(map.get("name")).append("%'");
         }
-        List<RECORD_INFO> list = super.findObjects(sql.toString(),map,RECORD_INFO.class);
+        List<Map> list = super.findObjects(sql.toString(),map);
         return list;
     }
 }

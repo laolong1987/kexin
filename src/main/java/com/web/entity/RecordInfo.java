@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "RECORD_INFO")
-public class RECORD_INFO {
+public class RecordInfo {
     @Column(name = "username")
     private String username;
     @Column(name = "role_type")

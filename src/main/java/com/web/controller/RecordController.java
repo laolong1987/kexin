@@ -1,16 +1,11 @@
 package com.web.controller;
 
-import com.utils.StringUtil;
-import com.web.entity.Demo;
-import com.web.entity.RECORD_INFO;
-import com.web.service.DemoService;
+import com.web.entity.RecordInfo;
 import com.web.service.RecordInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,18 +13,30 @@ import java.util.Map;
 /**
  * Created by gaoyang on 16/2/28.
  */
-@Controller
-@RequestMapping("/record")
+@RestController
 public class RecordController {
 
     @Autowired
     RecordInfoService recordInfoService;
 
-    @RequestMapping(value = "/listrecordinfo", method = RequestMethod.GET)
-    public @ResponseBody List<RECORD_INFO> listrecordinfo(@RequestParam(value = "name", required = false, defaultValue = "") String name){
+    @RequestMapping(value = "/manufacturers", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Map> listmanufacturers(@RequestParam(required = false, defaultValue = "") String name){
         Map map=new HashMap();
         map.put("name",name);
         return recordInfoService.searchRECORD_INFO(map);
+    }
+
+    @RequestMapping(value = "/manufacturers/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RecordInfo getlistrecordinfo(@PathVariable String id){
+        RecordInfo recordInfo=recordInfoService.getRecordInfoById(Integer.parseInt(id));
+        if(null!=recordInfo){
+            return recordInfo;
+        }else{
+//            throw Exception
+            return null;
+        }
     }
 
 //    @RequestMapping(value = "/show")
