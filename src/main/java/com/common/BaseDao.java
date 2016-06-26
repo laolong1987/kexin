@@ -96,7 +96,15 @@ public abstract class BaseDao {
 	public Object getObjectById(Integer id, Object entity) {
 		return  sessionFactory.getCurrentSession().get((Class) entity, id);
 	}
-	
+
+	/**
+	 * 根据id查询对象
+	 * @return
+	 */
+	public Object getObjectById(String id, Object entity) {
+		return  sessionFactory.getCurrentSession().get((Class) entity, id);
+	}
+
 	/**
 	 * 查询方法（页面表格用）
 	 * @param sql sql
