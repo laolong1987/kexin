@@ -19,7 +19,7 @@
   </context-param>
   <context-param>
     <param-name>webAppRootKey</param-name>
-    <param-value>sgm_ew.root</param-value>
+    <param-value>kexin.root</param-value>
   </context-param>
   <listener>
     <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
@@ -81,20 +81,5 @@
   <session-config>
     <session-timeout>600</session-timeout>
   </session-config>
-
-  <error-page>
-    <error-code>404</error-code>
-    <location>/jsp/website/error.jsp</location>
-  </error-page>
-
-  <error-page>
-    <error-code>500</error-code>
-    <location>/jsp/website/error.jsp</location>
-  </error-page>
-
-  <error-page>
-    <exception-type>java.lang.Exception</exception-type>
-    <location>/jsp/website/error.jsp</location>
-  </error-page>
 
 </web-app>
