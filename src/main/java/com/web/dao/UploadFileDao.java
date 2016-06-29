@@ -24,4 +24,14 @@ public class UploadFileDao extends BaseDao{
         List<Uploadfile> list = super.findObjects(sql.toString(), map, Uploadfile.class);
         return list;
     }
+
+    public List<Uploadfile> findUploadfileByReportId(String report_id,String report_type){
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from uploadfile where report_id=:report_id and type=1 and report_type=:report_type ");
+        Map map = new HashMap();
+        map.put("report_id",report_id);
+        map.put("report_type",report_type);
+        List<Uploadfile> list = super.findObjects(sql.toString(), map, Uploadfile.class);
+        return list;
+    }
 }

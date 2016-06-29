@@ -78,8 +78,6 @@ public class UploadFileController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
-
         if (StringUtils.isNotBlank(uploadfile.getMimetype()))
             response.setContentType(uploadfile.getMimetype());
         else

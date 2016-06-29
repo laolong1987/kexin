@@ -5,10 +5,7 @@ import com.web.entity.RecordInfo;
 import com.web.entity.ReportCompany;
 import com.web.entity.ReportProduct;
 import com.web.entity.Uploadfile;
-import com.web.model.ErrorModel;
-import com.web.model.ReportCompanyModel;
-import com.web.model.ReportProductModel;
-import com.web.model.ReportProductVO;
+import com.web.model.*;
 import com.web.service.RecordInfoService;
 import com.web.service.UploadFileService;
 import org.apache.commons.io.FileUtils;
@@ -21,7 +18,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 //import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -65,7 +65,7 @@ public class ReportController {
 
     @RequestMapping(value="/report-company", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.CREATED)
-    public ReportCompany addReportCompany(ReportCompanyModel reportCompanyModel){
+    public ReportCompany addReportCompany(ReportCompanyModel reportCompanyModel, HttpServletRequest request, HttpServletResponse response) throws IOException {
         ReportCompany reportCompany=new ReportCompany();
         reportCompany.setUuid(reportCompanyModel.getUuid());
         reportCompany.setStatus(0);
@@ -86,8 +86,17 @@ public class ReportController {
             uploadFileService.saveUploadFile(file);
 
             //把文件转移出临时目录
-//            File
-//            FileUtils.copyFileToDirectory();
+            /**构建保存的目录**/
+            String tmpPathDir = "/tmp";
+            String filePathDir = "/file";
+            String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
+            String fileRealPathDir = request.getSession().getServletContext().getRealPath(filePathDir);
+
+            /**根据真实路径创建目录**/
+            String fileName = tmpRealPathDir + File.separator + file.getFilepath();
+            File file1 = new File(fileName);
+            File file2 = new File(fileRealPathDir);
+            FileUtils.copyFileToDirectory(file1,file2);
         }
         return reportCompany;
     }
@@ -116,17 +125,27 @@ public class ReportController {
     }
 
 
-//    @RequestMapping(value = "/report-product/{id}", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public void getreportproduct(@PathVariable String id){
-//        RecordInfo recordInfo=recordInfoService.getReportProduct(id);
-//        if(null!=recordInfo){
-//            return recordInfo;
-//        }else{
-//            return null;
-//        }
-//    }
+    @RequestMapping(value = "/report-product/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RepReportProductModel getreportproduct(@PathVariable String id){
+        RepReportProductModel reportProductModel=new RepReportProductModel();
+        ReportProduct reportProduct = recordInfoService.getReportProduct(id);
+        if(null!=reportProduct){
+            reportProductModel.setTitle(reportProduct.getTitle());
+            reportProductModel.setDescription(reportProduct.getDescription());
+            reportProductModel.setCode(reportProduct.getCode());
+            reportProductModel.setCompany_name(reportProduct.getCompany_name());
+            reportProductModel.setProduct_name(reportProduct.getProduct_name());
 
+            List<String> lists=new ArrayList<>();
 
+            List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportProduct.getId(),"1");
+            for (Uploadfile uploadfile: list ) {
+                lists.add(uploadfile.getId());
+            }
+            reportProductModel.setFileidlist(lists);
+        }
+        return reportProductModel;
+    }
 
 }
