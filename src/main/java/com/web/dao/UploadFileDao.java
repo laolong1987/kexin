@@ -18,7 +18,7 @@ public class UploadFileDao extends BaseDao{
 
     public List<Uploadfile> findUploadfileByUUID(String uuid){
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from uploadfile where uuid=:uuid  ");
+        sql.append("select * from uploadfile where uuid=:uuid and type=0 ");
         Map map = new HashMap();
         map.put("uuid",uuid);
         List<Uploadfile> list = super.findObjects(sql.toString(), map, Uploadfile.class);

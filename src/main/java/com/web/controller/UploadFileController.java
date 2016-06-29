@@ -6,6 +6,8 @@ import com.web.model.ReportProductModel;
 import com.web.service.RecordInfoService;
 import com.web.service.UploadFileService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -13,11 +15,14 @@ import org.springframework.http.MediaType;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,12 +36,12 @@ public class UploadFileController {
     UploadFileService uploadFileService;
 
 
-    @RequestMapping(value="/uploadfile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/uploadfile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Uploadfile adduploadfile(HttpServletRequest request) throws IOException {
-        String uuid= request.getHeader("uuid");
-        String mimetype= request.getHeader("mimetype");
-        String filename=new String(Base64Utils.decodeFromString(request.getHeader("filename")),"UTF-8");
+        String uuid = request.getHeader("uuid");
+        String mimetype = request.getHeader("mimetype");
+        String filename = new String(Base64Utils.decodeFromString(request.getHeader("filename")), "UTF-8");
 
 
         /**构建保存的目录**/
@@ -44,14 +49,14 @@ public class UploadFileController {
         String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
         /**根据真实路径创建目录**/
         File tmpSaveFile = new File(tmpRealPathDir);
-        if(!tmpSaveFile.exists())
+        if (!tmpSaveFile.exists())
             tmpSaveFile.mkdirs();
-        String fileuuid=UUID.randomUUID().toString();
-        String fileName = tmpRealPathDir + File.separator   + fileuuid;
+        String fileuuid = UUID.randomUUID().toString();
+        String fileName = tmpRealPathDir + File.separator + fileuuid;
         File file = new File(fileName);
-        FileUtils.copyInputStreamToFile(request.getInputStream(),file);
+        FileUtils.copyInputStreamToFile(request.getInputStream(), file);
 
-        Uploadfile uploadfile=new Uploadfile();
+        Uploadfile uploadfile = new Uploadfile();
         uploadfile.setUpdate_time(new Date());
         uploadfile.setCreate_time(new Date());
         uploadfile.setFilename(filename);
@@ -61,6 +66,63 @@ public class UploadFileController {
         uploadfile.setType(0);
         uploadFileService.saveUploadFile(uploadfile);
         return uploadfile;
+    }
+
+
+    @RequestMapping(value = "/doDownload/{id}", method = RequestMethod.GET)
+    public void doDownload(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Uploadfile uploadfile = uploadFileService.getUploadfile(id);
+
+        if (null == uploadfile) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+
+        if (StringUtils.isNotBlank(uploadfile.getMimetype()))
+            response.setContentType(uploadfile.getMimetype());
+        else
+            response.setContentType("application/octet-stream");
+
+        if (StringUtils.isNotBlank(uploadfile.getFilename())) {
+            response.setHeader("Content-Disposition", getContentDispositionValue(uploadfile.getFilename()));
+        }
+
+        /**构建保存的目录**/
+        String tmpPathDir = "/file";
+        String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
+        String fileName = tmpRealPathDir + File.separator + uploadfile.getFilepath();
+        /**根据真实路径创建目录**/
+        File saveFile = new File(fileName);
+        response.setContentLength((int) saveFile.length());
+        OutputStream out = response.getOutputStream();
+        try {
+            FileUtils.copyFile(saveFile, out);
+        } finally {
+            IOUtils.closeQuietly(out);
+        }
+
+    }
+
+    private String getAsciiFilename(String filename) {
+        return new String(filename.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+    }
+
+    private String getContentDispositionValue(String filename) {
+
+        return String.format("attachment; filename=\"%s\"; filename*=UTF-8''%s",
+                getAsciiFilename(filename),
+                urlEncode(filename));
+        //return String.format("attachment; filename=\"%s\"", getAsciiFilename(encodedFilename));
+    }
+
+    private String urlEncode(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8").replaceAll("\\+", "%20");
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException(uee);
+        }
     }
 
 //    @ExceptionHandler
