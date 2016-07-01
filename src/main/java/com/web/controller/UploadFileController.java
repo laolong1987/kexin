@@ -6,6 +6,7 @@ import com.web.model.ReportProductModel;
 import com.web.service.RecordInfoService;
 import com.web.service.UploadFileService;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -32,12 +35,11 @@ public class UploadFileController {
     UploadFileService uploadFileService;
 
 
-    @RequestMapping(value = "/uploadfile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Uploadfile adduploadfile(HttpServletRequest request) throws IOException {
-        String uuid = request.getHeader("uuid");
-        String mimetype = request.getHeader("mimetype");
-        String filename = new String(Base64Utils.decodeFromString(request.getHeader("filename")), "UTF-8");
+    public Uploadfile adduploadfile(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+
+        String uuid=request.getParameter("uuid");
 
 
         /**构建保存的目录**/
@@ -49,14 +51,18 @@ public class UploadFileController {
             tmpSaveFile.mkdirs();
         String fileuuid = UUID.randomUUID().toString();
         String fileName = tmpRealPathDir + File.separator + fileuuid;
-        File file = new File(fileName);
-        FileUtils.copyInputStreamToFile(request.getInputStream(), file);
+
+        File transferred = new File(fileName);
+        file.transferTo(transferred);
+
+         String attachmentName = FilenameUtils.getName(file.getOriginalFilename());
+         String attachmentContentType = file.getContentType();
 
         Uploadfile uploadfile = new Uploadfile();
         uploadfile.setUpdate_time(new Date());
         uploadfile.setCreate_time(new Date());
-        uploadfile.setFilename(filename);
-        uploadfile.setMimetype(mimetype);
+        uploadfile.setFilename(attachmentName);
+        uploadfile.setMimetype(attachmentContentType);
         uploadfile.setUuid(uuid);
         uploadfile.setFilepath(fileuuid);
         uploadfile.setType(0);

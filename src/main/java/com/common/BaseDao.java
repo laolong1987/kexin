@@ -121,12 +121,14 @@ public abstract class BaseDao {
 	 */
 	public SearchTemplate search(String sql, Map param) {
 		SearchTemplate template = new SearchTemplate(sql);
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(template.getOrderSql(param));
 		if(param.get("page") != null && param.get("pageSize") != null){
 			int page = Integer.parseInt(param.get("page").toString());
 			int pageSize = Integer.parseInt(param.get("pageSize").toString());
 			query.setFirstResult(page == 1 ? 0 : (page - 1) * pageSize);
 			query.setMaxResults(pageSize);
+			param.remove("page");
+			param.remove("pageSize");
 		}
 		query.setProperties(param);
 		query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
@@ -134,7 +136,7 @@ public abstract class BaseDao {
 		// 总条数
 		query = sessionFactory.getCurrentSession().createSQLQuery(template.getCountSql());
 		query.setProperties(param);
-		template.setCount(((BigInteger) query.uniqueResult()).intValue());
+		template.setCount(Integer.valueOf(query.uniqueResult().toString()));
 		return template;
 	}
 	
