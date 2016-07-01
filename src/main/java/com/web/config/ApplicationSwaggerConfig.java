@@ -10,6 +10,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Collections;
+
 /**
  * Created by Michael on 2016/6/26.
  */
@@ -32,6 +34,7 @@ public class ApplicationSwaggerConfig {
                 new Contact("", "", ""),
                 "",
                 ""
-            ));
+            )).protocols(Collections.singleton("http"));
+
     }
 }
