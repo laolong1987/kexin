@@ -36,14 +36,34 @@ public class RecordInfoDao extends BaseDao {
 
 
     /**
-     * 查询
+     * 查询产品举报信息
      *
      * @param map
      * @return
      */
     public List<Map> searchReportProduct(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time from report_product t where 1=1 ");
+        sql.append("select t.id, t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
+        sql.append(",t.product_name,t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time  ");
+        sql.append(" from report_product t where 1=1");
+        if (map.containsKey("companyname") && "".equals(map.get("companyname"))){
+            sql.append("");
+        }
+        List<Map> list = super.findResult(sql.toString(),map);
+        return list;
+    }
+
+    /**
+     * 查询企业举报信息
+     *
+     * @param map
+     * @return
+     */
+    public List<Map> searchReportCompany(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.id,t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
+        sql.append(",t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time ");
+        sql.append(" from report_company t where 1=1");
         List<Map> list = super.findResult(sql.toString(),map);
         return list;
     }

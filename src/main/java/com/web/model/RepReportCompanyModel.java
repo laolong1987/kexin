@@ -4,29 +4,12 @@ package com.web.model;
 /**
  * Created by gaoyang on 16/6/28.
  */
-public class ReportProductVO {
+public class RepReportCompanyModel {
 
     String title;
     String create_time;
     String status;
-    String product_name;
     String company_name;
-
-    public String getProduct_name() {
-        return product_name;
-    }
-
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
-    }
-
-    public String getCompany_name() {
-        return company_name;
-    }
-
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
-    }
 
     public String getTitle() {
         return title;
@@ -40,7 +23,6 @@ public class ReportProductVO {
         return create_time;
     }
 
-
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
@@ -53,5 +35,11 @@ public class ReportProductVO {
         this.status = status;
     }
 
+    public String getCompany_name() {
+        return company_name;
+    }
 
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
 }

@@ -42,9 +42,15 @@ public class RecordInfoService {
         return recordInfoDao.searchReportProduct(map);
     }
 
+    public List<Map> searchReportCompany(Map map){
+        return recordInfoDao.searchReportCompany(map);
+    }
+
+
     public ReportProduct getReportProduct(String id){
         return (ReportProduct) recordInfoDao.getObjectById(id,ReportProduct.class);
     }
+
 
     public ReportCompany getReportCompany(String id){
         return (ReportCompany) recordInfoDao.getObjectById(id,ReportCompany.class);

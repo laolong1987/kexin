@@ -53,7 +53,7 @@ public class ReportController {
 
         //根据UUID查询文件
         List<Uploadfile> list= uploadFileService.findUploadfileByUUID(reportProductModel.getUuid());
-        for (Uploadfile file:list ) {
+        for(Uploadfile file:list){
             file.setType(1);
             file.setUpdate_time(new Date());
             file.setReport_id(reportProduct.getId());
@@ -76,7 +76,7 @@ public class ReportController {
         reportCompany.setUpdate_time(new Date());
         recordInfoService.saveReportCompany(reportCompany);
 
-        //根据UUID查询文件
+        //根ID查询文件
         List<Uploadfile> list= uploadFileService.findUploadfileByUUID(reportCompanyModel.getUuid());
         for (Uploadfile file:list ) {
             file.setType(1);
@@ -112,7 +112,8 @@ public class ReportController {
             ReportProductVO reportProduct = new ReportProductVO();
             reportProduct.setTitle(ConvertUtil.safeToString(map.get("title"),""));
             reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("create_time"),""));
-
+            reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("company_name"),""));
+            reportProduct.setProduct_name(ConvertUtil.safeToString(map.get("product_name"),""));
             int status=ConvertUtil.safeToInteger("status",0);
             if(0==status){
                 reportProduct.setStatus("处理中");
@@ -148,4 +149,44 @@ public class ReportController {
         return reportProductModel;
     }
 
+
+    @RequestMapping(value = "/report-company", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<RepReportCompanyModel> listreportcompany(){
+        Map p=new HashMap();
+        List<RepReportCompanyModel> reportCompanyModels=new ArrayList<>();
+        List<Map> list= recordInfoService.searchReportCompany(p);
+        for (Map map:list) {
+            RepReportCompanyModel reportProduct = new RepReportCompanyModel();
+            reportProduct.setTitle(ConvertUtil.safeToString(map.get("title"),""));
+            reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("create_time"),""));
+            reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("company_name"),""));
+            int status=ConvertUtil.safeToInteger("status",0);
+            if(0==status){
+                reportProduct.setStatus("处理中");
+            }else{
+                reportProduct.setStatus("已处理");
+            }
+            reportCompanyModels.add(reportProduct);
+        }
+        return reportCompanyModels;
+    }
+
+    @RequestMapping(value = "/report-company/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RepReportCompanyDetailModel getreportcompany(@PathVariable String id){
+        RepReportCompanyDetailModel reportCompanyModel=new RepReportCompanyDetailModel();
+        ReportCompany reportCompany = recordInfoService.getReportCompany(id);
+        if(null!=reportCompany){
+            reportCompanyModel.setTitle(reportCompany.getTitle());
+            reportCompanyModel.setCompany_name(reportCompany.getCompany_name());
+            List<String> lists=new ArrayList<>();
+            List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportCompany.getId(),"2");
+            for (Uploadfile uploadfile: list ) {
+                lists.add(uploadfile.getId());
+            }
+            reportCompanyModel.setFileidlist(lists);
+        }
+        return reportCompanyModel;
+    }
 }
