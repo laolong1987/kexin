@@ -2,6 +2,7 @@ package com.web.dao;
 
 
 import com.common.BaseDao;
+import com.common.SearchTemplate;
 import com.web.entity.RecordInfo;
 import com.web.model.ReportProductVO;
 import org.hibernate.SessionFactory;
@@ -41,16 +42,19 @@ public class RecordInfoDao extends BaseDao {
      * @param map
      * @return
      */
-    public List<Map> searchReportProduct(Map map) {
+    public SearchTemplate searchReportProduct(Map map) {
         StringBuffer sql = new StringBuffer();
         sql.append("select t.id, t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
         sql.append(",t.product_name,t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time  ");
         sql.append(" from report_product t where 1=1");
         if (map.containsKey("companyname") && "".equals(map.get("companyname"))){
-            sql.append("");
+            sql.append(" and t.company_name like :companyname ");
+            map.put("companyname", "%" + map.get("companyname") + "%");
         }
-        List<Map> list = super.findResult(sql.toString(),map);
-        return list;
+        if (map.containsKey("status") && "".equals(map.get("status"))){
+            sql.append(" and t.status =:status ");
+        }
+        return  super.search(sql.toString(),map);
     }
 
     /**
@@ -59,12 +63,11 @@ public class RecordInfoDao extends BaseDao {
      * @param map
      * @return
      */
-    public List<Map> searchReportCompany(Map map) {
+    public SearchTemplate searchReportCompany(Map map) {
         StringBuffer sql = new StringBuffer();
         sql.append("select t.id,t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
         sql.append(",t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time ");
         sql.append(" from report_company t where 1=1");
-        List<Map> list = super.findResult(sql.toString(),map);
-        return list;
+        return  super.search(sql.toString(),map);
     }
 }

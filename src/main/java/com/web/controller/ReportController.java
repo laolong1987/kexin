@@ -107,7 +107,7 @@ public class ReportController {
     public List<ReportProductVO> listreportproduct(){
         Map p=new HashMap();
         List<ReportProductVO> reportProductVOList=new ArrayList<>();
-        List<Map> list= recordInfoService.searchReportProduct(p);
+        List<Map<String, Object>> list= recordInfoService.searchReportProduct(p);
         for (Map map:list) {
             ReportProductVO reportProduct = new ReportProductVO();
             reportProduct.setTitle(ConvertUtil.safeToString(map.get("title"),""));
@@ -155,7 +155,7 @@ public class ReportController {
     public List<RepReportCompanyModel> listreportcompany(){
         Map p=new HashMap();
         List<RepReportCompanyModel> reportCompanyModels=new ArrayList<>();
-        List<Map> list= recordInfoService.searchReportCompany(p);
+        List<Map<String, Object>> list= recordInfoService.searchReportCompany(p);
         for (Map map:list) {
             RepReportCompanyModel reportProduct = new RepReportCompanyModel();
             reportProduct.setTitle(ConvertUtil.safeToString(map.get("title"),""));

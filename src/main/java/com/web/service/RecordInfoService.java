@@ -1,10 +1,10 @@
 package com.web.service;
 
+import com.common.SearchTemplate;
 import com.web.dao.RecordInfoDao;
 import com.web.entity.RecordInfo;
 import com.web.entity.ReportCompany;
 import com.web.entity.ReportProduct;
-import com.web.model.ReportProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,14 +38,17 @@ public class RecordInfoService {
     }
 
 
-    public List<Map> searchReportProduct(Map map){
-        return recordInfoDao.searchReportProduct(map);
+    public List<Map<String, Object>> searchReportProduct(Map map){
+        return recordInfoDao.searchReportProduct(map).getValues();
     }
 
-    public List<Map> searchReportCompany(Map map){
+    public List<Map<String, Object>> searchReportCompany(Map map){
+        return recordInfoDao.searchReportCompany(map).getValues();
+    }
+
+    public SearchTemplate findReportCompany(Map map){
         return recordInfoDao.searchReportCompany(map);
     }
-
 
     public ReportProduct getReportProduct(String id){
         return (ReportProduct) recordInfoDao.getObjectById(id,ReportProduct.class);

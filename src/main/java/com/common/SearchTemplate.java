@@ -116,6 +116,10 @@ public class SearchTemplate {
 		this.count = count;
 	}
 
+	public int getCount() {
+		return count;
+	}
+
 	public Map<String, Object> getResult() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("Rows", this.values);

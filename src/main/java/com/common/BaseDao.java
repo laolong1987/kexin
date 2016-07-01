@@ -121,7 +121,7 @@ public abstract class BaseDao {
 	 */
 	public SearchTemplate search(String sql, Map param) {
 		SearchTemplate template = new SearchTemplate(sql);
-		Query query = sessionFactory.getCurrentSession().createSQLQuery(template.getOrderSql(param));
+		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		if(param.get("page") != null && param.get("pageSize") != null){
 			int page = Integer.parseInt(param.get("page").toString());
 			int pageSize = Integer.parseInt(param.get("pageSize").toString());
@@ -173,6 +173,12 @@ public abstract class BaseDao {
 		Query query = sessionFactory.getCurrentSession().createSQLQuery(sql);
 		query.setProperties(param);
 		query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+		if(param.get("page") != null && param.get("pageSize") != null){
+			int page = Integer.parseInt(param.get("page").toString());
+			int pageSize = Integer.parseInt(param.get("pageSize").toString());
+			query.setFirstResult(page == 1 ? 0 : (page - 1) * pageSize);
+			query.setMaxResults(pageSize);
+		}
 		return query.list();
 	}
 	

@@ -28,16 +28,17 @@
             </div>
             <div class="tian"></div>
             <div class="edit_table">
+                <form action="showreportcompany" method="post">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr class="trbg">
                         <td colspan="4">检索条件 </td>
                     </tr>
                     <tr>
                         <td width="23%" align="right">企业名称：</td>
-                        <td width="27%"><input name="" type="text" class="intext" /></td>
+                        <td width="27%"><input name="" type="text" class="intext" id="companyname" name="companyname" value="${companyname}"/></td>
                         <td width="13%" align="right">处理状态：</td>
                         <td width="27%">
-                            <select>
+                            <select id="status" name="status">
                                 <option>未处理</option>
                                 <option>处理中</option>
                                 <option>已处理</option>
@@ -45,10 +46,11 @@
                         </td>
                     <tr>
                         <td align="right">&nbsp; </td>
-                        <td colspan="3"><input name="" type="button" class="btn_cld" value="检索" /></td>
+                        <td colspan="3"><input name="" type="submit" class="btn_cld" value="检索" /></td>
                     </tr>
                     </tr>
                 </table>
+                </form>
             </div>
             <div class="tian"></div>
             <div class="edit_table">
@@ -62,21 +64,21 @@
                     </tr>
                     <c:forEach var="ls" items="${list}">
                         <tr>
-                            <td>${ls.company_name}</td>
-                            <td>${ls.create_name}</td>
+                            <td>${ls.COMPANY_NAME}</td>
+                            <td>${ls.CREATE_TIME}</td>
                             <td>
-                                <c:if test="${ls.status==0}">
+                                <c:if test="${ls.STATUS==0}">
                                     未处理
                                 </c:if>
-                                <c:if test="${ls.status==1}">
+                                <c:if test="${ls.STATUS==1}">
                                     处理中
                                 </c:if>
-                                <c:if test="${ls.status==2}">
+                                <c:if test="${ls.STATUS==2}">
                                     已处理
                                 </c:if>
                             </td>
-                            <td>${ls.update_name}</td>
-                            <td><a href="updatereportcompany?id=${ls.id}">处理</a></td>
+                            <td>${ls.UPDATE_TIME}</td>
+                            <td><a href="updatereportcompany?id=${ls.ID}">处理</a></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -84,10 +86,24 @@
 
             <div class="tian"></div>
             <div class="page_box">
-                <div class="page"><a class='n2 over'>上一页</a><a class='n1 selected' >1</a> <a class='n1' href='#'>2</a>
+                <div class="page">
+                    <c:if test="${0!=page}">
+                        <a class='n2 over'>首页</a>
+                        <a class='n2 over'>上一页</a>
+                    </c:if>
 
-                    <a class='n1' href='#'>3</a>
-                    <a class=n2 href='#'>下一页</a></div>
+                    <%--<a class='n1 selected' >1</a>--%>
+                    <%--<a class='n1' href='#'>2</a>--%>
+                    <%--<a class='n1' href='#'>3</a>--%>
+                    <c:forEach begin="3" end="6" varStatus="status">
+                        <a class='n1' href='#'>${status.current}</a>
+                    </c:forEach>
+                    <c:if test="${page!=max}">
+                        <a class=n2 href='#'>下一页</a>
+                        <a class=n2 href='#'>末页</a>
+                    </c:if>
+
+                </div>
             </div>
 
             <div class="tian"></div>
