@@ -277,6 +277,21 @@ public class StringUtil {
         return sb.toString();
     }
 
+    public static String getRandomString(int length, int type) {
+        StringBuffer buffer = null;
+        if (type == 1)
+            buffer = new StringBuffer("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        else
+            buffer = new StringBuffer("0123456789");
+        StringBuffer sb = new StringBuffer();
+        Random random = new Random();
+        int range = buffer.length();
+        for (int i = 0; i < length; i++) {
+            sb.append(buffer.charAt(random.nextInt(range)));
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         System.out.println(validateIdCard("412723199006065975"));
     }
