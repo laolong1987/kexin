@@ -15,7 +15,7 @@ public class UserOutTokenDao extends BaseDao {
     public List findUserToken(UserOutToken userOutToken) {
         StringBuffer sql = new StringBuffer();
         sql.append("From UserOutToken u where 1=1");
-        if (userOutToken.getUsername() != null && !"".equals(userOutToken.getUsername())) {
+        if (userOutToken.getPhone() != null && !"".equals(userOutToken.getPhone())) {
             sql.append(" and u.username =:username");
         }
         if (userOutToken.getToken() != null && !"".equals(userOutToken.getToken())) {
