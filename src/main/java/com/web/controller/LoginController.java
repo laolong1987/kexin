@@ -129,7 +129,7 @@ public class LoginController {
         verifyCode.setCreate_time(new Date());
         verifyCodeService.saveVerifyCode(verifyCode);
         String message = "尊敬的用户您好，您正在进行注册验证，验证码" + code + "，请在15分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
-        messageSender.batchSend(message, phone);
+//        messageSender.batchSend(message, phone);
         return "success";
 
     }

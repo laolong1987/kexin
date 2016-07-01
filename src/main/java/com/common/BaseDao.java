@@ -26,7 +26,15 @@ public abstract class BaseDao {
 	 * 保存或者更新实体
 	 */
 	public void save(Object entry){
-		sessionFactory.getCurrentSession().saveOrUpdate(entry);
+//		sessionFactory.getCurrentSession().save(entry);
+		Session session = sessionFactory.openSession();
+		Transaction tx=session.beginTransaction();
+		if (null != entry) {
+			session.saveOrUpdate(entry);
+		}
+		tx.commit();
+		session.flush();
+		session.close();//从缓存中删，也就是把持久化对象变为游离态
 	}
 	
 	/**
