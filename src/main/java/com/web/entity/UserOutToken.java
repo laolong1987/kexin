@@ -22,12 +22,16 @@ public class UserOutToken {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "id")
     private String id;
+
     @Column(name = "phone")
     private String phone;
+
     @Column(name = "token")
     private String token;
+
     @Column(name = "oncestr")
     private String oncestr;
+
     @Column(name = "expire")
     private String expire;
     @Column(name = "create_time")
@@ -41,8 +45,8 @@ public class UserOutToken {
         return this.id;
     }
 
-    public void setPhone(String username) {
-        this.phone = username;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getPhone() {
