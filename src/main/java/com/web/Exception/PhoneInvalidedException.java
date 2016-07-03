@@ -6,6 +6,6 @@ package com.web.Exception;
 public class PhoneInvalidedException extends RuntimeException {
 
     public PhoneInvalidedException() {
-        super("该用户已存在");
+        super("电话号码格式错误");
     }
 }
