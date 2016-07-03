@@ -111,12 +111,19 @@ public class LoginController {
 
     }
 
-    @RequestMapping(value = "/get-validate-code/{phone}/{key}", method = RequestMethod.GET)
-    public String getValidateCode(@PathVariable(value = "phone") String phone, @PathVariable(value = "key") String key) {
+    @RequestMapping(value = "/get-validate-code/{phone}/{type}/{key}", method = RequestMethod.GET)
+    public String getValidateCode(@PathVariable(value = "phone") String phone, @PathVariable(value = "type") String type, @PathVariable(value = "key") String key) {
         String id_key = phone + Constant.key;
         String secret = MD5Util.mmd5(id_key);
         if (!secret.equals(key)) {
             throw new UnAuthorizedException();
+        }
+
+        if("1".equals(type)){//如果type=1，表示新注册用户，校验用户是否存在
+            USER_OUT user = userOutService.findUserOutByPhone(phone);
+            if (user != null) {//用户不存在
+                throw new UserExistException();
+            }
         }
 
         //生成6位随机数
@@ -169,6 +176,7 @@ public class LoginController {
         USER_OUT user = new USER_OUT();
         user.setMobile_phone(phone);
         user.setUsername(username);
+        user.setRole_type("MOBILE_USER");
         user.setPassword(password);
         userOutService.saveUserOut(user);
 
@@ -177,6 +185,7 @@ public class LoginController {
         model.setUserid(user.getMobile_phone());
         String onceStr = StringUtil.getRandomString(8);
         String token2 = MD5Util.mmd5(user.getMobile_phone() + onceStr + user.getPassword());
+        model.setUsername(username);
         model.setToken(token2);
 
         UserOutToken userOutToken = new UserOutToken();
@@ -198,6 +207,9 @@ public class LoginController {
             throw new UnAuthorizedException();
         }
         USER_OUT user = userOutService.findUserOutByPhone(uot.getPhone());
+        if (user == null) {//用户不存在
+            throw new UserOutNotFindException();
+        }
         user.setPassword(password);
         userOutService.saveUserOut(user);
 
@@ -213,6 +225,9 @@ public class LoginController {
         }
         String phone = uot.getPhone();
         USER_OUT user = userOutService.findUserOutByPhone(phone);
+        if (user == null) {//用户不存在
+           throw new UserOutNotFindException();
+       }
         user.setUsername(username);
         userOutService.saveUserOut(user);
 
@@ -246,6 +261,14 @@ public class LoginController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorModel handleVerifyCodeException(VerifyCodeException e) {
         ErrorModel model = new ErrorModelBuilder("000300").addChildError("000301").build();
+        return model;
+    }
+
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorModel handleUserExistException(UserExistException e) {
+        ErrorModel model = new ErrorModelBuilder("090100").build();
         return model;
     }
 
