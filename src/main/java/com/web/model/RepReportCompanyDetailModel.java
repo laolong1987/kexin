@@ -11,7 +11,16 @@ public class RepReportCompanyDetailModel {
     private String title;
     private String description;
     private String uuid;
+    private String id;
     private List<String> fileidlist;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public List<String> getFileidlist() {
         return fileidlist;

@@ -5,6 +5,7 @@ import com.common.BaseDao;
 import com.common.SearchTemplate;
 import com.web.entity.RecordInfo;
 import com.web.entity.ReportHandle;
+import com.web.entity.ReportReminder;
 import com.web.model.ReportProductVO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,4 +98,20 @@ public class RecordInfoDao extends BaseDao {
         List<ReportHandle> list = super.findObjects(sql.toString(),map, ReportHandle.class);
         return list;
     }
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ReportReminder> findReportReminder(String userid) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from REPORT_REMINDER t where 1=1");
+        sql.append(" and user_id=:userid  ");
+        Map map=new HashMap();
+        map.put("userid",userid);
+        List<ReportReminder> list = super.findObjects(sql.toString(),map, ReportReminder.class);
+        return list;
+    }
+
 }

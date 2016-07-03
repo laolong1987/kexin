@@ -13,6 +13,16 @@ public class RepReportProductModel {
     private String description;
     private String uuid;
     private String code;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private List<String> fileidlist;
 
     public List<String> getFileidlist() {

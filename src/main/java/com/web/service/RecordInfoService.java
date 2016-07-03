@@ -2,10 +2,7 @@ package com.web.service;
 
 import com.common.SearchTemplate;
 import com.web.dao.RecordInfoDao;
-import com.web.entity.RecordInfo;
-import com.web.entity.ReportCompany;
-import com.web.entity.ReportHandle;
-import com.web.entity.ReportProduct;
+import com.web.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,4 +73,25 @@ public class RecordInfoService {
     public  ReportHandle getReportHandle(String id ){
         return  (ReportHandle) recordInfoDao.getObjectById(id,ReportHandle.class);
     }
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public ReportReminder findReportReminder(String userid){
+        List<ReportReminder> list=recordInfoDao.findReportReminder(userid);
+        if(list.size()>0){
+            return list.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    public  void savereportReminder(ReportReminder reportReminder){
+        recordInfoDao.save(reportReminder);
+    }
+
+
+
 }

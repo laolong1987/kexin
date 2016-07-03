@@ -32,12 +32,12 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="right">接收邮箱地址： </td>
-                        <td><input name="email" id="email" type="text" class="intext"/></td>
+                        <td><input name="email" id="email" type="text" value="${reminder.email}" class="intext"/></td>
                     </tr>
                     <tr>
                         <td align="right">接收手机号码： </td>
                         <td>
-                            <input name="phone" id="phone" type="text" class="intext"/>
+                            <input name="phone" id="phone" value="${reminder.phone}" type="text" class="intext"/>
                             接收时段：
                             <select id="day" name="day">
                                 <option value="1">每天</option>
@@ -54,7 +54,7 @@
                     </tr>
                     <tr>
                         <td align="right">&nbsp; </td>
-                        <td><input name="" type="button" class="btn_cld" value="提交" /></td>
+                        <td><input name="" type="button" onclick="submitdata()" class="btn_cld" value="提交" /></td>
                     </tr>
                 </table>
             </div>
@@ -69,4 +69,37 @@
 <!-- 底部菜单-->
 <%@include file="footer.jsp"%>
 </body>
+<script type="text/javascript">
+    $(function(){
+        $("#day").val(${reportCompany.day});
+        $("#time").val(${reportCompany.time});
+    })
+
+
+    function submitdata(){
+        var email=$("#email").val();
+        var time=$("#time").val();
+        var day=$("#day").val();
+        var phone=$("#phone").val();
+        if(yanz()){
+            $.ajax({
+                type : "POST",
+                url : "addreportreminder",
+                data : {email:email,time:time,day:day,phone:phone},
+                dataType : "text",
+                success : function(result) {
+                    alert("设置成功");
+                }
+            });
+        }
+    }
+    function yanz(){
+        var email=$("#email").val();
+        if(""==email){
+            alert("邮箱不能为空！");
+            return false;
+        }
+        return true;
+    }
+</script>
 </html>

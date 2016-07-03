@@ -219,20 +219,38 @@ public class ReportAdminController {
     public String showreportreminder(HttpServletRequest request,
                                         HttpServletResponse response) {
 
-
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user");
+        ReportReminder reportReminders= recordInfoService.findReportReminder(user_in.getUesername());
+        if(null!=reportReminders){
+            request.setAttribute("reminder",reportReminders);
+        }
         //设置左边菜单高亮
         request.setAttribute("m5","ahover");
         return "/jsp/yw/jbxxtxsz";
     }
 
     @RequestMapping(value = "/addreportreminder")
+    @ResponseBody
     public String addreportreminder(HttpServletRequest request,
                                      HttpServletResponse response) {
-        
-
-        //设置左边菜单高亮
-        request.setAttribute("m5","ahover");
-        return "/jsp/yw/jbxxtxsz";
+        String email=ConvertUtil.safeToString(request.getParameter("email"),"");
+        String phone=ConvertUtil.safeToString(request.getParameter("phone"),"");
+        int day=ConvertUtil.safeToInteger(request.getParameter("day"),0);
+        int time=ConvertUtil.safeToInteger(request.getParameter("time"),0);
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user");
+        ReportReminder reportReminders= recordInfoService.findReportReminder(user_in.getUesername());
+        if(null==reportReminders){
+            reportReminders=new ReportReminder();
+            reportReminders.setCreate_time(new Date());
+            reportReminders.setUser_id(user_in.getUesername());
+        }
+        reportReminders.setUpdate_time(new Date());
+        reportReminders.setPhone(phone);
+        reportReminders.setEmail(email);
+        reportReminders.setDay(day);
+        reportReminders.setTime(time);
+        recordInfoService.savereportReminder(reportReminders);
+        return "ok";
     }
 
 

@@ -11,6 +11,15 @@ public class ReportProductVO {
     String status;
     String product_name;
     String company_name;
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getProduct_name() {
         return product_name;

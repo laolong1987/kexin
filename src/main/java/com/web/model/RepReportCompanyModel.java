@@ -10,6 +10,15 @@ public class RepReportCompanyModel {
     String create_time;
     String status;
     String company_name;
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

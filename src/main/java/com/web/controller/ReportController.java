@@ -112,18 +112,22 @@ public class ReportController {
 
     @RequestMapping(value = "/report-product", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<ReportProductVO> listreportproduct(){
+    public List<ReportProductVO> listreportproduct(@RequestParam(required=false ) String productname){
         Map p=new HashMap();
+        p.put("productname",ConvertUtil.safeToString(productname,""));
         List<ReportProductVO> reportProductVOList=new ArrayList<>();
         List<Map<String, Object>> list= recordInfoService.searchReportProduct(p);
         for (Map map:list) {
             ReportProductVO reportProduct = new ReportProductVO();
-            reportProduct.setTitle(ConvertUtil.safeToString(map.get("title"),""));
-            reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("create_time"),""));
-            reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("company_name"),""));
-            reportProduct.setProduct_name(ConvertUtil.safeToString(map.get("product_name"),""));
-            int status=ConvertUtil.safeToInteger("status",0);
+            reportProduct.setTitle(ConvertUtil.safeToString(map.get("TITLE"),""));
+            reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("CREATE_TIME"),""));
+            reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("COMPANY_NAME"),""));
+            reportProduct.setProduct_name(ConvertUtil.safeToString(map.get("PRODUCT_NAME"),""));
+            reportProduct.setId(ConvertUtil.safeToString(map.get("ID"),""));
+            int status=ConvertUtil.safeToInteger(map.get("STATUS"),0);
             if(0==status){
+                reportProduct.setStatus("未处理");
+            }else if(1==status){
                 reportProduct.setStatus("处理中");
             }else{
                 reportProduct.setStatus("已处理");
@@ -145,7 +149,7 @@ public class ReportController {
             reportProductModel.setCode(reportProduct.getCode());
             reportProductModel.setCompany_name(reportProduct.getCompany_name());
             reportProductModel.setProduct_name(reportProduct.getProduct_name());
-
+            reportProductModel.setId(reportProduct.getId());
             List<String> lists=new ArrayList<>();
 
             List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportProduct.getId(),"1");
@@ -160,17 +164,21 @@ public class ReportController {
 
     @RequestMapping(value = "/report-company", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<RepReportCompanyModel> listreportcompany(){
+    public List<RepReportCompanyModel> listreportcompany(@RequestParam(required=false) String companyname){
         Map p=new HashMap();
+        p.put("companyname",ConvertUtil.safeToString(companyname,""));
         List<RepReportCompanyModel> reportCompanyModels=new ArrayList<>();
         List<Map<String, Object>> list= recordInfoService.searchReportCompany(p);
         for (Map map:list) {
             RepReportCompanyModel reportProduct = new RepReportCompanyModel();
-            reportProduct.setTitle(ConvertUtil.safeToString(map.get("title"),""));
-            reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("create_time"),""));
-            reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("company_name"),""));
-            int status=ConvertUtil.safeToInteger("status",0);
+            reportProduct.setTitle(ConvertUtil.safeToString(map.get("TITLE"),""));
+            reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("CREATE_TIME"),""));
+            reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("COMPANY_NAME"),""));
+            reportProduct.setId(ConvertUtil.safeToString(map.get("ID"),""));
+            int status=ConvertUtil.safeToInteger(map.get("STATUS"),0);
             if(0==status){
+                reportProduct.setStatus("未处理");
+            }else if(1==status){
                 reportProduct.setStatus("处理中");
             }else{
                 reportProduct.setStatus("已处理");
@@ -188,6 +196,7 @@ public class ReportController {
         if(null!=reportCompany){
             reportCompanyModel.setTitle(reportCompany.getTitle());
             reportCompanyModel.setCompany_name(reportCompany.getCompany_name());
+            reportCompanyModel.setId(reportCompany.getId());
             List<String> lists=new ArrayList<>();
             List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportCompany.getId(),"2");
             for (Uploadfile uploadfile: list ) {
