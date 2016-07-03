@@ -69,9 +69,6 @@ public class RecordInfoDao extends BaseDao {
         sql.append("select t.id,t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
         sql.append(",t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time ");
         sql.append(" from report_company t where 1=1  ");
-        Map p=new HashMap();
-        p.put("page",0);
-        p.put("pageSize",10);
-        return  super.search(sql.toString(),p);
+        return  super.search(sql.toString(),map);
     }
 }

@@ -9,11 +9,11 @@
 <div class="edit_left">
     <ul>
         <li><a href="spzlyj.html" class="${m1}">商品质量预警</a></li>
-        <li><a href="spzlznyjsz.html" class="ahover">商品质量智能预警设置</a></li>
-        <li><a href="qyjbxxcl.html" class="ahover">企业举报信息处理</a></li>
-        <li><a href="spjbxxcl.html" class="ahover">商品举报信息处理</a></li>
-        <li><a href="jbxxtxsz.html" class="ahover">举报信息提醒设置</a></li>
-        <li><a href="jsxxgl.html" class="ahover">警示信息管理</a></li>
-        <li><a href="grxxgl.html" class="ahover">个人信息管理</a></li>
+        <li><a href="spzlznyjsz.html" class="${m2}">商品质量智能预警设置</a></li>
+        <li><a href="qyjbxxcl.html" class="${m3}">企业举报信息处理</a></li>
+        <li><a href="spjbxxcl.html" class="${m4}">商品举报信息处理</a></li>
+        <li><a href="jbxxtxsz.html" class="${m5}">举报信息提醒设置</a></li>
+        <li><a href="jsxxgl.html" class="${m6}">警示信息管理</a></li>
+        <li><a href="grxxgl.html" class="${m7}">个人信息管理</a></li>
     </ul>
 </div>

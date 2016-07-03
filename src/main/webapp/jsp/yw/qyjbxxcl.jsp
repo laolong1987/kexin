@@ -28,7 +28,8 @@
             </div>
             <div class="tian"></div>
             <div class="edit_table">
-                <form action="showreportcompany" method="post">
+                <form action="showreportcompany" id="myform" name="myform" method="post">
+                    <input type="hidden" value="1" id="page" name="page"/>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr class="trbg">
                         <td colspan="4">检索条件 </td>
@@ -46,7 +47,7 @@
                         </td>
                     <tr>
                         <td align="right">&nbsp; </td>
-                        <td colspan="3"><input name="" type="submit" class="btn_cld" value="检索" /></td>
+                        <td colspan="3"><input name="" onclick="topage('1')" type="button" class="btn_cld" value="检索" /></td>
                     </tr>
                     </tr>
                 </table>
@@ -87,20 +88,26 @@
             <div class="tian"></div>
             <div class="page_box">
                 <div class="page">
-                    <c:if test="${0!=page}">
-                        <a class='n2 over'>首页</a>
-                        <a class='n2 over'>上一页</a>
+                    <c:if test="${1!=page}">
+                        <a class='n2 over' onclick="topage('1')">首页</a>
+                        <a class='n2 over' onclick="topage('${page-1}')">上一页</a>
                     </c:if>
 
                     <%--<a class='n1 selected' >1</a>--%>
                     <%--<a class='n1' href='#'>2</a>--%>
                     <%--<a class='n1' href='#'>3</a>--%>
-                    <c:forEach begin="3" end="6" varStatus="status">
-                        <a class='n1' href='#'>${status.current}</a>
+                    <c:forEach begin="${begin}" end="${end}" varStatus="status">
+                        <c:if test="${status.current==page}">
+                            <a class='n1 selected' href='#' onclick="topage('${status.current}')">${status.current}</a>
+                        </c:if>
+                        <c:if test="${status.current!=page}">
+                            <a class='n1' href='#' onclick="topage('${status.current}')">${status.current}</a>
+                        </c:if>
+
                     </c:forEach>
                     <c:if test="${page!=max}">
-                        <a class=n2 href='#'>下一页</a>
-                        <a class=n2 href='#'>末页</a>
+                        <a class=n2 href='#' onclick="topage('${page+1}')">下一页</a>
+                        <a class=n2 href='#' onclick="topage('${max}')" >末页</a>
                     </c:if>
 
                 </div>
@@ -115,4 +122,12 @@
 <!-- 底部菜单-->
 <%@include file="footer.jsp"%>
 </body>
+
+<script type="text/javascript">
+
+    function topage(page){
+        $("#page").val(page);
+        document.getElementById("myform").submit();
+    }
+</script>
 </html>

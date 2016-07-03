@@ -127,8 +127,6 @@ public abstract class BaseDao {
 			int pageSize = Integer.parseInt(param.get("pageSize").toString());
 			query.setFirstResult(page == 1 ? 0 : (page - 1) * pageSize);
 			query.setMaxResults(pageSize);
-			param.remove("page");
-			param.remove("pageSize");
 		}
 		query.setProperties(param);
 		query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);

@@ -49,7 +49,7 @@ public class ReportAdminController {
 
         String companyname= ConvertUtil.safeToString(request.getParameter("companyname"),"");
         int status= ConvertUtil.safeToInteger(request.getParameter("status"),0);
-        int page= ConvertUtil.safeToInteger(request.getParameter("page"),0);
+        int page= ConvertUtil.safeToInteger(request.getParameter("page"),1);
         int pageSize= 10;
         Map p=new HashMap();
         p.put("companyname",companyname);
@@ -63,7 +63,27 @@ public class ReportAdminController {
         if (searchTemplate.getCount() % 10 != 0){
             max++;
         }
+        int begin=page-1;
+        int end=page+1;
+        if(begin<1){
+            begin=1;
+            if(end<max){
+                end++;
+            }
+        }
+        if(end>max){
+            end=max;
+            if(begin>1){
+                begin--;
+            }
+        }
+
+
+
         request.setAttribute("max",max);
+        request.setAttribute("begin",begin);
+        request.setAttribute("end",end);
+        request.setAttribute("page",page);
 
 
         //设置左边菜单高亮
