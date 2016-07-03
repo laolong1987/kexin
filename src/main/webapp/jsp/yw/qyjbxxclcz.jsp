@@ -34,7 +34,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="25%" align="right">企业名称：</td>
-                        <td>${reportCompany.companyName}</td>
+                        <td>${reportCompany.company_name}</td>
                     </tr>
                     <tr>
                         <td width="25%" align="right">标题：</td>

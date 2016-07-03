@@ -41,7 +41,7 @@ public class UploadFileController {
     public Uploadfile adduploadfile(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
 
         String uuid=request.getParameter("uuid");
-        String file_type=request.getParameter("file_type");
+        int file_type=ConvertUtil.safeToInteger(request.getParameter("file_type"),1);
 
 
         /**构建保存的目录**/
@@ -68,7 +68,7 @@ public class UploadFileController {
         uploadfile.setUuid(uuid);
         uploadfile.setFile_type(ConvertUtil.safeToInteger(file_type,0));
         uploadfile.setFilepath(fileuuid);
-        uploadfile.setType(0);
+        uploadfile.setType(file_type);
         uploadFileService.saveUploadFile(uploadfile);
         return uploadfile;
     }

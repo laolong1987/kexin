@@ -68,6 +68,10 @@ public class ReportController {
             File file2 = new File(fileRealPathDir);
             FileUtils.copyFileToDirectory(file1,file2);
         }
+
+        //添加举报提醒
+        recordInfoService.runreminde();
+
         return reportProduct;
     }
 
@@ -106,6 +110,9 @@ public class ReportController {
             File file2 = new File(fileRealPathDir);
             FileUtils.copyFileToDirectory(file1,file2);
         }
+
+        //添加举报提醒
+        recordInfoService.runreminde();
         return reportCompany;
     }
 

@@ -1,6 +1,8 @@
 package com.web.service;
 
+import com.common.MailSender;
 import com.common.SearchTemplate;
+import com.web.component.mail.SentEmailUtils;
 import com.web.dao.RecordInfoDao;
 import com.web.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class RecordInfoService {
 
     @Autowired
     public RecordInfoDao recordInfoDao;
+
+    @Autowired
+    public MailSender mailSender;
 
     public List<Map> searchRECORD_INFO(Map map){
         return recordInfoDao.searchRECORD_INFO(map);
@@ -93,5 +98,22 @@ public class RecordInfoService {
     }
 
 
+    private static String TITLE="你有一个举报要处理";
+    private static String CONTENT="你有一个举报要处理";
+
+    public void runreminde(){
+        List<ReportReminder> list=recordInfoDao.findReportReminder();
+        for (ReportReminder remider:list ) {
+            if(null!=remider.getEmail() && !"".equals(remider.getEmail())){
+                try {
+//                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,CONTENT);
+                    mailSender.batchSend(TITLE,CONTENT,false,remider.getEmail());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
 
 }

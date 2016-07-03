@@ -71,9 +71,9 @@
 </body>
 <script type="text/javascript">
     $(function(){
-        $("#day").val(${reportCompany.day});
-        $("#time").val(${reportCompany.time});
-    })
+        $("#day").val(${reminder.day});
+        $("#time").val(${reminder.time});
+    });
 
 
     function submitdata(){

@@ -76,6 +76,8 @@ public class ReportAdminController {
         request.setAttribute("m3","ahover");
         request.setAttribute("status",status);
         request.setAttribute("companyname",companyname);
+
+
         return "/jsp/yw/qyjbxxcl";
     }
 
@@ -219,7 +221,7 @@ public class ReportAdminController {
     public String showreportreminder(HttpServletRequest request,
                                         HttpServletResponse response) {
 
-        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user");
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user_in");
         ReportReminder reportReminders= recordInfoService.findReportReminder(user_in.getUesername());
         if(null!=reportReminders){
             request.setAttribute("reminder",reportReminders);
@@ -237,7 +239,7 @@ public class ReportAdminController {
         String phone=ConvertUtil.safeToString(request.getParameter("phone"),"");
         int day=ConvertUtil.safeToInteger(request.getParameter("day"),0);
         int time=ConvertUtil.safeToInteger(request.getParameter("time"),0);
-        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user");
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user_in");
         ReportReminder reportReminders= recordInfoService.findReportReminder(user_in.getUesername());
         if(null==reportReminders){
             reportReminders=new ReportReminder();
