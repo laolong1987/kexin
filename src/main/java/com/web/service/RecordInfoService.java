@@ -4,6 +4,7 @@ import com.common.SearchTemplate;
 import com.web.dao.RecordInfoDao;
 import com.web.entity.RecordInfo;
 import com.web.entity.ReportCompany;
+import com.web.entity.ReportHandle;
 import com.web.entity.ReportProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,4 +60,15 @@ public class RecordInfoService {
         return (ReportCompany) recordInfoDao.getObjectById(id,ReportCompany.class);
     }
 
+    public List<ReportHandle> findreporthandle(String reportid, int reporttype){
+        return recordInfoDao.findreporthandle(reportid,reporttype);
+    }
+
+    public  void saveReportHandle(ReportHandle reportHandle){
+        recordInfoDao.save(reportHandle);
+    }
+
+    public  ReportHandle getReportHandle(String id ){
+        return  (ReportHandle) recordInfoDao.getObjectById(id,ReportHandle.class);
+    }
 }

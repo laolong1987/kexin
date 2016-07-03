@@ -40,9 +40,9 @@
                         <td width="13%" align="right">处理状态：</td>
                         <td width="27%">
                             <select id="status" name="status">
-                                <option>未处理</option>
-                                <option>处理中</option>
-                                <option>已处理</option>
+                                <option value="0">未处理</option>
+                                <option value="1">处理中</option>
+                                <option value="2">已处理</option>
                             </select>
                         </td>
                     <tr>
@@ -79,7 +79,7 @@
                                 </c:if>
                             </td>
                             <td>${ls.UPDATE_TIME}</td>
-                            <td><a href="updatereportcompany?id=${ls.ID}">处理</a></td>
+                            <td><a href="showreportcompanybyid?id=${ls.ID}">处理</a></td>
                         </tr>
                     </c:forEach>
                 </table>

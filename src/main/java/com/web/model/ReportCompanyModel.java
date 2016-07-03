@@ -6,10 +6,10 @@ package com.web.model;
 public class ReportCompanyModel {
 
     private String title;
-    private String company_name;
+    private String companyName;
     private String description;
     private String uuid;
-    private String user_id;
+    private String userId;
 
     public String getTitle() {
         return title;
@@ -19,12 +19,12 @@ public class ReportCompanyModel {
         this.title = title;
     }
 
-    public String getCompany_name() {
-        return company_name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getDescription() {
@@ -43,11 +43,11 @@ public class ReportCompanyModel {
         this.uuid = uuid;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

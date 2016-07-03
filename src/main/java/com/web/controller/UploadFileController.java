@@ -1,5 +1,6 @@
 package com.web.controller;
 
+import com.utils.ConvertUtil;
 import com.web.entity.ReportProduct;
 import com.web.entity.Uploadfile;
 import com.web.model.ReportProductModel;
@@ -40,6 +41,7 @@ public class UploadFileController {
     public Uploadfile adduploadfile(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
 
         String uuid=request.getParameter("uuid");
+        String file_type=request.getParameter("file_type");
 
 
         /**构建保存的目录**/
@@ -64,6 +66,7 @@ public class UploadFileController {
         uploadfile.setFilename(attachmentName);
         uploadfile.setMimetype(attachmentContentType);
         uploadfile.setUuid(uuid);
+        uploadfile.setFile_type(ConvertUtil.safeToInteger(file_type,0));
         uploadfile.setFilepath(fileuuid);
         uploadfile.setType(0);
         uploadFileService.saveUploadFile(uploadfile);

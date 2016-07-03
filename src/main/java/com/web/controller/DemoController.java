@@ -27,7 +27,7 @@ public class DemoController {
     public String show(HttpServletRequest request,
                                 HttpServletResponse response) {
 
-        request.setAttribute("list",demoService.searchList(new HashMap()));
+//        request.setAttribute("list",demoService.searchList(new HashMap()));
 
         return "/jsp/demo";
     }

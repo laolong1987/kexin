@@ -4,6 +4,7 @@ package com.web.dao;
 import com.common.BaseDao;
 import com.common.SearchTemplate;
 import com.web.entity.RecordInfo;
+import com.web.entity.ReportHandle;
 import com.web.model.ReportProductVO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,21 @@ public class RecordInfoDao extends BaseDao {
         sql.append(",t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time ");
         sql.append(" from report_company t where 1=1  ");
         return  super.search(sql.toString(),map);
+    }
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ReportHandle> findreporthandle(String reportid,int reporttype) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from report_handle t where 1=1");
+        sql.append(" and report_type=:report_type and report_id=:report_id and status=1 ");
+        Map map=new HashMap();
+        map.put("report_id",reportid);
+        map.put("report_type",reporttype);
+        List<ReportHandle> list = super.findObjects(sql.toString(),map, ReportHandle.class);
+        return list;
     }
 }

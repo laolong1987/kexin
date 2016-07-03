@@ -1,7 +1,6 @@
 package com.web.controller;
 
 import com.utils.ConvertUtil;
-import com.web.entity.RecordInfo;
 import com.web.entity.ReportCompany;
 import com.web.entity.ReportProduct;
 import com.web.entity.Uploadfile;
@@ -12,14 +11,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 //import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -36,7 +30,7 @@ public class ReportController {
     @Autowired
     UploadFileService uploadFileService;
 
-    @RequestMapping(value="/report-products", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
+    @RequestMapping(value="/report-products", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ReportProduct addReportProduct(ReportProductModel reportProductModel){
         ReportProduct reportProduct=new ReportProduct();
@@ -63,13 +57,13 @@ public class ReportController {
         return reportProduct;
     }
 
-    @RequestMapping(value="/report-company", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
+    @RequestMapping(value="/report-company", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ReportCompany addReportCompany(ReportCompanyModel reportCompanyModel, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ReportCompany addReportCompany(ReportCompanyModel reportCompanyModel) throws IOException {
         ReportCompany reportCompany=new ReportCompany();
         reportCompany.setUuid(reportCompanyModel.getUuid());
         reportCompany.setStatus(0);
-        reportCompany.setCompany_name(reportCompanyModel.getCompany_name());
+        reportCompany.setCompany_name(reportCompanyModel.getCompanyName());
         reportCompany.setTitle(reportCompanyModel.getTitle());
         reportCompany.setDescription(reportCompanyModel.getDescription());
         reportCompany.setCreate_time(new Date());
@@ -89,8 +83,8 @@ public class ReportController {
             /**构建保存的目录**/
             String tmpPathDir = "/tmp";
             String filePathDir = "/file";
-            String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
-            String fileRealPathDir = request.getSession().getServletContext().getRealPath(filePathDir);
+            String tmpRealPathDir = "";
+            String fileRealPathDir = "";
 
             /**根据真实路径创建目录**/
             String fileName = tmpRealPathDir + File.separator + file.getFilepath();

@@ -37,6 +37,8 @@ public class Uploadfile{
     private String report_id;
     @Column(name ="type")
     private int type;
+    @Column(name ="file_type")
+    private int file_type;
     @Column(name ="create_time")
     private Date create_time;
     @Column(name ="update_time")
@@ -46,6 +48,14 @@ public class Uploadfile{
     }
     public String getId(){
         return this.id;
+    }
+
+    public int getFile_type() {
+        return file_type;
+    }
+
+    public void setFile_type(int file_type) {
+        this.file_type = file_type;
     }
 
     public void setFilename(String filename){

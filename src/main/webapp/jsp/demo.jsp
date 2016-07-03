@@ -7,9 +7,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
     <title>Title</title>
+
 </head>
 <body>
 <form action="add" method="post">
@@ -36,6 +38,22 @@
      <input type="button" value="save" onclick="save('1','zhangsan')" title="删除"/>
 
 </dl>
+<br/>
+<form action="${ctx}/uploadfile" method="post" enctype="multipart/form-data" >
+    <input type="hidden" name="uuid" id="uuid" value="123123"/>
+    <dl>
+        <dt><input type="file" name="file" id="file"></dt>
+        <dd><input type="submit" title="提交"/></dd>
+    </dl>
+</form>
+
+<form action="${ctx}/report-products" method="post">
+    <dl>
+        <dt><input type="text" name="uuid" id="uuid" value="123"></dt>
+        <dd><input type="submit" title="提交"/></dd>
+    </dl>
+</form>
+
 </body>
 <script type="text/javascript" src='../js/jquery.min.js'></script>
 <script type="text/javascript">
