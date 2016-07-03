@@ -3,6 +3,7 @@ package com.web.controller;
 import com.utils.StringUtil;
 import com.web.entity.Demo;
 import com.web.service.DemoService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +31,21 @@ public class DemoController {
                                 HttpServletResponse response) {
 
 //        request.setAttribute("list",demoService.searchList(new HashMap()));
+
+        String tmpPathDir = "/tmp";
+        String filePathDir = "/file";
+        String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
+        String fileRealPathDir = request.getSession().getServletContext().getRealPath(filePathDir);
+
+        /**根据真实路径创建目录**/
+        String fileName = tmpRealPathDir + File.separator + "fj.jpg";
+        File file1 = new File(fileName);
+        File file2 = new File(fileRealPathDir);
+        try {
+            FileUtils.copyFileToDirectory(file1,file2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return "/jsp/demo";
     }

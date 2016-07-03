@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: gaoyang
-  Date: 16/7/2
-  Time: 下午3:45
+  Date: 16/7/3
+  Time: 下午6:39
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -11,7 +11,7 @@
 <head>
     <%@include file="common.jsp"%>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>企业举报信息处理 </title>
+    <title>商品举报信息处理 </title>
 </head>
 <body>
 <!-- 头部 -->
@@ -24,31 +24,33 @@
 
         <div class="edit_right">
             <div class="eh2title">
-                当前位置：企业举报信息处理
+                当前位置：商品举报信息处理
             </div>
             <div class="tian"></div>
             <div class="edit_table">
                 <form action="addhandle" method="post">
-                    <input type="hidden" name="id" id="id" value="${reportCompany.id}">
-                    <input type="hidden" name="type" id="type" value="1">
+                    <input type="hidden" name="id" id="id" value="${reportProduct.id}">
+                    <input type="hidden" name="type" id="type" value="2">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
+                        <td width="25%" align="right">商品名称：</td>
+                        <td>${reportProduct.product_name}</td>
+                    </tr>
+                    <tr>
                         <td width="25%" align="right">企业名称：</td>
-                        <td>${reportCompany.companyName}</td>
+                        <td>${reportProduct.company_name}</td>
                     </tr>
                     <tr>
                         <td width="25%" align="right">标题：</td>
-                        <td>${reportCompany.title}</td>
+                        <td>${reportProduct.title}</td>
                     </tr>
                     <tr>
                         <td width="25%" align="right">举报时间：</td>
-                        <td>
-                        <fmt:formatDate value="${reportCompany.create_time}" type="both" />
-                            </td>
+                        <td> <fmt:formatDate value="${reportProduct.create_time}" type="both" /></td>
                     </tr>
                     <tr>
                         <td width="25%" align="right">举报内容：</td>
-                        <td>${reportCompany.description}</td>
+                        <td>${reportProduct.description}</td>
                     </tr>
                     <tr>
                         <td width="25%" align="right">证据（图片）：</td>
@@ -56,7 +58,7 @@
                             <c:forEach items="${filelist}" var="fls">
                                 <c:if test="${fls.file_type==1}">
                                     <a href="${ctx}/doDownload/${fls.id}" target="_top" ><img src="${ctx}/doDownload/${fls.id}" width="200px" /></a>
-                                        <br />
+                                    <br />
                                 </c:if>
                             </c:forEach>
                         </td>
@@ -102,19 +104,23 @@
                         <td><textarea id="description" name="description" rows="5" style="width:500px;"></textarea>
                         </td>
                     </tr>
-                            <c:forEach items="${handlelist}" var="ls">
-                                <tr>
-                                <td align="right"> <fmt:formatDate value="${ls.create_time}" /></td>
-                                <td>${ls.description}<a href="delhandle?id=${ls.id}&type=1">删除</a></td>
-                                </tr>
-                            </c:forEach>
+                    <c:forEach items="${handlelist}" var="ls">
+                        <tr>
+                            <td align="right"> <fmt:formatDate value="${ls.create_time}" /></td>
+                            <td>${ls.description}<a href="delhandle?id=${ls.id}&type=2">删除</a></td>
+                        </tr>
+                    </c:forEach>
                     <tr>
                         <td align="right">&nbsp; </td>
                         <td><input name="" type="submit" class="btn_cld" value="提交" /></td>
                     </tr>
                 </table>
-                </form>
             </div>
+
+
+
+
+
         </div>
     </div>
 </div>

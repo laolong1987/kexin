@@ -3,10 +3,7 @@ package com.web.controller.admin;
 import com.common.SearchTemplate;
 import com.utils.ConvertUtil;
 import com.utils.StringUtil;
-import com.web.entity.Demo;
-import com.web.entity.ReportCompany;
-import com.web.entity.ReportHandle;
-import com.web.entity.Uploadfile;
+import com.web.entity.*;
 import com.web.service.DemoService;
 import com.web.service.RecordInfoService;
 import com.web.service.UploadFileService;
@@ -41,18 +38,6 @@ public class ReportAdminController {
     @RequestMapping(value = "/showreportcompany")
     public String showreportcompany(HttpServletRequest request,
                                 HttpServletResponse response) {
-
-//
-//        for(int i=1;i<15;i++){
-//            ReportCompany reportCompany=new ReportCompany();
-//            reportCompany.setCompanyName("企业名称"+i);
-//            reportCompany.setStatus(0);
-//            reportCompany.setTitle("举报标题"+i);
-//            reportCompany.setCreate_time(new Date());
-//            reportCompany.setUpdate_time(new Date());
-//            reportCompany.setDescription("举报内容"+i);
-//            recordInfoService.saveReportCompany(reportCompany);
-//        }
         String companyname= ConvertUtil.safeToString(request.getParameter("companyname"),"");
         int status= ConvertUtil.safeToInteger(request.getParameter("status"),0);
         int page= ConvertUtil.safeToInteger(request.getParameter("page"),1);
@@ -89,6 +74,7 @@ public class ReportAdminController {
         request.setAttribute("page",page);
         //设置左边菜单高亮
         request.setAttribute("m3","ahover");
+        request.setAttribute("status",status);
         request.setAttribute("companyname",companyname);
         return "/jsp/yw/qyjbxxcl";
     }
@@ -120,9 +106,16 @@ public class ReportAdminController {
         int type= ConvertUtil.safeToInteger(request.getParameter("type"),0);
         int status= ConvertUtil.safeToInteger(request.getParameter("status"),0);
 
-        ReportCompany reportCompany= recordInfoService.getReportCompany(id);
-        reportCompany.setStatus(status);
-        recordInfoService.saveReportCompany(reportCompany);
+        if(1==type){
+            ReportCompany reportCompany= recordInfoService.getReportCompany(id);
+            reportCompany.setStatus(status);
+            recordInfoService.saveReportCompany(reportCompany);
+        }else if (2==type){
+            ReportProduct reportProduct= recordInfoService.getReportProduct(id);
+            reportProduct.setStatus(status);
+            recordInfoService.saveReportProduct(reportProduct);
+        }
+
 
         ReportHandle reportHandle=new ReportHandle();
         reportHandle.setCreate_time(new Date());
@@ -136,7 +129,7 @@ public class ReportAdminController {
         if(1==type){
             return "redirect:/admin/report/showreportcompanybyid?id="+id;
         }else{
-            return "redirect:/admin/report/showreportcompanybyid?id="+id;
+            return "redirect:/admin/report/showreportproductbyid?id="+id;
         }
     }
     @RequestMapping(value = "/delhandle")
@@ -152,7 +145,96 @@ public class ReportAdminController {
         if(1==type){
             return "redirect:/admin/report/showreportcompanybyid?id="+reportHandle.getReport_id();
         }else{
-            return "redirect:/admin/report/showreportcompanybyid?id="+reportHandle.getReport_id();
+            return "redirect:/admin/report/showreportproductbyid?id="+reportHandle.getReport_id();
         }
     }
+
+
+    @RequestMapping(value = "/showreportproduct")
+    public String showreportproduct(HttpServletRequest request,
+                                    HttpServletResponse response) {
+
+        String productname= ConvertUtil.safeToString(request.getParameter("productname"),"");
+        int status= ConvertUtil.safeToInteger(request.getParameter("status"),0);
+        int page= ConvertUtil.safeToInteger(request.getParameter("page"),1);
+        int pageSize= 10;
+        Map p=new HashMap();
+        p.put("productname",productname);
+        p.put("status",status);
+        p.put("page",page);
+        p.put("pageSize",pageSize);
+        SearchTemplate searchTemplate=  recordInfoService.findReportProduct(p);
+        request.setAttribute("list",searchTemplate.getValues());
+
+        int max=searchTemplate.getCount()/pageSize;
+        if (searchTemplate.getCount() % 10 != 0){
+            max++;
+        }
+        int begin=page-1;
+        int end=page+1;
+        if(begin<1){
+            begin=1;
+            if(end<max){
+                end++;
+            }
+        }
+        if(end>max){
+            end=max;
+            if(begin>1){
+                begin--;
+            }
+        }
+        request.setAttribute("max",max);
+        request.setAttribute("begin",begin);
+        request.setAttribute("end",end);
+        request.setAttribute("page",page);
+        //设置左边菜单高亮
+        request.setAttribute("m4","ahover");
+        request.setAttribute("status",status);
+        request.setAttribute("productname",productname);
+        return "/jsp/yw/spjbxxcl";
+    }
+
+
+    @RequestMapping(value = "/showreportproductbyid")
+    public String showreportproductbyid(HttpServletRequest request,
+                                        HttpServletResponse response) {
+        String id= ConvertUtil.safeToString(request.getParameter("id"),"");
+        ReportProduct reportProduct= recordInfoService.getReportProduct(id);
+
+        List<ReportHandle> list=recordInfoService.findreporthandle(id,2);
+
+        request.setAttribute("reportProduct",reportProduct);
+        request.setAttribute("handlelist",list);
+
+        List<Uploadfile> uploadfileList= uploadFileService.findUploadfileByReportId(id,"2");
+
+        //设置左边菜单高亮
+        request.setAttribute("m3","ahover");
+        request.setAttribute("filelist",uploadfileList);
+        return "/jsp/yw/spjbxxclcz";
+    }
+
+    @RequestMapping(value = "/showreportreminder")
+    public String showreportreminder(HttpServletRequest request,
+                                        HttpServletResponse response) {
+
+
+        //设置左边菜单高亮
+        request.setAttribute("m5","ahover");
+        return "/jsp/yw/jbxxtxsz";
+    }
+
+    @RequestMapping(value = "/addreportreminder")
+    public String addreportreminder(HttpServletRequest request,
+                                     HttpServletResponse response) {
+        
+
+        //设置左边菜单高亮
+        request.setAttribute("m5","ahover");
+        return "/jsp/yw/jbxxtxsz";
+    }
+
+
+
 }

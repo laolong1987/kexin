@@ -49,13 +49,14 @@ public class RecordInfoDao extends BaseDao {
         sql.append("select t.id, t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
         sql.append(",t.product_name,t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time  ");
         sql.append(" from report_product t where 1=1");
-        if (map.containsKey("companyname") && "".equals(map.get("companyname"))){
-            sql.append(" and t.company_name like :companyname ");
-            map.put("companyname", "%" + map.get("companyname") + "%");
+        if (map.containsKey("productname") && !"".equals(map.get("productname"))){
+            sql.append(" and t.product_name like :productname ");
+            map.put("productname", "%" + map.get("productname") + "%");
         }
-        if (map.containsKey("status") && "".equals(map.get("status"))){
+        if (map.containsKey("status") && !"".equals(map.get("status"))){
             sql.append(" and t.status =:status ");
         }
+        sql.append(" order by t.create_time desc");
         return  super.search(sql.toString(),map);
     }
 
@@ -70,6 +71,14 @@ public class RecordInfoDao extends BaseDao {
         sql.append("select t.id,t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
         sql.append(",t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time ");
         sql.append(" from report_company t where 1=1  ");
+        if (map.containsKey("companyname") && !"".equals(map.get("companyname"))){
+            sql.append(" and t.company_name like :companyname ");
+            map.put("companyname", "%" + map.get("companyname") + "%");
+        }
+        if (map.containsKey("status") && !"".equals(map.get("status"))){
+            sql.append(" and t.status =:status ");
+        }
+        sql.append(" order by t.create_time desc");
         return  super.search(sql.toString(),map);
     }
 

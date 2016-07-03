@@ -1,18 +1,17 @@
 <%--
   Created by IntelliJ IDEA.
   User: gaoyang
-  Date: 16/6/30
-  Time: 下午8:50
+  Date: 16/7/3
+  Time: 下午5:38
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <%@include file="common.jsp"%>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>企业举报信息处理  </title>
+    <title>商品举报信息处理  </title>
 </head>
 <body>
 <!-- 头部 -->
@@ -24,19 +23,19 @@
         <%@include file="left.jsp"%>
         <div class="edit_right">
             <div class="eh2title">
-                当前位置：企业举报信息处理
+                当前位置：商品举报信息处理
             </div>
             <div class="tian"></div>
             <div class="edit_table">
-                <form action="showreportcompany" id="myform" name="myform" method="post">
+                <form action="showreportproduct" method="post" id="myform" name="myform">
                     <input type="hidden" value="1" id="page" name="page"/>
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr class="trbg">
                         <td colspan="4">检索条件 </td>
                     </tr>
                     <tr>
-                        <td width="23%" align="right">企业名称：</td>
-                        <td width="27%"><input name="" type="text" class="intext" id="companyname" name="companyname" value="${companyname}"/></td>
+                        <td width="23%" align="right">商品名称：</td>
+                        <td width="27%"><input name="productname" id="productname" type="text" class="intext" value="${productname}" /></td>
                         <td width="13%" align="right">处理状态：</td>
                         <td width="27%">
                             <select id="status" name="status">
@@ -47,7 +46,7 @@
                         </td>
                     <tr>
                         <td align="right">&nbsp; </td>
-                        <td colspan="3"><input name="" onclick="topage('1')" type="button" class="btn_cld" value="检索" /></td>
+                        <td colspan="3"><input name="" onclick="topage('1')" type="submit" class="btn_cld" value="检索" /></td>
                     </tr>
                     </tr>
                 </table>
@@ -57,6 +56,7 @@
             <div class="edit_table">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr class="trbg">
+                        <td>商品名称</td>
                         <td>企业名称</td>
                         <td>被举报时间</td>
                         <td>处理状态</td>
@@ -65,6 +65,7 @@
                     </tr>
                     <c:forEach var="ls" items="${list}">
                         <tr>
+                            <td>${ls.PRODUCT_NAME}</td>
                             <td>${ls.COMPANY_NAME}</td>
                             <td>${ls.CREATE_TIME}</td>
                             <td>
@@ -79,7 +80,7 @@
                                 </c:if>
                             </td>
                             <td>${ls.UPDATE_TIME}</td>
-                            <td><a href="showreportcompanybyid?id=${ls.ID}">处理</a></td>
+                            <td><a href="showreportproductbyid?id=${ls.ID}">处理</a></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -120,6 +121,9 @@
 </body>
 
 <script type="text/javascript">
+            $(function(){
+                $("#status").val(${status});
+            })
 
     function topage(page){
         $("#page").val(page);

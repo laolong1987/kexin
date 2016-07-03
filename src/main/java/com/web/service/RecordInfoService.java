@@ -51,6 +51,11 @@ public class RecordInfoService {
         return recordInfoDao.searchReportCompany(map);
     }
 
+    public SearchTemplate findReportProduct(Map map){
+        return recordInfoDao.searchReportProduct(map);
+    }
+
+
     public ReportProduct getReportProduct(String id){
         return (ReportProduct) recordInfoDao.getObjectById(id,ReportProduct.class);
     }
