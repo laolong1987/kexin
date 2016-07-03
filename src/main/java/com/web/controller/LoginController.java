@@ -118,7 +118,9 @@ public class LoginController {
         if (!secret.equals(key)) {
             throw new UnAuthorizedException();
         }
-
+        if(!phone.matches(Constant.phoneRegx)){
+            throw new PhoneInvalidedException();
+        }
         if("1".equals(type)){//如果type=1，表示新注册用户，校验用户是否存在
             USER_OUT user = userOutService.findUserOutByPhone(phone);
             if (user != null) {//用户不存在
@@ -131,6 +133,7 @@ public class LoginController {
         VerifyCode verifyCode = new VerifyCode();
         verifyCode.setCode(code);
         verifyCode.setPhone(phone);
+        verifyCode.setUsed(1);
         verifyCode.setCreate_time(new Date());
         verifyCodeService.saveVerifyCode(verifyCode);
         String message = "尊敬的用户您好，您正在进行注册验证，验证码" + code + "，请在15分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
@@ -160,6 +163,10 @@ public class LoginController {
         //保存token对象
         userOutTokenService.saveToken(userOutToken);
 
+        //验证码失效
+        verifyCode.setUsed(2);
+        verifyCodeService.saveVerifyCode(verifyCode);
+
         return model;
 
     }
@@ -171,8 +178,16 @@ public class LoginController {
         if (uot == null) {
             throw new UnAuthorizedException();
         }
-        String phone = uot.getPhone();
 
+        String phone = uot.getPhone();
+        USER_OUT userOutByPhone = userOutService.findUserOutByPhone(phone);
+        if (userOutByPhone != null) {//手机号已被注册
+            throw new UserExistException();
+        }
+        USER_OUT userOutByUserName = userOutService.findUserOutByPhone(username);
+        if (userOutByUserName != null) {//用户昵称已存在
+            throw new UserNameExistException();
+        }
         USER_OUT user = new USER_OUT();
         user.setMobile_phone(phone);
         user.setUsername(username);
@@ -266,11 +281,24 @@ public class LoginController {
 
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorModel handleUserExistException(UserExistException e) {
         ErrorModel model = new ErrorModelBuilder("090100").build();
         return model;
     }
+    @ExceptionHandler
+      @ResponseStatus(HttpStatus.CONFLICT)
+      public ErrorModel handleUserNameExistException(UserNameExistException e) {
+          ErrorModel model = new ErrorModelBuilder("090101").build();
+          return model;
+      }
+
+    @ExceptionHandler
+       @ResponseStatus(HttpStatus.BAD_REQUEST)
+       public ErrorModel handlePhoneInvalidedException(PhoneInvalidedException e) {
+           ErrorModel model = new ErrorModelBuilder("000403").build();
+           return model;
+       }
 
 
 }

@@ -27,6 +27,7 @@ public class VerifyCodeService {
         VerifyCode verifyCode =new VerifyCode();
         verifyCode.setPhone(phone);
         verifyCode.setCode(code);
+        verifyCode.setUsed(1);
         List<VerifyCode> verifyCodeList=verifyCodeDao.findVerifyCode(verifyCode);
         if(verifyCodeList.size()==1){
             return verifyCodeList.get(0);
