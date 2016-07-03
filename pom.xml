@@ -307,6 +307,30 @@
           <uriEncoding>UTF-8</uriEncoding>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>native2ascii-maven-plugin</artifactId>
+        <version>1.0-beta-1</version>
+        <executions>
+          <execution>
+            <id>native2ascii</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>native2ascii</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-native2ascii</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>native2ascii</goal>
+            </goals>
+            <configuration>
+              <workDir>${project.build.testOutputDirectory}</workDir>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
