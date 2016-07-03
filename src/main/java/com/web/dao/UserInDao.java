@@ -15,7 +15,7 @@ public class UserInDao extends BaseDao {
 
    public List findUser(USER_IN user) {
         StringBuffer sql = new StringBuffer();
-        sql.append("From USER_OUT u where 1=1");
+        sql.append("From USER_IN u where 1=1");
         if (user.getUesername() != null && !"".equals(user.getUesername())) {
             sql.append(" and u.uesername =:uesername");
         }
