@@ -111,8 +111,8 @@ public class RecordInfoService {
         for (ReportReminder remider:list ) {
             if(null!=remider.getEmail() && !"".equals(remider.getEmail())){
                 try {
-//                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,CONTENT);
-                    mailSender.batchSend(TITLE,CONTENT,false,remider.getEmail());
+                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,CONTENT);
+//                    mailSender.batchSend(TITLE,CONTENT,false,remider.getEmail());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
