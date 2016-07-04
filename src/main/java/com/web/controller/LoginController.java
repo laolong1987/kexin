@@ -2,7 +2,7 @@ package com.web.controller;
 
 import java.util.Date;
 
-import com.common.Constant;
+import com.common.*;
 import com.utils.*;
 import com.web.Exception.*;
 import com.web.component.message.MessageSenderImpl;
@@ -32,6 +32,9 @@ public class LoginController {
 
     @Autowired
     private MessageSenderImpl messageSender;
+
+    @Autowired
+    private MailSender mailSender;
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -143,33 +146,46 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/checkout-code/{phone}/{code}", method = RequestMethod.GET)
-    public LoginModel CheckoutValidateCode(@PathVariable(value = "phone") String phone, @PathVariable(value = "code") String code) {
-        VerifyCode verifyCode = verifyCodeService.findVerifyCode(phone, code);
-        if (verifyCode == null) {
-            throw new VerifyCodeException();
+        public LoginModel CheckoutValidateCode(@PathVariable(value = "phone") String phone, @PathVariable(value = "code") String code) {
+            VerifyCode verifyCode = verifyCodeService.findVerifyCode(phone, code);
+            if (verifyCode == null) {
+                throw new VerifyCodeException();
+            }
+
+            LoginModel model = new LoginModel();
+            model.setUserid(phone);
+            String onceStr = StringUtil.getRandomString(8);
+            String token = MD5Util.mmd5(phone + onceStr);
+            model.setToken(token);
+
+            UserOutToken userOutToken = new UserOutToken();
+            userOutToken.setPhone(phone);
+            userOutToken.setToken(token);
+            userOutToken.setCreate_time(new Date());
+            userOutToken.setOncestr(onceStr);
+            //保存token对象
+            userOutTokenService.saveToken(userOutToken);
+
+            //验证码失效
+            verifyCode.setUsed(2);
+            verifyCodeService.saveVerifyCode(verifyCode);
+
+            return model;
+
         }
 
-        LoginModel model = new LoginModel();
-        model.setUserid(phone);
-        String onceStr = StringUtil.getRandomString(8);
-        String token = MD5Util.mmd5(phone + onceStr);
-        model.setToken(token);
-
-        UserOutToken userOutToken = new UserOutToken();
-        userOutToken.setPhone(phone);
-        userOutToken.setToken(token);
-        userOutToken.setCreate_time(new Date());
-        userOutToken.setOncestr(onceStr);
-        //保存token对象
-        userOutTokenService.saveToken(userOutToken);
-
-        //验证码失效
-        verifyCode.setUsed(2);
-        verifyCodeService.saveVerifyCode(verifyCode);
-
-        return model;
-
-    }
+//    @RequestMapping(value = "/sentmailTest", method = RequestMethod.GET)
+//       public String sentMailTest() {
+//        Mail mail = new Mail.Builder()
+//            .from("service@ecdata.org.cn")
+//            .fromName("汤力丞")
+//            .subject("hahahah")
+//            .text("shit")
+//            .tos("735181886@qq.com")
+//            .build();
+//        mailSender.send(mail);
+//        return "success";
+//       }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public LoginModel register(@RequestParam String username, @RequestParam String password, @RequestParam String token) {
@@ -233,6 +249,8 @@ public class LoginController {
         return "success";
 
     }
+
+
 
     @RequestMapping(value = "/modify-username", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public LoginModel setUsername(@RequestParam String username, @RequestParam String token) {
