@@ -2,7 +2,8 @@ package com.common;
 
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.mail.javamail.*;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -17,20 +18,13 @@ public class MailSenderImpl implements MailSender {
     }
 
     @Override
-    public void batchSend(final String subject, final String message, final boolean html, final String email, final String... otherEmails) {
+    public void send(final Mail mail) {
 
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
             @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-                messageHelper.addTo(email);
-                for (String otherEmail : otherEmails) {
-                    messageHelper.addTo(otherEmail);
-                }
-                messageHelper.setFrom("lctang@foxmail.com");
-                messageHelper.setSubject(subject);
-                messageHelper.setText(message, html);
+                mail.setupMimeMessage(mimeMessage);
             }
         };
 
@@ -39,7 +33,7 @@ public class MailSenderImpl implements MailSender {
 
     @Override
     @Async
-    public void batchSendAsync(String subject, String message, boolean html, String email, String... otherEmails) {
-        batchSend(subject,message, html, email, otherEmails);
+    public void sendAsync(Mail mail) {
+        send(mail);
     }
 }

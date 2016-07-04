@@ -46,9 +46,9 @@ public class LoginController {
             throw new PasswordErrorException();
         }
         model.setUserid(user.getMobile_phone());
-        model.setUsername(user.getUsername());
+        model.setUsername(user.getName());
         String onceStr = StringUtil.getRandomString(8);
-        String token = MD5Util.mmd5(user.getUsername() + onceStr);
+        String token = MD5Util.mmd5(user.getMobile_phone() + onceStr + user.getPassword());
         model.setToken(token);
 
         UserOutToken userOutToken = new UserOutToken();
@@ -64,28 +64,28 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value = "/get-user-by-username/{username}/{key}", method = RequestMethod.GET)
-    public UserOut getUserByUsername(@PathVariable(value = "username") String username, @PathVariable(value = "key") String key) {
-        String id_key = username + Constant.key;
-        String secret = MD5Util.mmd5(id_key);
-        if (!secret.equals(key)) {
-            throw new UnAuthorizedException();
-        }
-
-        USER_OUT u = userOutService.findUserOutByUserName(username);
-        if (u == null) {//用户不存在
-            throw new UserOutNotFindException();
-        }
-        UserOut user = new UserOut();
-        user.setUsername(u.getUsername());
-        user.setSex(u.getSex());
-        user.setAddress(u.getAddress());
-        user.setEmail(u.getEmail());
-        user.setName(u.getName());
-
-        return user;
-
-    }
+//    @RequestMapping(value = "/get-user-by-username/{username}/{key}", method = RequestMethod.GET)
+//    public UserOut getUserByUsername(@PathVariable(value = "username") String username, @PathVariable(value = "key") String key) {
+//        String id_key = username + Constant.key;
+//        String secret = MD5Util.mmd5(id_key);
+//        if (!secret.equals(key)) {
+//            throw new UnAuthorizedException();
+//        }
+//
+//        USER_OUT u = userOutService.findUserOutByUserName(username);
+//        if (u == null) {//用户不存在
+//            throw new UserOutNotFindException();
+//        }
+//        UserOut user = new UserOut();
+//        user.setUsername(u.getUsername());
+//        user.setSex(u.getSex());
+//        user.setAddress(u.getAddress());
+//        user.setEmail(u.getEmail());
+//        user.setName(u.getName());
+//
+//        return user;
+//
+//    }
 
     @RequestMapping(value = "/get-user-by-phone/{phone}/{key}", method = RequestMethod.GET)
     public UserOut getUserByPhone(@PathVariable(value = "phone") String phone, @PathVariable(value = "key") String key) {
@@ -100,7 +100,7 @@ public class LoginController {
             throw new UserOutNotFindException();
         }
         UserOut user = new UserOut();
-        user.setUsername(u.getUsername());
+        user.setUsername(u.getName());
         user.setPhone(phone);
         user.setSex(u.getSex());
         user.setAddress(u.getAddress());
@@ -118,10 +118,10 @@ public class LoginController {
         if (!secret.equals(key)) {
             throw new UnAuthorizedException();
         }
-        if(!phone.matches(Constant.phoneRegx)){
+        if (!phone.matches(Constant.phoneRegx)) {
             throw new PhoneInvalidedException();
         }
-        if("1".equals(type)){//如果type=1，表示新注册用户，校验用户是否存在
+        if ("1".equals(type)) {//如果type=1，表示新注册用户，校验用户是否存在
             USER_OUT user = userOutService.findUserOutByPhone(phone);
             if (user != null) {//用户不存在
                 throw new UserExistException();
@@ -184,15 +184,17 @@ public class LoginController {
         if (userOutByPhone != null) {//手机号已被注册
             throw new UserExistException();
         }
-        USER_OUT userOutByUserName = userOutService.findUserOutByPhone(username);
-        if (userOutByUserName != null) {//用户昵称已存在
-            throw new UserNameExistException();
-        }
+//        USER_OUT userOutByUserName = userOutService.findUserOutByPhone(username);
+//        if (userOutByUserName != null) {//用户昵称已存在
+//            throw new UserNameExistException();
+//        }
         USER_OUT user = new USER_OUT();
         user.setMobile_phone(phone);
-        user.setUsername(username);
+//        user.setUsername(username);
+        user.setName(username);
         user.setRole_type("MOBILE_USER");
         user.setPassword(password);
+        user.setCreate_time(new Date());
         userOutService.saveUserOut(user);
 
         LoginModel model = new LoginModel();
@@ -233,7 +235,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/modify-username", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String setUsername(@RequestParam String username,  @RequestParam String token) {
+    public LoginModel setUsername(@RequestParam String username, @RequestParam String token) {
         UserOutToken uot = userOutTokenService.getUserTokenByToken(token);
         if (uot == null) {
             throw new UnAuthorizedException();
@@ -241,13 +243,14 @@ public class LoginController {
         String phone = uot.getPhone();
         USER_OUT user = userOutService.findUserOutByPhone(phone);
         if (user == null) {//用户不存在
-           throw new UserOutNotFindException();
-       }
-        user.setUsername(username);
+            throw new UserOutNotFindException();
+        }
+        user.setName(username);
         userOutService.saveUserOut(user);
-
-       return "success";
-
+        LoginModel model = new LoginModel();
+        model.setUserid(user.getMobile_phone());
+        model.setUsername(user.getName());
+        return model;
     }
 
 
@@ -286,19 +289,20 @@ public class LoginController {
         ErrorModel model = new ErrorModelBuilder("090100").build();
         return model;
     }
-    @ExceptionHandler
-      @ResponseStatus(HttpStatus.CONFLICT)
-      public ErrorModel handleUserNameExistException(UserNameExistException e) {
-          ErrorModel model = new ErrorModelBuilder("090101").build();
-          return model;
-      }
 
     @ExceptionHandler
-       @ResponseStatus(HttpStatus.BAD_REQUEST)
-       public ErrorModel handlePhoneInvalidedException(PhoneInvalidedException e) {
-           ErrorModel model = new ErrorModelBuilder("000403").build();
-           return model;
-       }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorModel handleUserNameExistException(UserNameExistException e) {
+        ErrorModel model = new ErrorModelBuilder("090101").build();
+        return model;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorModel handlePhoneInvalidedException(PhoneInvalidedException e) {
+        ErrorModel model = new ErrorModelBuilder("000403").build();
+        return model;
+    }
 
 
 }
