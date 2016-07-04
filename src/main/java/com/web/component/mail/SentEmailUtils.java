@@ -42,12 +42,12 @@ public class SentEmailUtils {
 
     public static void sentEmailNullFile(String toAddress,String subject, String content) throws Exception {
         MailSenderInfo mailInfo = new MailSenderInfo();
-        mailInfo.setMailServerHost("smtp.hostuc.net");
+        mailInfo.setMailServerHost("smtp.exmail.qq.com");
         mailInfo.setMailServerPort("25");
         mailInfo.setValidate(true);
-        mailInfo.setUserName("case@advance-medical.com.cn");
-        mailInfo.setPassword("d98420");//您的邮箱密码
-        mailInfo.setFromAddress("case@advance-medical.com.cn");
+        mailInfo.setUserName("service@ecdata.org.cn");
+        mailInfo.setPassword("ioebfudan2K7");//您的邮箱密码
+        mailInfo.setFromAddress("service@ecdata.org.cn");
         mailInfo.setToAddress(toAddress);
         mailInfo.setSubject(subject);
         mailInfo.setContent(content);

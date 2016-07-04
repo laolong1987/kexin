@@ -5,7 +5,7 @@ package com.common;
  */
 public interface MailSender {
 
-    void batchSend(String subject, String message, boolean html, String email, String... otherEmails);
+    void send(Mail mail);
 
-    void batchSendAsync(String subject, String message, boolean html, String email, String... otherEmails);
+    void sendAsync(Mail mail);
 }
