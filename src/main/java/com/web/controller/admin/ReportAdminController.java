@@ -38,6 +38,8 @@ public class ReportAdminController {
     @RequestMapping(value = "/showreportcompany")
     public String showreportcompany(HttpServletRequest request,
                                 HttpServletResponse response) {
+
+
         String companyname= ConvertUtil.safeToString(request.getParameter("companyname"),"");
         int status= ConvertUtil.safeToInteger(request.getParameter("status"),0);
         int page= ConvertUtil.safeToInteger(request.getParameter("page"),1);

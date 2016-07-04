@@ -2,14 +2,16 @@ package com.web.service;
 
 import com.common.MailSender;
 import com.common.SearchTemplate;
+import com.utils.ConvertUtil;
+import com.utils.DateUtil;
 import com.web.component.mail.SentEmailUtils;
+import com.web.component.message.MessageSenderImpl;
 import com.web.dao.RecordInfoDao;
 import com.web.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -23,6 +25,9 @@ public class RecordInfoService {
 
     @Autowired
     public MailSender mailSender;
+
+    @Autowired
+    private MessageSenderImpl messageSender;
 
     public List<Map> searchRECORD_INFO(Map map){
         return recordInfoDao.searchRECORD_INFO(map);
@@ -112,8 +117,99 @@ public class RecordInfoService {
                     e.printStackTrace();
                 }
             }
+            if(null!=remider.getPhone() && !"".equals(remider.getPhone())){
+                if(reportRules(remider.getDay(),remider.getTime())){
+                    //发送短信
+                    messageSender.batchSend(CONTENT, remider.getPhone());
+                }else{
+                    //保存到数据库
+                    ReportSms sms=new ReportSms();
+                    sms.setCreate_time(new Date());
+                    sms.setUpdate_time(new Date());
+                    sms.setUser_id(remider.getUser_id());
+                    sms.setStatus(0);
+                    recordInfoDao.save(sms);
+                }
+            }
+        }
+    }
+
+    public void runremindesms(){
+       List<Map> list= recordInfoDao.searchReportSMS();
+        Map<String,Integer> sendmap=new HashMap<>();
+        List<String> dellist=new ArrayList<>();
+        for (Map map:list) {
+            String phone= ConvertUtil.safeToString(map.get("phone"),"");
+            String id= ConvertUtil.safeToString(map.get("id"),"");
+            int time= ConvertUtil.safeToInteger(map.get("time"),1);
+            int day= ConvertUtil.safeToInteger(map.get("day"),1);
+            if(null!=phone && !"".equals(phone)){
+                if(reportRules(day,time)){
+                    //发送短信
+                    if(sendmap.containsKey(phone)){
+                        int a=sendmap.get(phone)+1;
+                        sendmap.put(phone,a) ;
+                    }else{
+                        sendmap.put(phone,1) ;
+                    }
+                    dellist.add(id);
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : sendmap.entrySet()) {
+            //发送短信
+            messageSender.batchSend("你有"+entry.getValue()+"个举报要处理", entry.getKey());
+        }
+
+        for(String s:dellist){
+            ReportSms sms= (ReportSms)recordInfoDao.getObjectById(s,ReportSms.class);
+            sms.setStatus(1);
+            recordInfoDao.save(sms);
         }
 
     }
+
+    public boolean  reportRules(int day,int time){
+        boolean result=true;// 默认当前时间是可以发送的
+        if(!isday(day) || !istime(time)){
+            result=false;
+        }
+        return result;
+    }
+
+    public boolean isday(int day){
+        boolean result=true;
+        if(2==day){
+            int a = DateUtil.getNumofWeek();
+            if(2==a || 3==a || 4==a ||5==a ||6==a ){
+                result=true;
+            }else{
+                result=false;
+            }
+        }
+        return result;
+    }
+
+
+    public boolean istime(int time){
+        String m = "00";
+        String h = "";
+        boolean result=true;
+        if(1!=time){
+            if(2==time){
+                result= DateUtil.checkTimes("09"+":00","18"+":00");
+            }else if(3==time){
+                result= DateUtil.checkTimes("09"+":00","17"+":00");
+            }else if(4==time){
+                result= DateUtil.checkTimes("08"+":00","18"+":00");
+            }else if(5==time){
+                result= DateUtil.checkTimes("08"+":00","17"+":00");
+            }
+        }
+        return result;
+    }
+
+
 
 }

@@ -23,13 +23,13 @@ public class RepReportProductModel {
         this.id = id;
     }
 
-    private List<String> fileidlist;
+    private List<FileModel> fileidlist;
 
-    public List<String> getFileidlist() {
+    public List<FileModel> getFileidlist() {
         return fileidlist;
     }
 
-    public void setFileidlist(List<String> fileidlist) {
+    public void setFileidlist(List<FileModel> fileidlist) {
         this.fileidlist = fileidlist;
     }
 

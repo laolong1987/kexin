@@ -1,5 +1,7 @@
 package com.web.model;
 
+import com.web.entity.Uploadfile;
+
 import java.util.List;
 
 /**
@@ -12,7 +14,7 @@ public class RepReportCompanyDetailModel {
     private String description;
     private String uuid;
     private String id;
-    private List<String> fileidlist;
+    private List<FileModel> fileidlist;
 
     public String getId() {
         return id;
@@ -22,11 +24,11 @@ public class RepReportCompanyDetailModel {
         this.id = id;
     }
 
-    public List<String> getFileidlist() {
+    public List<FileModel> getFileidlist() {
         return fileidlist;
     }
 
-    public void setFileidlist(List<String> fileidlist) {
+    public void setFileidlist(List<FileModel> fileidlist) {
         this.fileidlist = fileidlist;
     }
 

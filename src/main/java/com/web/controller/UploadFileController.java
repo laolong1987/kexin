@@ -68,7 +68,7 @@ public class UploadFileController {
         uploadfile.setUuid(uuid);
         uploadfile.setFile_type(ConvertUtil.safeToInteger(file_type,0));
         uploadfile.setFilepath(fileuuid);
-        uploadfile.setType(file_type);
+        uploadfile.setType(0);
         uploadFileService.saveUploadFile(uploadfile);
         return uploadfile;
     }

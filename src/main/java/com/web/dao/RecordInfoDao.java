@@ -122,4 +122,18 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
+    /**
+     * 查询
+     *
+     * @param
+     * @return
+     */
+    public List<Map> searchReportSMS() {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.id,a.day,a.time,a.phone from report_sms t ");
+        sql.append(" left join REPORT_REMINDER a on t.USER_ID=a.USER_ID where t.status=0;");
+
+        List<Map> list = super.findResult(sql.toString(),new HashMap());
+        return list;
+    }
 }

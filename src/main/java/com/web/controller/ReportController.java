@@ -88,9 +88,17 @@ public class ReportController {
         reportCompany.setUpdate_time(new Date());
         recordInfoService.saveReportCompany(reportCompany);
 
+        System.out.println("gaoyang1----------------"+reportCompanyModel.getUuid());
         //根ID查询文件
         List<Uploadfile> list= uploadFileService.findUploadfileByUUID(reportCompanyModel.getUuid());
+        System.out.println("gaoyang2----------------"+list.size());
+
+
         for (Uploadfile file:list ) {
+
+            System.out.println("gaoyang3----------------"+reportCompany.getId());
+            System.out.println("gaoyang4----------------"+list.size());
+
             file.setType(1);
             file.setUpdate_time(new Date());
             file.setReport_id(reportCompany.getId());
@@ -157,11 +165,14 @@ public class ReportController {
             reportProductModel.setCompany_name(reportProduct.getCompany_name());
             reportProductModel.setProduct_name(reportProduct.getProduct_name());
             reportProductModel.setId(reportProduct.getId());
-            List<String> lists=new ArrayList<>();
+            List<FileModel> lists=new ArrayList<>();
 
-            List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportProduct.getId(),"1");
+            List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportProduct.getId(),"2");
             for (Uploadfile uploadfile: list ) {
-                lists.add(uploadfile.getId());
+                FileModel fileModel=new FileModel();
+                fileModel.setFileid(uploadfile.getId());
+                fileModel.setFiletype(String.valueOf(uploadfile.getFile_type()));
+                lists.add(fileModel);
             }
             reportProductModel.setFileidlist(lists);
         }
@@ -204,10 +215,14 @@ public class ReportController {
             reportCompanyModel.setTitle(reportCompany.getTitle());
             reportCompanyModel.setCompany_name(reportCompany.getCompany_name());
             reportCompanyModel.setId(reportCompany.getId());
-            List<String> lists=new ArrayList<>();
-            List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportCompany.getId(),"2");
+            reportCompanyModel.setDescription(reportCompany.getDescription());
+            List<FileModel> lists=new ArrayList<>();
+            List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportCompany.getId(),"1");
             for (Uploadfile uploadfile: list ) {
-                lists.add(uploadfile.getId());
+                FileModel fileModel=new FileModel();
+                fileModel.setFileid(uploadfile.getId());
+                fileModel.setFiletype(String.valueOf(uploadfile.getFile_type()));
+                lists.add(fileModel);
             }
             reportCompanyModel.setFileidlist(lists);
         }

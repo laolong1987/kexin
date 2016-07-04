@@ -461,8 +461,9 @@ public class DateUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(getDay());
-		System.out.println(getNumOfWeekStr(null));
+//		System.out.println(getDay());
+//		System.out.println(getNumOfWeekStr(null));
+		System.out.println(DateUtil.getNumofWeek());
 	}
 	/**
 	 * 获取当天属本月的天数
