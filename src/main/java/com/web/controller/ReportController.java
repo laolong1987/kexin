@@ -44,6 +44,7 @@ public class ReportController {
         reportProduct.setCode(reportProductModel.getCode());
         reportProduct.setCreate_time(new Date());
         reportProduct.setUpdate_time(new Date());
+        reportProduct.setUser_id(reportProductModel.getUser_id());
         recordInfoService.saveReportProduct(reportProduct);
 
         //根据UUID查询文件
@@ -86,19 +87,12 @@ public class ReportController {
         reportCompany.setDescription(reportCompanyModel.getDescription());
         reportCompany.setCreate_time(new Date());
         reportCompany.setUpdate_time(new Date());
+        reportCompany.setUser_id(reportCompanyModel.getUserId());
         recordInfoService.saveReportCompany(reportCompany);
 
-        System.out.println("gaoyang1----------------"+reportCompanyModel.getUuid());
         //根ID查询文件
         List<Uploadfile> list= uploadFileService.findUploadfileByUUID(reportCompanyModel.getUuid());
-        System.out.println("gaoyang2----------------"+list.size());
-
-
         for (Uploadfile file:list ) {
-
-            System.out.println("gaoyang3----------------"+reportCompany.getId());
-            System.out.println("gaoyang4----------------"+list.size());
-
             file.setType(1);
             file.setUpdate_time(new Date());
             file.setReport_id(reportCompany.getId());
@@ -127,9 +121,10 @@ public class ReportController {
 
     @RequestMapping(value = "/report-product", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<ReportProductVO> listreportproduct(@RequestParam(required=false ) String productname){
+    public List<ReportProductVO> listreportproduct(@RequestParam(required=false ) String productname,@RequestParam(required=false ) String userid){
         Map p=new HashMap();
         p.put("productname",ConvertUtil.safeToString(productname,""));
+        p.put("userid",ConvertUtil.safeToString(userid,""));
         List<ReportProductVO> reportProductVOList=new ArrayList<>();
         List<Map<String, Object>> list= recordInfoService.searchReportProduct(p);
         for (Map map:list) {
@@ -182,9 +177,10 @@ public class ReportController {
 
     @RequestMapping(value = "/report-company", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<RepReportCompanyModel> listreportcompany(@RequestParam(required=false) String companyname){
+    public List<RepReportCompanyModel> listreportcompany(@RequestParam(required=false) String companyname,@RequestParam(required=false ) String userid){
         Map p=new HashMap();
         p.put("companyname",ConvertUtil.safeToString(companyname,""));
+        p.put("userid",ConvertUtil.safeToString(userid,""));
         List<RepReportCompanyModel> reportCompanyModels=new ArrayList<>();
         List<Map<String, Object>> list= recordInfoService.searchReportCompany(p);
         for (Map map:list) {

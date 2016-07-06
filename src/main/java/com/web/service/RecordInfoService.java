@@ -10,6 +10,7 @@ import com.web.dao.RecordInfoDao;
 import com.web.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -134,15 +135,16 @@ public class RecordInfoService {
         }
     }
 
+    @Transactional
     public void runremindesms(){
        List<Map> list= recordInfoDao.searchReportSMS();
         Map<String,Integer> sendmap=new HashMap<>();
         List<String> dellist=new ArrayList<>();
         for (Map map:list) {
-            String phone= ConvertUtil.safeToString(map.get("phone"),"");
-            String id= ConvertUtil.safeToString(map.get("id"),"");
-            int time= ConvertUtil.safeToInteger(map.get("time"),1);
-            int day= ConvertUtil.safeToInteger(map.get("day"),1);
+            String phone= ConvertUtil.safeToString(map.get("PHONE"),"");
+            String id= ConvertUtil.safeToString(map.get("ID"),"");
+            int time= ConvertUtil.safeToInteger(map.get("TIME"),1);
+            int day= ConvertUtil.safeToInteger(map.get("DAY"),1);
             if(null!=phone && !"".equals(phone)){
                 if(reportRules(day,time)){
                     //发送短信
@@ -198,13 +200,13 @@ public class RecordInfoService {
         boolean result=true;
         if(1!=time){
             if(2==time){
-                result= DateUtil.checkTimes("09"+":00","18"+":00");
+                result= DateUtil.checkTimes2("09"+":00","18"+":00");
             }else if(3==time){
-                result= DateUtil.checkTimes("09"+":00","17"+":00");
+                result= DateUtil.checkTimes2("09"+":00","17"+":00");
             }else if(4==time){
-                result= DateUtil.checkTimes("08"+":00","18"+":00");
+                result= DateUtil.checkTimes2("08"+":00","18"+":00");
             }else if(5==time){
-                result= DateUtil.checkTimes("08"+":00","17"+":00");
+                result= DateUtil.checkTimes2("08"+":00","17"+":00");
             }
         }
         return result;

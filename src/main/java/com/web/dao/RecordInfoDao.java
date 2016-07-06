@@ -57,6 +57,9 @@ public class RecordInfoDao extends BaseDao {
         if (map.containsKey("status") && !"".equals(map.get("status"))){
             sql.append(" and t.status =:status ");
         }
+        if (map.containsKey("userid") && !"".equals(map.get("userid"))){
+            sql.append(" and t.user_id =:userid ");
+        }
         sql.append(" order by t.create_time desc");
         return  super.search(sql.toString(),map);
     }
@@ -78,6 +81,9 @@ public class RecordInfoDao extends BaseDao {
         }
         if (map.containsKey("status") && !"".equals(map.get("status"))){
             sql.append(" and t.status =:status ");
+        }
+        if (map.containsKey("userid") && !"".equals(map.get("userid"))){
+            sql.append(" and t.user_id =:userid ");
         }
         sql.append(" order by t.create_time desc");
         return  super.search(sql.toString(),map);
@@ -131,7 +137,7 @@ public class RecordInfoDao extends BaseDao {
     public List<Map> searchReportSMS() {
         StringBuffer sql = new StringBuffer();
         sql.append("select t.id,a.day,a.time,a.phone from report_sms t ");
-        sql.append(" left join REPORT_REMINDER a on t.USER_ID=a.USER_ID where t.status=0;");
+        sql.append(" left join REPORT_REMINDER a on t.USER_ID=a.USER_ID where t.status=0 ");
 
         List<Map> list = super.findResult(sql.toString(),new HashMap());
         return list;

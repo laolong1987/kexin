@@ -463,7 +463,8 @@ public class DateUtil {
 	public static void main(String[] args) {
 //		System.out.println(getDay());
 //		System.out.println(getNumOfWeekStr(null));
-		System.out.println(DateUtil.getNumofWeek());
+//		System.out.println(DateUtil.getNumofWeek());
+		System.out.println(DateUtil.checkTimes2("20:00","23:00"));
 	}
 	/**
 	 * 获取当天属本月的天数
@@ -473,5 +474,29 @@ public class DateUtil {
 		Calendar now = Calendar.getInstance();
 		return now.get(Calendar.DAY_OF_MONTH);
 	}
-	
+
+
+	/**
+	 * 比较当前时间是否在两个时间段内(小时:分钟)
+	 *
+	 * @return
+	 */
+
+	@SuppressWarnings("deprecation")
+	public static final boolean checkTimes2(String time1, String time2) {
+		Date date = new Date();
+		Date date1 = new Date();
+		Date date2 = new Date();
+		String[] time = time1.split(":");
+		date1.setHours(Integer.valueOf(time[0]));
+		date1.setMinutes(Integer.valueOf(time[1]));
+		time = time2.split(":");
+		date2.setHours(Integer.valueOf(time[0]));
+		date2.setMinutes(Integer.valueOf(time[1]));
+
+		if (date.getTime() >= date1.getTime() && date.getTime() <= date2.getTime()) {
+			return true;
+		}
+		return false;
+	}
 }
