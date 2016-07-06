@@ -16,8 +16,8 @@ public class ReportTask {
     RecordInfoService recordInfoService;
 
 
-//    @Scheduled(cron = "0 0 */1 * * ?")
-    @Scheduled(cron = "0 */1 * * * ?")
+    @Scheduled(cron = "0 0 */1 * * ?")
+//    @Scheduled(cron = "0 */1 * * * ?")
     public void sendsms() {
         //每天23点执行
         System.out.println("task---------sendsms-----start");

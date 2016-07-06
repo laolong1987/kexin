@@ -224,4 +224,14 @@ public class ReportController {
         }
         return reportCompanyModel;
     }
+
+    @RequestMapping(value = "/search-productcode/{code}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public RepProductCodeModel searchproductcode(@PathVariable String code){
+        RepProductCodeModel reportCompanyModel= new RepProductCodeModel();
+        reportCompanyModel.setCode(code);
+        reportCompanyModel.setCompanyname("测试企业");
+        reportCompanyModel.setProductname("测试产品");
+        return reportCompanyModel;
+    }
 }
