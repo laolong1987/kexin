@@ -20,8 +20,6 @@ import org.hibernate.annotations.GenericGenerator;
 public class USER_OUT {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -55,23 +53,19 @@ public class USER_OUT {
     @Column(name = "contact_name")
     private String contact_name;
     @Column(name = "state")
-    private Integer state;
-    @Column(name = "key_id")
-    private String key_id;
-    @Column(name = "update_time_qg")
-    private Date update_time_qg;
-    @Column(name = "update_time_sj")
-    private Date update_time_sj;
+    private int state;
+    @Column(name = "net_id")
+    private String net_id;
     @Column(name = "location")
     private String location;
-    @Column(name = "industry")
-    private String industry;
-    @Column(name = "ebtrust_location")
-    private String ebtrust_location;
-    @Column(name = "ebtrust_sync_time")
-    private Date ebtrust_sync_time;
-    @Column(name = "ebtrust_is_sync")
-    private Integer ebtrust_is_sync;
+    @Column(name = "sync_time")
+    private Date sync_time;
+    @Column(name = "clearpassword")
+    private String clearpassword;
+    @Column(name = "password_with_salt")
+    private String password_with_salt;
+    @Column(name = "salt")
+    private String salt;
 
     public void setUsername(String username) {
         this.username = username;
@@ -201,36 +195,20 @@ public class USER_OUT {
         return this.contact_name;
     }
 
-    public void setState(Integer state) {
+    public void setState(int state) {
         this.state = state;
     }
 
-    public Integer getState() {
+    public int getState() {
         return this.state;
     }
 
-    public void setKey_id(String key_id) {
-        this.key_id = key_id;
+    public void setNet_id(String net_id) {
+        this.net_id = net_id;
     }
 
-    public String getKey_id() {
-        return this.key_id;
-    }
-
-    public void setUpdate_time_qg(Date update_time_qg) {
-        this.update_time_qg = update_time_qg;
-    }
-
-    public Date getUpdate_time_qg() {
-        return this.update_time_qg;
-    }
-
-    public void setUpdate_time_sj(Date update_time_sj) {
-        this.update_time_sj = update_time_sj;
-    }
-
-    public Date getUpdate_time_sj() {
-        return this.update_time_sj;
+    public String getNet_id() {
+        return this.net_id;
     }
 
     public void setLocation(String location) {
@@ -241,36 +219,37 @@ public class USER_OUT {
         return this.location;
     }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
+    public void setSync_time(Date sync_time) {
+        this.sync_time = sync_time;
     }
 
-    public String getIndustry() {
-        return this.industry;
+    public Date getSync_time() {
+        return this.sync_time;
     }
 
-    public void setEbtrust_location(String ebtrust_location) {
-        this.ebtrust_location = ebtrust_location;
+    public void setClearpassword(String clearpassword) {
+        this.clearpassword = clearpassword;
     }
 
-    public String getEbtrust_location() {
-        return this.ebtrust_location;
+    public String getClearpassword() {
+        return this.clearpassword;
     }
 
-    public void setEbtrust_sync_time(Date ebtrust_sync_time) {
-        this.ebtrust_sync_time = ebtrust_sync_time;
+    public void setPassword_with_salt(String password_with_salt) {
+        this.password_with_salt = password_with_salt;
     }
 
-    public Date getEbtrust_sync_time() {
-        return this.ebtrust_sync_time;
+    public String getPassword_with_salt() {
+        return this.password_with_salt;
     }
 
-    public void setEbtrust_is_sync(Integer ebtrust_is_sync) {
-        this.ebtrust_is_sync = ebtrust_is_sync;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public Integer getEbtrust_is_sync() {
-        return this.ebtrust_is_sync;
+    public String getSalt() {
+        return this.salt;
     }
-
 }
+
+
