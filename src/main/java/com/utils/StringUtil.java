@@ -292,6 +292,17 @@ public class StringUtil {
         return sb.toString();
     }
 
+    //匹配查询字符串
+    public static String matchStr(String regx, String input) {
+        Pattern pattern = Pattern.compile(regx);
+        Matcher matcher = pattern.matcher(input);
+        String output = null;
+        if (matcher.find()) {//返回true )
+            output = matcher.group();
+        }
+        return output;
+    }
+
     public static void main(String[] args) {
         System.out.println(validateIdCard("412723199006065975"));
     }

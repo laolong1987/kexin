@@ -20,17 +20,17 @@ import org.hibernate.annotations.Parameter;
 public class UserOutToken {
 
     @Id
-        @GeneratedValue( generator = "uuid" )
-        @GenericGenerator(
-            name = "uuid",
-            strategy = "org.hibernate.id.UUIDGenerator",
-            parameters = {
-                @Parameter(
-                    name = "uuid_gen_strategy_class",
-                    value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
-                )
-            }
-        )
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(
+        name = "uuid",
+        strategy = "org.hibernate.id.UUIDGenerator",
+        parameters = {
+            @Parameter(
+                name = "uuid_gen_strategy_class",
+                value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+            )
+        }
+    )
     private String id;
 
     @Column(name = "phone")

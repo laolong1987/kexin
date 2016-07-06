@@ -9,4 +9,6 @@ public class Constant {
 
     public static final String phoneRegx="^1[3|4|5|8][0-9]\\d{8}$";
 
+    public static final String BaiDuApiKey="oWF5pGrvL7rWQbCPjpge08GQsHaGzIYH";
+
 }
