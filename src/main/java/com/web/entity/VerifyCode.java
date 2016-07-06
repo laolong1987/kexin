@@ -14,14 +14,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "VERIFY_CODE")
 public class VerifyCode{
- @Id
- @GeneratedValue(generator = "uuid")
- @GenericGenerator(name = "uuid", strategy = "uuid")
- @Column(name = "id")
+    @Id
+        @GeneratedValue( generator = "uuid" )
+        @GenericGenerator(
+            name = "uuid",
+            strategy = "org.hibernate.id.UUIDGenerator",
+            parameters = {
+                @Parameter(
+                    name = "uuid_gen_strategy_class",
+                    value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+                )
+            }
+        )
  private String id;
  @Column(name ="phone")
  private String phone;

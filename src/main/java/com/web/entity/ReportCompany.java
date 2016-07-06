@@ -5,6 +5,7 @@ package com.web.entity;
  */
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
 import javax.persistence.Basic;
@@ -19,9 +20,18 @@ import javax.persistence.Table;
 @Table(name = "REPORT_COMPANY")
 public class ReportCompany {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    @Column(name = "id")
+        @GeneratedValue( generator = "uuid" )
+        @GenericGenerator(
+            name = "uuid",
+            strategy = "org.hibernate.id.UUIDGenerator",
+            parameters = {
+                @Parameter(
+                    name = "uuid_gen_strategy_class",
+                    value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+                )
+            }
+        )
+
     private String id;
     @Column(name = "title")
     private String title;

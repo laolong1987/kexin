@@ -9,13 +9,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "demo")
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 public class Demo{
     @Id
-    @Basic(optional = false)
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue( generator = "uuid" )
+        @GenericGenerator(
+            name = "uuid",
+            strategy = "org.hibernate.id.UUIDGenerator",
+            parameters = {
+                @Parameter(
+                    name = "uuid_gen_strategy_class",
+                    value = "org.hibernate.id.uuid.CustomVersionOneStrategy"
+                )
+            }
+        )
     private int id;
 
     @Column(name ="name")
