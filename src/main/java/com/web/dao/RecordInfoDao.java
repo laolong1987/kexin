@@ -114,7 +114,7 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
-    public List<ReportReminder> findReportReminder() {
+        public List<ReportReminder> findReportReminder() {
         StringBuffer sql = new StringBuffer();
         sql.append("select * from REPORT_REMINDER t where 1=1");
         Map map=new HashMap();
