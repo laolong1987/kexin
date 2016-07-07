@@ -5,6 +5,7 @@ import com.common.BaseDao;
 import com.common.SearchTemplate;
 import com.web.entity.RecordInfo;
 import com.web.entity.ReportHandle;
+import com.web.entity.ReportProductCode;
 import com.web.entity.ReportReminder;
 import com.web.model.ReportProductVO;
 import org.hibernate.SessionFactory;
@@ -140,6 +141,34 @@ public class RecordInfoDao extends BaseDao {
         sql.append(" left join REPORT_REMINDER a on t.USER_ID=a.USER_ID where t.status=0 ");
 
         List<Map> list = super.findResult(sql.toString(),new HashMap());
+        return list;
+    }
+
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ReportProductCode> findReportProductCode(String code) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from REPORT_PRODUCT_CODE t where ");
+        sql.append("  t.code=:code  ");
+        Map map=new HashMap();
+        map.put("code",code);
+        List<ReportProductCode> list = super.findObjects(sql.toString(),map, ReportProductCode.class);
+        return list;
+    }
+
+
+    public List<Map> findProduct(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer from draft_permit t  ");
+        sql.append(" where 1=1  ");
+        if(map.containsKey("productname") && !"".equals(map.get("productname"))){
+            sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
+        }
+        List<Map> list = super.findResult(sql.toString(),map);
         return list;
     }
 }

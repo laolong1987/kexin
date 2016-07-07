@@ -3,6 +3,7 @@ package com.web.controller;
 import com.utils.ConvertUtil;
 import com.web.entity.ReportCompany;
 import com.web.entity.ReportProduct;
+import com.web.entity.ReportProductCode;
 import com.web.entity.Uploadfile;
 import com.web.model.*;
 import com.web.service.RecordInfoService;
@@ -229,9 +230,13 @@ public class ReportController {
     @ResponseStatus(HttpStatus.OK)
     public RepProductCodeModel searchproductcode(@PathVariable String code){
         RepProductCodeModel reportCompanyModel= new RepProductCodeModel();
-        reportCompanyModel.setCode(code);
-        reportCompanyModel.setCompanyname("测试企业");
-        reportCompanyModel.setProductname("测试产品");
+
+       ReportProductCode reportProductCode=  recordInfoService.findReportProductCode(code);
+        if(null!=reportProductCode){
+            reportCompanyModel.setCode(reportProductCode.getCode());
+            reportCompanyModel.setCompanyname(reportProductCode.getCompany_name());
+            reportCompanyModel.setProductname(reportProductCode.getProduct_name());
+        }
         return reportCompanyModel;
     }
 }

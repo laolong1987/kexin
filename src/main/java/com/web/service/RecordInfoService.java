@@ -212,6 +212,22 @@ public class RecordInfoService {
         return result;
     }
 
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public ReportProductCode findReportProductCode(String code){
+        ReportProductCode reportProductCode=null;
+        List<ReportProductCode> list=recordInfoDao.findReportProductCode(code);
+        if(list.size()>0){
+            reportProductCode=list.get(0);
+        }
+        return reportProductCode;
+    }
 
+    public List<Map> findProduct(Map map){
+       return recordInfoDao.findProduct(map);
+    }
 
 }
