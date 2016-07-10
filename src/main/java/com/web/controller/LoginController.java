@@ -209,6 +209,7 @@ public class LoginController {
 //        user.setUsername(username);
         user.setName(username);
         user.setRole_type("MOBILE_USER");
+        user.setEmail("empty");
         user.setPassword(password);
         user.setCreate_time(new Date());
         userOutService.saveUserOut(user);
