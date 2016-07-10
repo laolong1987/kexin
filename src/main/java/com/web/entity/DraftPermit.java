@@ -2,22 +2,20 @@ package com.web.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by gaoyang on 16/7/7.
  */
+@Entity
+@Table(name = "DRAFT_PERMIT")
 public class DraftPermit {
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "id")
-    private int id;
+    private String id;
     @Column(name ="product_source")
-    private int product_source;
+    private Integer product_source;
     @Column(name ="generic_name")
     private String generic_name;
     @Column(name ="product_name")
@@ -55,7 +53,7 @@ public class DraftPermit {
     @Column(name ="manual_file")
     private String manual_file;
     @Column(name ="prescription_type")
-    private int prescription_type;
+    private Integer prescription_type;
     @Column(name ="durability")
     private String durability;
     @Column(name ="specification")
@@ -155,15 +153,15 @@ public class DraftPermit {
     @Column(name ="execution_standard")
     private String execution_standard;
     @Column(name ="medicare_type")
-    private int medicare_type;
+    private Integer medicare_type;
     @Column(name ="reg_type")
-    private int reg_type;
+    private Integer reg_type;
     @Column(name ="small_pic")
     private String small_pic;
     @Column(name ="external_links")
     private String external_links;
     @Column(name ="template_id")
-    private int template_id;
+    private Integer template_id;
     @Column(name ="brand_awards_files")
     private String brand_awards_files;
     @Column(name ="brand_mark_files")
@@ -263,7 +261,7 @@ public class DraftPermit {
     @Column(name ="country_code")
     private String country_code;
     @Column(name ="permission_type")
-    private int permission_type;
+    private Integer permission_type;
     @Column(name ="product_variety")
     private String product_variety;
     @Column(name ="location")
@@ -271,25 +269,25 @@ public class DraftPermit {
     @Column(name ="sync_time")
     private Date sync_time;
     @Column(name ="remote_id")
-    private int remote_id;
+    private Integer remote_id;
     @Column(name ="antifake")
     private String antifake;
     @Column(name ="live_camera_serialno")
     private String live_camera_serialno;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getProduct_source() {
+    public Integer getProduct_source() {
         return product_source;
     }
 
-    public void setProduct_source(int product_source) {
+    public void setProduct_source(Integer product_source) {
         this.product_source = product_source;
     }
 
@@ -437,11 +435,11 @@ public class DraftPermit {
         this.manual_file = manual_file;
     }
 
-    public int getPrescription_type() {
+    public Integer getPrescription_type() {
         return prescription_type;
     }
 
-    public void setPrescription_type(int prescription_type) {
+    public void setPrescription_type(Integer prescription_type) {
         this.prescription_type = prescription_type;
     }
 
@@ -837,19 +835,19 @@ public class DraftPermit {
         this.execution_standard = execution_standard;
     }
 
-    public int getMedicare_type() {
+    public Integer getMedicare_type() {
         return medicare_type;
     }
 
-    public void setMedicare_type(int medicare_type) {
+    public void setMedicare_type(Integer medicare_type) {
         this.medicare_type = medicare_type;
     }
 
-    public int getReg_type() {
+    public Integer getReg_type() {
         return reg_type;
     }
 
-    public void setReg_type(int reg_type) {
+    public void setReg_type(Integer reg_type) {
         this.reg_type = reg_type;
     }
 
@@ -869,11 +867,11 @@ public class DraftPermit {
         this.external_links = external_links;
     }
 
-    public int getTemplate_id() {
+    public Integer getTemplate_id() {
         return template_id;
     }
 
-    public void setTemplate_id(int template_id) {
+    public void setTemplate_id(Integer template_id) {
         this.template_id = template_id;
     }
 
@@ -1269,11 +1267,11 @@ public class DraftPermit {
         this.country_code = country_code;
     }
 
-    public int getPermission_type() {
+    public Integer getPermission_type() {
         return permission_type;
     }
 
-    public void setPermission_type(int permission_type) {
+    public void setPermission_type(Integer permission_type) {
         this.permission_type = permission_type;
     }
 
@@ -1301,11 +1299,11 @@ public class DraftPermit {
         this.sync_time = sync_time;
     }
 
-    public int getRemote_id() {
+    public Integer getRemote_id() {
         return remote_id;
     }
 
-    public void setRemote_id(int remote_id) {
+    public void setRemote_id(Integer remote_id) {
         this.remote_id = remote_id;
     }
 

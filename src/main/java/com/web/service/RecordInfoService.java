@@ -46,6 +46,11 @@ public class RecordInfoService {
         recordInfoDao.save(reportCompany);
     }
 
+    public void saveProductComment(ProductComment productComment){
+        recordInfoDao.save(productComment);
+    }
+
+
 
     public List<Map<String, Object>> searchReportProduct(Map map){
         return recordInfoDao.searchReportProduct(map).getValues();
@@ -83,6 +88,10 @@ public class RecordInfoService {
 
     public  ReportHandle getReportHandle(String id ){
         return  (ReportHandle) recordInfoDao.getObjectById(id,ReportHandle.class);
+    }
+
+    public DraftPermit getProduct(String id ){
+        return  (DraftPermit) recordInfoDao.getObjectById(id,DraftPermit.class);
     }
 
     /**
@@ -228,6 +237,14 @@ public class RecordInfoService {
 
     public List<Map> findProduct(Map map){
        return recordInfoDao.findProduct(map);
+    }
+
+    public List<Map> findLicense(String companyname){
+        return recordInfoDao.findLicense(companyname);
+    }
+
+    public List<ProductComment> findProductComment(String productid){
+        return recordInfoDao.findProductComment(productid);
     }
 
 }

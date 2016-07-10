@@ -3,10 +3,7 @@ package com.web.dao;
 
 import com.common.BaseDao;
 import com.common.SearchTemplate;
-import com.web.entity.RecordInfo;
-import com.web.entity.ReportHandle;
-import com.web.entity.ReportProductCode;
-import com.web.entity.ReportReminder;
+import com.web.entity.*;
 import com.web.model.ReportProductVO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +126,15 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
+    public List<ProductComment> findProductComment(String productid) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from product_comment t where 1=1 and productid=:productid");
+        Map map=new HashMap();
+        map.put("productid",productid);
+        List<ProductComment> list = super.findObjects(sql.toString(),map, ProductComment.class);
+        return list;
+    }
+
     /**
      * 查询
      *
@@ -168,6 +174,16 @@ public class RecordInfoDao extends BaseDao {
         if(map.containsKey("productname") && !"".equals(map.get("productname"))){
             sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
         }
+        List<Map> list = super.findResult(sql.toString(),map);
+        return list;
+    }
+
+    public List<Map> findLicense(String companyname) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.record_no,t.CERTIFICATE_ORDER from CERTIFICATE t left join record_info a on a.RECORD_NO=t.record_no ");
+        sql.append(" where a.com_name=:com_name ");
+        Map map=new HashMap();
+        map.put("com_name",companyname);
         List<Map> list = super.findResult(sql.toString(),map);
         return list;
     }

@@ -1,21 +1,15 @@
 package com.web.controller;
 
 import com.utils.ConvertUtil;
-import com.web.entity.ReportCompany;
-import com.web.entity.ReportProduct;
-import com.web.entity.ReportProductCode;
-import com.web.entity.Uploadfile;
+import com.web.entity.*;
 import com.web.model.*;
 import com.web.service.RecordInfoService;
-import com.web.service.UploadFileService;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -30,6 +24,8 @@ public class ProductController {
     @Autowired
     RecordInfoService recordInfoService;
 
+    private static String IMGURL="http://www.ecdata.org.cn/srv/viewDownloadAction.action?fileName=publishedFile/";
+    private static String IMGURL2="http://www.ecdata.org.cn/srv/showPartyPicAction.action?fileName=&recordNo=";
 
     @RequestMapping(value = "/search-product", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -46,7 +42,8 @@ public class ProductController {
             product.setProductname(ConvertUtil.safeToString(map.get("MANUFACTURER"),""));
             product.setId(ConvertUtil.safeToString(map.get("ID"),""));
             product.setEvaluation("4");
-            product.setPicurl(ConvertUtil.safeToString(map.get("PICURL"),""));
+            product.setPicurl(IMGURL+ConvertUtil.safeToString(map.get("PICURL"),""));
+            product.setPicurl(product.getPicurl().replaceAll(";",""));
             result.add(product);
         }
         return result;
@@ -55,23 +52,51 @@ public class ProductController {
 
     @RequestMapping(value = "/search-product/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public RepReportProductModel getproduct(@PathVariable String id){
-        RepReportProductModel reportProductModel=new RepReportProductModel();
-        ReportProduct reportProduct = recordInfoService.getReportProduct(id);
-        if(null!=reportProduct){
-            reportProductModel.setTitle(reportProduct.getTitle());
-            reportProductModel.setDescription(reportProduct.getDescription());
-            reportProductModel.setCode(reportProduct.getCode());
-            reportProductModel.setCompany_name(reportProduct.getCompany_name());
-            reportProductModel.setProduct_name(reportProduct.getProduct_name());
-            reportProductModel.setId(reportProduct.getId());
-            List<FileModel> lists=new ArrayList<>();
-
-            reportProductModel.setFileidlist(lists);
+    public RepProductDetailModel getproduct(@PathVariable String id){
+        RepProductDetailModel productDetailModel=new RepProductDetailModel();
+        DraftPermit product = recordInfoService.getProduct(id);
+        if(null!=product){
+            String productname=ConvertUtil.safeToString(product.getProduct_name(),"");
+            if(!"".equals(productname)){
+                productDetailModel.setProductname(product.getProduct_name());
+            }else{
+                productDetailModel.setProductname(product.getGeneric_name());
+            }
+            productDetailModel.setBrands(ConvertUtil.safeToString(product.getBarcode(),""));
+            productDetailModel.setCompanyname(ConvertUtil.safeToString(product.getService_sector(),""));
+            productDetailModel.setCampanyaddress(ConvertUtil.safeToString(product.getService_address(),""));
+            List<Map> list=recordInfoService.findLicense(ConvertUtil.safeToString(product.getService_sector(),""));
+            if(list.size()>0){
+                String record_no=ConvertUtil.safeToString(list.get(0).get("RECORD_NO"),"");
+                String order=ConvertUtil.safeToString(list.get(0).get("CERTIFICATE_ORDER"),"");
+                productDetailModel.setLicense(IMGURL2+record_no+"&type=&order="+order);
+                productDetailModel.setLicense(productDetailModel.getLicense().replaceAll(";",""));
+            }
         }
-        return reportProductModel;
+        return productDetailModel;
+    }
+
+    @RequestMapping(value="/comment-product", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public  ProductComment addComment(ReqCommentModel commentModel) throws IOException {
+        ProductComment productComment=new ProductComment();
+        productComment.setCreate_time(new Date());
+        productComment.setUpdate_time(new Date());
+        productComment.setDirections(commentModel.getDirections());
+        productComment.setUserid(commentModel.getUserid());
+        productComment.setProductid(commentModel.getProductid());
+        productComment.setPoint(commentModel.getPoint());
+        productComment.setIsfalse(commentModel.getIsfalse());
+        recordInfoService.saveProductComment(productComment);
+        return productComment;
     }
 
 
+    @RequestMapping(value = "/search-productcomment", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductComment> listproduct(@RequestParam(required=false ) String productid){
 
+        List<ProductComment> list=recordInfoService.findProductComment(productid);
+        return list;
+    }
 }
