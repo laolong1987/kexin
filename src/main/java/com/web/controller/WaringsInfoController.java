@@ -17,8 +17,8 @@ public class WaringsInfoController {
     @Autowired
     private WaringsInfoService waringsInfoService;
 
-    @RequestMapping("/search")
-    public List<Warings> search(@RequestParam String keywords){
+    @RequestMapping(value="/search" ,method = RequestMethod.GET)
+    public List<Warings> search(@RequestParam(required=false) String keywords){
         List<Warings> waringsList= waringsInfoService.findWaringsInfoByKeyWords(keywords);
         return waringsList;
     }

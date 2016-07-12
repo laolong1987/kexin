@@ -25,7 +25,7 @@ public class WaringsInfoDao extends BaseDao {
     public List<WaringsInfo> findWaringsInfoByKeyWords(String keyword) {
         StringBuffer sql = new StringBuffer();
         sql.append("from WaringsInfo where 1=1");
-        if (keyword != null) {
+        if (keyword != null && !"".equals(keyword)) {
             sql.append(" and title like '%");
             sql.append(keyword);
             sql.append("%'");
@@ -49,6 +49,8 @@ public class WaringsInfoDao extends BaseDao {
         sql.append(" order by t.create_time desc");
         return super.search(sql.toString(), map);
     }
+
+
 
 
 }

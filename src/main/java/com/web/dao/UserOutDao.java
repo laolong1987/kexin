@@ -23,6 +23,9 @@ public class UserOutDao extends BaseDao {
         if (user.getMobile_phone() != null && !"".equals(user.getContact_phone())) {
             sql.append(" and u.mobile_phone =:mobile_phone");
         }
+        if(user.getRole_type() != null && !"".equals(user.getRole_type())){
+            sql.append(" and u.role_type =:role_type");
+        }
 
         return super.findObjects(sql.toString(), user);
     }

@@ -21,7 +21,7 @@ public class EnterpriseDao extends BaseDao {
      */
     public List<Map> findEnterpriseInfoByKeyWords(String keywords) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.username.t.com_name,t.role_type,t.reg_address,(select count(1) from DRAFT_PERMIT r where r.company_user=t.username ) as num From RECORD_INFO t where t.com_name like '%");
+        sql.append("select t.username,t.record_no,t.com_name,t.role_type,t.reg_address,(select count(1) from DRAFT_PERMIT r where r.company_user=t.username ) as num From RECORD_INFO t where t.com_name like '%");
         sql.append(keywords);
         sql.append("%'");
         List<Map> enterpriseList = super.findResult(sql.toString(), new HashMap());
@@ -36,11 +36,30 @@ public class EnterpriseDao extends BaseDao {
      */
     public List<RecordInfo> findEnterpriseInfoByID(String id){
         StringBuffer sql = new StringBuffer();
-        sql.append("FROM RECORD_INFO t where t.username='");
+        sql.append("FROM RecordInfo t where t.username='");
         sql.append(id);
         sql.append("'");
         List<RecordInfo> enterpriseList = super.findObjects(sql.toString(),RecordInfo.class);
         return  enterpriseList;
+    }
+
+
+
+    /**
+     * 通过RECORD_ID 查询企业许可证
+     *
+     * @param record_no
+     *
+     * @return
+     */
+    public List<Map> findCertificateByRecordNo(String record_no) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.certificate_name,t.permit_name,to_char(t.valid_period,'yyyy-MM-dd') as valid_period,to_char(t.issue_date,'yyyy-MM-dd') as issue_date, t.issue_branch from CERTIFICATE t where t.record_no='");
+        sql.append(record_no);
+        sql.append("'");
+        List<Map> certificateList = super.findResult(sql.toString(), new HashMap());
+
+        return certificateList;
     }
 
 
