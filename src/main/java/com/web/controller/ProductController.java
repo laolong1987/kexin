@@ -25,7 +25,6 @@ public class ProductController {
     RecordInfoService recordInfoService;
 
     private static String IMGURL="http://www.ecdata.org.cn/srv/viewDownloadAction.action?fileName=publishedFile/";
-    private static String IMGURL2="http://www.ecdata.org.cn/srv/showPartyPicAction.action?fileName=&recordNo=";
 
     @RequestMapping(value = "/search-product", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -41,9 +40,12 @@ public class ProductController {
             product.setCompanyname(ConvertUtil.safeToString(map.get("PRODUCT_NAME"),""));
             product.setProductname(ConvertUtil.safeToString(map.get("MANUFACTURER"),""));
             product.setId(ConvertUtil.safeToString(map.get("ID"),""));
-            product.setEvaluation("4");
-            product.setPicurl(IMGURL+ConvertUtil.safeToString(map.get("PICURL"),""));
-            product.setPicurl(product.getPicurl().replaceAll(";",""));
+            product.setEvaluation(ConvertUtil.safeToString(map.get("POINT"),""));
+            String picurl= ConvertUtil.safeToString(map.get("PICURL"),"");
+            if(!"".equals(picurl)){
+                String ps[]=picurl.split(";");
+                product.setPicurl(IMGURL+ps[0]);
+            }
             result.add(product);
         }
         return result;
@@ -65,13 +67,31 @@ public class ProductController {
             productDetailModel.setBrands(ConvertUtil.safeToString(product.getBarcode(),""));
             productDetailModel.setCompanyname(ConvertUtil.safeToString(product.getService_sector(),""));
             productDetailModel.setCampanyaddress(ConvertUtil.safeToString(product.getService_address(),""));
-            List<Map> list=recordInfoService.findLicense(ConvertUtil.safeToString(product.getService_sector(),""));
-            if(list.size()>0){
-                String record_no=ConvertUtil.safeToString(list.get(0).get("RECORD_NO"),"");
-                String order=ConvertUtil.safeToString(list.get(0).get("CERTIFICATE_ORDER"),"");
-                productDetailModel.setLicense(IMGURL2+record_no+"&type=&order="+order);
+            if(!"".equals(ConvertUtil.safeToString(product.getProduction_license_file(),""))){
+                productDetailModel.setLicense(IMGURL+product.getProduction_license_file());
                 productDetailModel.setLicense(productDetailModel.getLicense().replaceAll(";",""));
             }
+            String picurl= ConvertUtil.safeToString(product.getPicurl(),"");
+            List<String> list2=new ArrayList<>();
+            if(!"".equals(picurl)){
+                String ps[]=picurl.split(";");
+                for (String s:ps ) {
+                    list2.add(IMGURL+s);
+                }
+            }
+            productDetailModel.setProductimg(list2);
+
+            List<Map> webSitelist = recordInfoService.findWebSite(id);
+            List<RepWebSite> website=new ArrayList<>();
+            for (Map map: webSitelist) {
+                RepWebSite ws=new RepWebSite();
+                ws.setName(ConvertUtil.safeToString(map.get("WEBSITE_NAME"),""));
+                ws.setUrl(ConvertUtil.safeToString(map.get("WEBSITE_ADDRESS"),""));
+                website.add(ws);
+            }
+            productDetailModel.setAuthorize(webSitelist.size());
+            productDetailModel.setWebSiteList(website);
+            productDetailModel.setEvaluation(recordInfoService.getProductCommentpoint(id));
         }
         return productDetailModel;
     }
@@ -95,8 +115,9 @@ public class ProductController {
     @RequestMapping(value = "/search-productcomment", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<ProductComment> listproduct(@RequestParam(required=false ) String productid){
-
         List<ProductComment> list=recordInfoService.findProductComment(productid);
         return list;
     }
+
+
 }

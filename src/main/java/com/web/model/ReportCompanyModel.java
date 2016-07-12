@@ -10,6 +10,15 @@ public class ReportCompanyModel {
     private String description;
     private String uuid;
     private String userId;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getTitle() {
         return title;

@@ -2,6 +2,7 @@ package com.web.model;
 
 import com.web.entity.Uploadfile;
 
+import java.lang.ref.PhantomReference;
 import java.util.List;
 
 /**
@@ -15,6 +16,16 @@ public class RepReportCompanyDetailModel {
     private String uuid;
     private String id;
     private List<FileModel> fileidlist;
+
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getId() {
         return id;

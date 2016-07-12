@@ -89,6 +89,7 @@ public class ReportController {
         reportCompany.setCreate_time(new Date());
         reportCompany.setUpdate_time(new Date());
         reportCompany.setUser_id(reportCompanyModel.getUserId());
+        reportCompany.setAddress(reportCompanyModel.getAddress());
         recordInfoService.saveReportCompany(reportCompany);
 
         //根ID查询文件
@@ -187,6 +188,7 @@ public class ReportController {
         for (Map map:list) {
             RepReportCompanyModel reportProduct = new RepReportCompanyModel();
             reportProduct.setTitle(ConvertUtil.safeToString(map.get("TITLE"),""));
+            reportProduct.setAddress(ConvertUtil.safeToString(map.get("ADDRESS"),""));
             reportProduct.setCreate_time(ConvertUtil.safeToString(map.get("CREATE_TIME"),""));
             reportProduct.setCompany_name(ConvertUtil.safeToString(map.get("COMPANY_NAME"),""));
             reportProduct.setId(ConvertUtil.safeToString(map.get("ID"),""));
@@ -213,6 +215,7 @@ public class ReportController {
             reportCompanyModel.setCompany_name(reportCompany.getCompany_name());
             reportCompanyModel.setId(reportCompany.getId());
             reportCompanyModel.setDescription(reportCompany.getDescription());
+            reportCompanyModel.setAddress(reportCompany.getAddress());
             List<FileModel> lists=new ArrayList<>();
             List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportCompany.getId(),"1");
             for (Uploadfile uploadfile: list ) {

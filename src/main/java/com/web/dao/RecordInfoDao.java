@@ -70,7 +70,7 @@ public class RecordInfoDao extends BaseDao {
      */
     public SearchTemplate searchReportCompany(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.id,t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
+        sql.append("select t.address, t.id,t.title,t.status,to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time ");
         sql.append(",t.company_name ,to_char(t.update_time,'yyyy-MM-dd HH24:mm:ss') as update_time ");
         sql.append(" from report_company t where 1=1  ");
         if (map.containsKey("companyname") && !"".equals(map.get("companyname"))){
@@ -169,7 +169,7 @@ public class RecordInfoDao extends BaseDao {
 
     public List<Map> findProduct(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer from draft_permit t  ");
+        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point from draft_permit t  ");
         sql.append(" where 1=1  ");
         if(map.containsKey("productname") && !"".equals(map.get("productname"))){
             sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
@@ -186,5 +186,22 @@ public class RecordInfoDao extends BaseDao {
         map.put("com_name",companyname);
         List<Map> list = super.findResult(sql.toString(),map);
         return list;
+    }
+
+    public List<Map> findWebSite(String draft_id) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.WEBSITE_NAME,t.WEBSITE_ADDRESS from sale_website t where t.draft_id=:draft_id ");
+        Map map=new HashMap();
+        map.put("draft_id",draft_id);
+        List<Map> list = super.findResult(sql.toString(),map);
+        return list;
+    }
+
+    public String getProductCommentpoint(String productid){
+        StringBuffer sql=new StringBuffer();
+        sql.append("select avg(point) from product_comment where productid=:productid");
+        Map map = new HashMap();
+        map.put("productid",productid);
+         return String.valueOf(super.getUniqueResult(sql.toString(),map));
     }
 }
