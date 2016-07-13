@@ -26,6 +26,7 @@ public class UserOutService {
     public USER_OUT findUserOutByUserName(String username) {
         USER_OUT user = new USER_OUT();
         user.setUsername(username);
+        user.setRole_type("MOBILE_USER");
         List<USER_OUT> ulist = userOutDao.findUser(user);
         USER_OUT u = null;
         if (ulist.size() == 1) {
@@ -41,6 +42,7 @@ public class UserOutService {
     public USER_OUT findUserOutByPhone(String phone) {
         USER_OUT user = new USER_OUT();
         user.setMobile_phone(phone);
+        user.setRole_type("MOBILE_USER");
         List<USER_OUT> ulist = userOutDao.findUser(user);
         USER_OUT u = null;
         if (ulist.size() == 1) {

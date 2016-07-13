@@ -6,12 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.common.SearchTemplate;
 import com.utils.ConvertUtil;
+import com.utils.DateUtil;
 import com.web.entity.WaringsInfo;
 import com.web.service.WaringsInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by sukey on 2016/7/10.
@@ -61,17 +61,29 @@ public class WaringController {
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String showAddWaringInfo(HttpServletRequest request, HttpServletResponse response) {
-        return "";
+        String id=request.getParameter("id");
+       String publish_date= DateUtil.FormatUIDate(new Date());
+        if(id!=null && !"".equals(id)){
+           WaringsInfo waringsInfo = waringsInfoService.findWaringsInfoById(id);
+            request.setAttribute("waring",waringsInfo);
+        }
+
+        request.setAttribute("publish_date",publish_date);
+        return "/jsp/yw/xjjsxx";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String saveWaringInfo(HttpServletRequest request, HttpServletResponse response) {
+        String id=request.getParameter("id");
         String title = request.getParameter("title");
         String department = request.getParameter("department");
         String content = request.getParameter("content");
         String enterprise = request.getParameter("enterprise");
         String product = request.getParameter("product");
         WaringsInfo warinsInfo = new WaringsInfo();
+        if(id!=null && !"".equals(id)){
+            warinsInfo.setId(id);
+        }
         warinsInfo.setCreate_time(new Date());
         warinsInfo.setPublish_department(department);
         warinsInfo.setProduct(product);
@@ -79,7 +91,24 @@ public class WaringController {
         warinsInfo.setTitle(title);
         warinsInfo.setEnterprise(enterprise);
         waringsInfoService.saveWaringsInfo(warinsInfo);
-        return "";
+        return "/jsp/yw/xjjsxx";
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteWaring(HttpServletRequest request,HttpServletResponse response){
+      String id=  request.getParameter("wid");
+        String result="failure";
+        try{
+            if(id!=null && !"".equals(id)){
+                waringsInfoService.deleteWaringById(id);
+                result="success";
+            }
+        }catch (Exception e){
+            result="failure";
+            e.printStackTrace();
+        }
+        return result;
     }
 
 

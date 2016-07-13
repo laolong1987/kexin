@@ -56,4 +56,28 @@ public class WaringsInfoService {
     public SearchTemplate searchWaringsInfo(Map map) {
         return waringsInfoDao.searchWaringsInfo(map);
     }
+
+    /**
+     * 通过ID查询警示信息
+     *
+     * @param id
+     *
+     * @return
+     */
+    public WaringsInfo findWaringsInfoById(String id) {
+
+        WaringsInfo waringsInfo =(WaringsInfo) waringsInfoDao.getObjectById(id,WaringsInfo.class);
+        return waringsInfo;
+
+    }
+
+    /**
+     * 删除警示信息
+     * @param id
+     */
+    public void deleteWaringById(String id){
+        WaringsInfo waringsInfo=new WaringsInfo();
+        waringsInfo.setId(id);
+        waringsInfoDao.remove(waringsInfo);
+    }
 }

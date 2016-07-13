@@ -5,6 +5,8 @@ package com.web.model;
  */
 public class EnterpriseModel {
 
+    private String record_no;
+
     private String com_name;
 
     private  String role_type;
@@ -54,5 +56,13 @@ public class EnterpriseModel {
 
     public void setEid(String eid) {
         this.eid = eid;
+    }
+
+    public String getRecord_no() {
+        return record_no;
+    }
+
+    public void setRecord_no(String record_no) {
+        this.record_no = record_no;
     }
 }
