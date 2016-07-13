@@ -37,8 +37,8 @@ public class ProductController {
         List<Map> list=recordInfoService.findProduct(p);
         for (Map map:list) {
             RepProductModel product=new RepProductModel();
-            product.setCompanyname(ConvertUtil.safeToString(map.get("PRODUCT_NAME"),""));
-            product.setProductname(ConvertUtil.safeToString(map.get("MANUFACTURER"),""));
+            product.setProductname(ConvertUtil.safeToString(map.get("PRODUCT_NAME"),""));
+            product.setCompanyname(ConvertUtil.safeToString(map.get("MANUFACTURER"),""));
             product.setId(ConvertUtil.safeToString(map.get("ID"),""));
             product.setEvaluation(ConvertUtil.safeToString(map.get("POINT"),""));
             String picurl= ConvertUtil.safeToString(map.get("PICURL"),"");
@@ -98,7 +98,7 @@ public class ProductController {
 
     @RequestMapping(value="/comment-product", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public  ProductComment addComment(ReqCommentModel commentModel) throws IOException {
+    public  ProductComment addComment(ReqCommentModel commentModel) {
         ProductComment productComment=new ProductComment();
         productComment.setCreate_time(new Date());
         productComment.setUpdate_time(new Date());
@@ -114,9 +114,20 @@ public class ProductController {
 
     @RequestMapping(value = "/search-productcomment", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductComment> listproduct(@RequestParam(required=false ) String productid){
-        List<ProductComment> list=recordInfoService.findProductComment(productid);
-        return list;
+    public List<ProductCommentModel> listproduct(@RequestParam(required=false ) String productid){
+        List<ProductCommentModel> productCommentModelList=new ArrayList<>();
+        List<Map> list=recordInfoService.findProductComment2(productid);
+        for (Map map:list) {
+            ProductCommentModel pc=new ProductCommentModel();
+            pc.setIsfalse(ConvertUtil.safeToInteger(map.get("ISFALSE"),0));
+            pc.setDirections(ConvertUtil.safeToString(map.get("DIRECTIONS"),""));
+            pc.setPoint(ConvertUtil.safeToInteger(map.get("POINT"),0));
+            pc.setCreate_time(ConvertUtil.safeToString(map.get("CREATE_TIME"),""));
+            pc.setUsername(ConvertUtil.safeToString(map.get("NAME"),""));
+            pc.setUserid(ConvertUtil.safeToString(map.get("USERID"),""));
+            productCommentModelList.add(pc);
+        }
+        return productCommentModelList;
     }
 
 

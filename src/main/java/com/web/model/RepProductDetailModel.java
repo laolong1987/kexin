@@ -13,6 +13,11 @@ public class RepProductDetailModel {
     private String license;
     private String evaluation;
 
+    private List<String> productimg;
+
+    private Integer authorize;
+
+    private List<RepWebSite> webSiteList;
 
     public String getEvaluation() {
         return evaluation;
@@ -22,11 +27,7 @@ public class RepProductDetailModel {
         this.evaluation = evaluation;
     }
 
-    private List<String> productimg;
 
-    private Integer authorize;
-
-    private List<RepWebSite> webSiteList;
 
     public List<RepWebSite> getWebSiteList() {
         return webSiteList;

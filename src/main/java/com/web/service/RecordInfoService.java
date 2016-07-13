@@ -247,6 +247,10 @@ public class RecordInfoService {
         return recordInfoDao.findProductComment(productid);
     }
 
+    public List<Map> findProductComment2(String productid){
+        return recordInfoDao.findProductComment2(productid);
+    }
+
     public List<Map> findWebSite(String draft_id){
         return recordInfoDao.findWebSite(draft_id);
     }

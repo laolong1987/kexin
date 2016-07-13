@@ -4,6 +4,7 @@ package com.web.dao;
 import com.common.BaseDao;
 import com.common.SearchTemplate;
 import com.web.entity.*;
+import com.web.model.ProductCommentModel;
 import com.web.model.ReportProductVO;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +133,16 @@ public class RecordInfoDao extends BaseDao {
         Map map=new HashMap();
         map.put("productid",productid);
         List<ProductComment> list = super.findObjects(sql.toString(),map, ProductComment.class);
+        return list;
+    }
+
+    public List<Map> findProductComment2(String productid) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time,t.DIRECTIONS,t.ISFALSE,t.POINT ,a.name,t.userid from product_comment t");
+        sql.append(" left  join user_out a on t.USERID=a.MOBILE_PHONE where a.role_type='MOBILE_USER' and t.productid=:productid ");
+        Map map=new HashMap();
+        map.put("productid",productid);
+        List<Map> list = super.findResult(sql.toString(),map);
         return list;
     }
 
