@@ -32,7 +32,7 @@
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="25%" align="right">标题：</td>
-            <td><input name="" type="text" class="intext" style="width:500px;"/>
+            <td><input name="title" type="text" class="intext" value="${waring.title}" style="width:500px;"/>
             </td>
           </tr>
           <tr>
@@ -42,26 +42,28 @@
           </tr>
           <tr>
             <td width="25%" align="right">发布时间：</td>
-            <td>2016-06-05</td>
+            <td>${publish_date}</td>
           </tr>
           <tr>
             <td width="25%" align="right">关联企业：</td>
-            <td><input name="enterprise" type="text" class="intext"/></td>
+            <td><input name="enterprise" type="text" value="${waring.enterprise}" class="intext"/></td>
           </tr>
           <tr>
             <td width="25%" align="right">关联商品：</td>
-            <td><input name="product" type="text" class="intext"/></td>
+            <td><input name="product" type="text"  value="${waring.product}"  class="intext"/></td>
           </tr>
           <tr>
             <td width="25%" align="right">内容：</td>
             <td>
-              <textarea name="content" style="width:500px;" rows="10"></textarea>
+              <textarea name="content"  style="width:500px;" rows="10">${waring.content}</textarea>
             </td>
           </tr>
+          <input name="id" type="hidden" value="${waring.id}">
           <tr>
             <td align="right">&nbsp; </td>
             <td><input  type="submit" class="btn_cld" value="提交"/></td>
           </tr>
+
         </table>
         </form>
       </div>
@@ -74,9 +76,5 @@
 <!-- 底部菜单-->
 <%@include file="footer.jsp" %>
 </body>
-<script type="text/javascript">
-  $(function () {
-    $("#status").val(${reportCompany.status});
-  })
-</script>
+
 </html>

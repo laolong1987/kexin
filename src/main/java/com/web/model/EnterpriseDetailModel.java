@@ -1,5 +1,7 @@
 package com.web.model;
 
+import java.util.List;
+
 /**
  * Created by sukey on 2016/7/9.
  */
@@ -30,6 +32,8 @@ public class EnterpriseDetailModel {
     private String reg_branch;
 
     private String valid_period;
+
+    private List<CertificateModel> certificateModels;
 
     public String getCom_name() {
         return com_name;
@@ -133,5 +137,13 @@ public class EnterpriseDetailModel {
 
     public void setValid_period(String valid_period) {
         this.valid_period = valid_period;
+    }
+
+    public List<CertificateModel> getCertificateModels() {
+        return certificateModels;
+    }
+
+    public void setCertificateModels(List<CertificateModel> certificateModels) {
+        this.certificateModels = certificateModels;
     }
 }

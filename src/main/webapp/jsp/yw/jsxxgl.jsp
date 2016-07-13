@@ -40,11 +40,11 @@
             <td>操作</td>
           </tr>
           <c:forEach var="obj" items="${list}">
-            <tr>
-              <td>${obj.title}</td>
-              <td>${obj.create_time}</td>
-              <td>${obj.publish_department}</td>
-              <td><a href="#">修改</a>&nbsp;|&nbsp;<a href="#">删除</a></td>
+            <tr id="${obj.ID}">
+              <td>${obj.TITLE}</td>
+              <td>${obj.CREATE_TIME}</td>
+              <td>${obj.PUBLISH_DEPARTMENT}</td>
+              <td><a href="${ctx}/admin/warings/add?id=${obj.ID}">修改</a>&nbsp;|&nbsp;<a href="javascript:del('${obj.ID}')">删除</a></td>
             </tr>
           </c:forEach>
 
@@ -84,5 +84,19 @@
 <!-- 底部菜单-->
 <%@include file="footer.jsp" %>
 </body>
+<script>
+  function del(id){
+    $.ajax({
+      url:"delete",
+      type:"POST",
+      data:{"wid":id},
+      success:function (rest) {
+        $("#"+id).remove();
+        alert(rest);
+      }
+    })
+  }
+
+</script>
 
 </html>

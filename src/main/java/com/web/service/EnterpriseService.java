@@ -6,8 +6,7 @@ import com.utils.DateUtil;
 import com.utils.StringUtil;
 import com.web.dao.EnterpriseDao;
 import com.web.entity.RecordInfo;
-import com.web.model.EnterpriseDetailModel;
-import com.web.model.EnterpriseModel;
+import com.web.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,8 @@ public class EnterpriseService {
             model.setRole_type(role_type);
             model.setReg_address(StringUtil.safeToString(map.get("REG_ADDRESS"), ""));
             model.setProduct_num(StringUtil.safeToString(map.get("NUM"), ""));
-            model.setProduct_num(StringUtil.safeToString(map.get("USERNAME"), ""));
+            model.setEid(StringUtil.safeToString(map.get("USERNAME"), ""));
+            model.setRecord_no(StringUtil.safeToString(map.get("RECORD_NO"), ""));
             enterpriseModelList.add(model);
         }
         return enterpriseModelList;
@@ -51,10 +51,10 @@ public class EnterpriseService {
      * @return
      */
     public EnterpriseDetailModel findEnterpriseInfoByID(String id) {
-        List<RecordInfo> recordInfoList=enterpriseDao.findEnterpriseInfoByID(id);
-        EnterpriseDetailModel model =new EnterpriseDetailModel();
-        if(recordInfoList.size()>0){
-            RecordInfo recordInfo=recordInfoList.get(0);
+        List<RecordInfo> recordInfoList = enterpriseDao.findEnterpriseInfoByID(id);
+        EnterpriseDetailModel model = new EnterpriseDetailModel();
+        if (recordInfoList.size() > 0) {
+            RecordInfo recordInfo = recordInfoList.get(0);
             model.setReg_address(recordInfo.getReg_address());
             model.setCom_name(recordInfo.getCom_name());
             model.setRole_type(recordInfo.getRole_type());
@@ -71,4 +71,29 @@ public class EnterpriseService {
         }
         return model;
     }
-}
+
+    /**
+     * 通过RECORD_ID 查询企业许可证
+     *
+     * @param record_no
+     *
+     * @return
+     */
+    public List<CertificateModel> findCertificateByRecordNo(String record_no) {
+        List<Map> res_list=enterpriseDao.findCertificateByRecordNo(record_no);
+        List<CertificateModel> models=new ArrayList<>();
+        for(Map map:res_list){
+            CertificateModel model=new CertificateModel();
+            model.setCertificate_name(StringUtil.safeToString(map.get("CERTIFICATE_NAME"),""));
+            model.setCertificateNo("");
+            model.setIssue_branch(StringUtil.safeToString(map.get("ISSUE_BRANCH"),""));
+            model.setValid_period(StringUtil.safeToString(map.get("VALID_PERIOD"),""));
+            model.setPermit_name(StringUtil.safeToString(map.get("PERMIT_NAME"),""));
+            model.setIssue_date(StringUtil.safeToString(map.get("ISSUE_DATE"),""));
+            models.add(model);
+        }
+        return  models;
+    }
+
+
+    }
