@@ -19,11 +19,22 @@ public class EnterpriseDao extends BaseDao {
      *
      * @return
      */
-    public List<Map> findEnterpriseInfoByKeyWords(String keywords) {
+    public List<Map> findEnterpriseInfoByKeyWords(String keywords,int limit,int offset) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.username,t.record_no,t.com_name,t.role_type,t.reg_address,(select count(1) from DRAFT_PERMIT r where r.company_user=t.username ) as num From RECORD_INFO t where t.com_name like '%");
-        sql.append(keywords);
-        sql.append("%'");
+        sql .append("select W.*,(select count(1) from DRAFT_PERMIT r where  W.username=r.company_user ) as num from (");
+        sql.append(" select * from (select t.username,t.record_no,t.com_name,t.role_type,t.reg_address,ROWNUM as RN From RECORD_INFO t where 1=1 ");
+
+        if (!"".equals(keywords) && keywords != null) {
+            sql.append(" and t.com_name like '%");
+            sql.append(keywords);
+            sql.append("%'");
+        }
+sql.append(" ) where RN> ");
+        sql.append(offset);
+        sql.append(" and RN<=");
+        sql.append(offset +limit);
+        sql.append(") W");
+
         List<Map> enterpriseList = super.findResult(sql.toString(), new HashMap());
 
         return enterpriseList;
@@ -31,18 +42,19 @@ public class EnterpriseDao extends BaseDao {
 
     /**
      * 通过主键查询企业信息
+     *
      * @param id
+     *
      * @return
      */
-    public List<RecordInfo> findEnterpriseInfoByID(String id){
+    public List<RecordInfo> findEnterpriseInfoByID(String id) {
         StringBuffer sql = new StringBuffer();
         sql.append("FROM RecordInfo t where t.username='");
         sql.append(id);
         sql.append("'");
-        List<RecordInfo> enterpriseList = super.findObjects(sql.toString(),RecordInfo.class);
-        return  enterpriseList;
+        List<RecordInfo> enterpriseList = super.findObjects(sql.toString(), RecordInfo.class);
+        return enterpriseList;
     }
-
 
 
     /**
@@ -61,7 +73,6 @@ public class EnterpriseDao extends BaseDao {
 
         return certificateList;
     }
-
 
 
 }

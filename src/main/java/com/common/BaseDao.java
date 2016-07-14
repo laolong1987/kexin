@@ -78,6 +78,25 @@ public abstract class BaseDao {
     }
 
     /**
+     * 查询对象集合
+     *
+     * @param sql
+     * @param entry
+     *
+     * @return
+     */
+    public List findObjects(String sql, int page,int pageSize, Object entry) {
+        Query query = sessionFactory.getCurrentSession().createQuery(sql);
+        query.setProperties(entry);
+        if (page != 0 && pageSize != 0) {
+            query.setFirstResult(page == 1 ? 0 : (page - 1) * pageSize);
+            query.setMaxResults(pageSize);
+        }
+        return query.list();
+    }
+
+
+    /**
      * 删除方法（参数必须是ids）
      *
      * @param sql
