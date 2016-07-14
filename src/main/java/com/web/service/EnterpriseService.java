@@ -26,8 +26,16 @@ public class EnterpriseService {
      *
      * @return
      */
-    public List<EnterpriseModel> findEnterpriseInfoByKeyWords(String keywords) {
-        List<Map> res_list = enterpriseDao.findEnterpriseInfoByKeyWords(keywords);
+    public List<EnterpriseModel> findEnterpriseInfoByKeyWords(String keywords, String page, String pageSize) {
+        int offset = 0;
+        int limit = 0;
+        if (pageSize != null && !"".equals(pageSize)) {
+            limit = Integer.parseInt(pageSize);
+        }
+        if (page != null && !"".equals(page)) {
+            offset = (Integer.parseInt(page) - 1) * limit;
+        }
+        List<Map> res_list = enterpriseDao.findEnterpriseInfoByKeyWords(keywords, limit, offset);
         List<EnterpriseModel> enterpriseModelList = new ArrayList<>();
         for (Map map : res_list) {
             EnterpriseModel model = new EnterpriseModel();
@@ -80,20 +88,20 @@ public class EnterpriseService {
      * @return
      */
     public List<CertificateModel> findCertificateByRecordNo(String record_no) {
-        List<Map> res_list=enterpriseDao.findCertificateByRecordNo(record_no);
-        List<CertificateModel> models=new ArrayList<>();
-        for(Map map:res_list){
-            CertificateModel model=new CertificateModel();
-            model.setCertificate_name(StringUtil.safeToString(map.get("CERTIFICATE_NAME"),""));
+        List<Map> res_list = enterpriseDao.findCertificateByRecordNo(record_no);
+        List<CertificateModel> models = new ArrayList<>();
+        for (Map map : res_list) {
+            CertificateModel model = new CertificateModel();
+            model.setCertificate_name(StringUtil.safeToString(map.get("CERTIFICATE_NAME"), ""));
             model.setCertificateNo("");
-            model.setIssue_branch(StringUtil.safeToString(map.get("ISSUE_BRANCH"),""));
-            model.setValid_period(StringUtil.safeToString(map.get("VALID_PERIOD"),""));
-            model.setPermit_name(StringUtil.safeToString(map.get("PERMIT_NAME"),""));
-            model.setIssue_date(StringUtil.safeToString(map.get("ISSUE_DATE"),""));
+            model.setIssue_branch(StringUtil.safeToString(map.get("ISSUE_BRANCH"), ""));
+            model.setValid_period(StringUtil.safeToString(map.get("VALID_PERIOD"), ""));
+            model.setPermit_name(StringUtil.safeToString(map.get("PERMIT_NAME"), ""));
+            model.setIssue_date(StringUtil.safeToString(map.get("ISSUE_DATE"), ""));
             models.add(model);
         }
-        return  models;
+        return models;
     }
 
 
-    }
+}

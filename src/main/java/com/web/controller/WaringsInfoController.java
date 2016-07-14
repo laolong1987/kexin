@@ -17,9 +17,17 @@ public class WaringsInfoController {
     @Autowired
     private WaringsInfoService waringsInfoService;
 
-    @RequestMapping(value="/search" ,method = RequestMethod.GET)
-    public List<Warings> search(@RequestParam(required=false) String keywords){
-        List<Warings> waringsList= waringsInfoService.findWaringsInfoByKeyWords(keywords);
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public List<Warings> search(@RequestParam(required = false) String keywords, @RequestParam(required = false) String page, @RequestParam(required = false) String pageSize) {
+        int pg = 0;
+        int pgS = 0;
+        if (page != null && !"".equals(page)) {
+            pg = Integer.parseInt(page);
+        }
+        if (pageSize != null && !"".equals(pageSize)) {
+            pgS = Integer.parseInt(pageSize);
+        }
+        List<Warings> waringsList = waringsInfoService.findWaringsInfoByKeyWords(keywords,pg,pgS);
         return waringsList;
     }
 
