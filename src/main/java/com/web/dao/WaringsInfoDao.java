@@ -22,7 +22,7 @@ public class WaringsInfoDao extends BaseDao {
      *
      * @return
      */
-    public List<WaringsInfo> findWaringsInfoByKeyWords(String keyword) {
+    public List<WaringsInfo> findWaringsInfoByKeyWords(String keyword,int page,int pageSize) {
         StringBuffer sql = new StringBuffer();
         sql.append("from WaringsInfo where 1=1");
         if (keyword != null && !"".equals(keyword)) {
@@ -30,7 +30,7 @@ public class WaringsInfoDao extends BaseDao {
             sql.append(keyword);
             sql.append("%'");
         }
-        List<WaringsInfo> list = super.findObjects(sql.toString(), WaringsInfo.class);
+        List<WaringsInfo> list = super.findObjects(sql.toString(),page, pageSize,WaringsInfo.class);
         return list;
 
     }

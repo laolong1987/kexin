@@ -20,8 +20,9 @@ public class WaringsInfoService {
     @Autowired
     private WaringsInfoDao waringsInfoDao;
 
-    public List<Warings> findWaringsInfoByKeyWords(String keyword) {
-        List<WaringsInfo> list = waringsInfoDao.findWaringsInfoByKeyWords(keyword);
+    public List<Warings> findWaringsInfoByKeyWords(String keyword,int page,int pageSize) {
+
+        List<WaringsInfo> list = waringsInfoDao.findWaringsInfoByKeyWords(keyword,page,pageSize);
         List<Warings> waringsList = new ArrayList<>();
         for (WaringsInfo waringsInfo : list) {
             Warings warings = new Warings();

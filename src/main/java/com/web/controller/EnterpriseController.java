@@ -19,8 +19,8 @@ public class EnterpriseController {
     private EnterpriseService enterpriseService;
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
-    public List<EnterpriseModel> search(@RequestParam String keywords) {
-        List<EnterpriseModel> list = enterpriseService.findEnterpriseInfoByKeyWords(keywords);
+    public List<EnterpriseModel> search(@RequestParam(required = false) String keywords,@RequestParam(required = false) String page,@RequestParam(required = false) String pageSize) {
+        List<EnterpriseModel> list = enterpriseService.findEnterpriseInfoByKeyWords(keywords,page,pageSize);
         return list;
     }
 
