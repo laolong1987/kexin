@@ -52,9 +52,9 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/search-product/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/search-product/{id}/{userid}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public RepProductDetailModel getproduct(@PathVariable String id){
+    public RepProductDetailModel getproduct(@PathVariable String id,@PathVariable String userid){
         RepProductDetailModel productDetailModel=new RepProductDetailModel();
         DraftPermit product = recordInfoService.getProduct(id);
         if(null!=product){
@@ -92,6 +92,10 @@ public class ProductController {
             productDetailModel.setAuthorize(webSitelist.size());
             productDetailModel.setWebSiteList(website);
             productDetailModel.setEvaluation(recordInfoService.getProductCommentpoint(id));
+
+            //判断是否收藏 0 无收藏 1 收藏了
+            productDetailModel.setIscollect(recordInfoService.findCollect(id,2,userid));
+
         }
         return productDetailModel;
     }

@@ -13,6 +13,8 @@ public class RepProductDetailModel {
     private String license;
     private String evaluation;
 
+    private String iscollect;
+
     private List<String> productimg;
 
     private Integer authorize;
@@ -27,7 +29,13 @@ public class RepProductDetailModel {
         this.evaluation = evaluation;
     }
 
+    public String getIscollect() {
+        return iscollect;
+    }
 
+    public void setIscollect(String iscollect) {
+        this.iscollect = iscollect;
+    }
 
     public List<RepWebSite> getWebSiteList() {
         return webSiteList;

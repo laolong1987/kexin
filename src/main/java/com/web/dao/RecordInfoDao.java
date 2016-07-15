@@ -189,6 +189,17 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
+    public List<Map> findProductCollect(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point  from COLLECT b left join draft_permit t on b.SOURCEID=t.id and b.type=2 ");
+        sql.append(" where 1=1 and userid=:userid ");
+        if(map.containsKey("productname") && !"".equals(map.get("productname"))){
+            sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
+        }
+        List<Map> list = super.findResult(sql.toString(),map);
+        return list;
+    }
+
     public List<Map> findLicense(String companyname) {
         StringBuffer sql = new StringBuffer();
         sql.append("select t.record_no,t.CERTIFICATE_ORDER from CERTIFICATE t left join record_info a on a.RECORD_NO=t.record_no ");
@@ -214,5 +225,20 @@ public class RecordInfoDao extends BaseDao {
         Map map = new HashMap();
         map.put("productid",productid);
          return String.valueOf(super.getUniqueResult(sql.toString(),map));
+    }
+
+    public String findCollect(String sourceid,int type,String userid){
+        StringBuffer sql=new StringBuffer();
+        sql.append("select count(id) from collect where type=:type and sourceid=:sourceid and userid=:userid");
+        Map map=new HashMap();
+        map.put("userid",userid);
+        map.put("sourceid",sourceid);
+        map.put("type",type);
+        String result=String.valueOf(super.getUniqueResult(sql.toString(),map));
+        if("0".equals(result)){
+            return "0";
+        }else{
+            return "1";
+        }
     }
 }

@@ -50,6 +50,9 @@ public class RecordInfoService {
         recordInfoDao.save(productComment);
     }
 
+    public void saveCollect(Collect collect){
+        recordInfoDao.save(collect);
+    }
 
 
     public List<Map<String, Object>> searchReportProduct(Map map){
@@ -238,6 +241,9 @@ public class RecordInfoService {
     public List<Map> findProduct(Map map){
        return recordInfoDao.findProduct(map);
     }
+    public List<Map> findProductCollect(Map map){
+        return recordInfoDao.findProductCollect(map);
+    }
 
     public List<Map> findLicense(String companyname){
         return recordInfoDao.findLicense(companyname);
@@ -256,5 +262,18 @@ public class RecordInfoService {
     }
     public String getProductCommentpoint(String productid){
         return recordInfoDao.getProductCommentpoint(productid);
+    }
+
+    public void removeCollect(String userid,String sourceid,int type){
+        String sql=new String("delete from collect where type=:type and sourceid=:sourceid and userid=:userid");
+        Map map=new HashMap();
+        map.put("userid",userid);
+        map.put("sourceid",sourceid);
+        map.put("type",type);
+        recordInfoDao.executeSql(sql,map);
+    }
+
+    public String findCollect(String sourceid,int type,String userid){
+        return findCollect(sourceid,type,userid);
     }
 }
