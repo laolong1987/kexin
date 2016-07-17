@@ -28,7 +28,7 @@ public class EnterpriseService {
      */
     public List<EnterpriseModel> findEnterpriseInfoByKeyWords(String keywords, String page, String pageSize) {
         int offset = 0;
-        int limit = 0;
+        int limit = 10;
         if (pageSize != null && !"".equals(pageSize)) {
             limit = Integer.parseInt(pageSize);
         }
