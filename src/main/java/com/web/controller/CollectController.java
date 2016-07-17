@@ -5,6 +5,7 @@ import com.web.entity.Collect;
 import com.web.entity.DraftPermit;
 import com.web.entity.ProductComment;
 import com.web.model.*;
+import com.web.service.EnterpriseService;
 import com.web.service.RecordInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,10 @@ public class CollectController {
 
     @Autowired
     RecordInfoService recordInfoService;
+
+
+    @Autowired
+    private EnterpriseService enterpriseService;
 
     private static String IMGURL="http://www.ecdata.org.cn/srv/viewDownloadAction.action?fileName=publishedFile/";
 
@@ -53,7 +58,7 @@ public class CollectController {
         return result;
     }
 
-
+    
 
     @RequestMapping(value="/collect-product", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

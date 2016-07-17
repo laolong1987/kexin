@@ -191,8 +191,8 @@ public class RecordInfoDao extends BaseDao {
 
     public List<Map> findProductCollect(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point  from COLLECT b left join draft_permit t on b.SOURCEID=t.id and b.type=2 ");
-        sql.append(" where 1=1 and userid=:userid ");
+        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point  from COLLECT b left join draft_permit t on b.SOURCEID=t.id ");
+        sql.append(" where 1=1 and userid=:userid  and b.type=2  ");
         if(map.containsKey("productname") && !"".equals(map.get("productname"))){
             sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
         }
