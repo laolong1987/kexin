@@ -274,6 +274,6 @@ public class RecordInfoService {
     }
 
     public String findCollect(String sourceid,int type,String userid){
-        return findCollect(sourceid,type,userid);
+        return recordInfoDao.findCollect(sourceid,type,userid);
     }
 }
