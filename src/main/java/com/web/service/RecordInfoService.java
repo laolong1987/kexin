@@ -276,4 +276,14 @@ public class RecordInfoService {
     public String findCollect(String sourceid,int type,String userid){
         return recordInfoDao.findCollect(sourceid,type,userid);
     }
+
+    public void setlog(String userid,int type,String sourceid){
+        Loginfo loginfo=new Loginfo();
+        loginfo.setCreate_time(new Date());
+        loginfo.setUpdate_time(new Date());
+        loginfo.setType(type);
+        loginfo.setSourceid(sourceid);
+        loginfo.setUserid(userid);
+        recordInfoDao.save(loginfo);
+    }
 }
