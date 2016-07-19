@@ -261,7 +261,7 @@ public class RecordInfoDao extends BaseDao {
     public String findCollectnew(String sourceid,int type) {
         String result="";
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from (select to_char(c.create_time,'yyyy-MM-dd HH24:mm:ss') from collect c where c.sourceid=:sourceid and c.type=:type order by c.CREATE_TIME desc) where ROWNUM < 2");
+        sql.append("select * from (select to_char(c.create_time,'yyyy-MM-dd HH24:mm:ss') as CREATE_TIME from collect c where c.sourceid=:sourceid and c.type=:type order by c.CREATE_TIME desc) where ROWNUM < 2");
         Map map=new HashMap();
         map.put("sourceid",sourceid);
         map.put("type",type);
@@ -275,7 +275,7 @@ public class RecordInfoDao extends BaseDao {
     public String findlogtnew(String sourceid,int type) {
         String result="";
         StringBuffer sql = new StringBuffer();
-        sql.append("select * from (select to_char(c.create_time,'yyyy-MM-dd HH24:mm:ss') from LOGOINFO c where c.sourceid=:sourceid and c.type=:type order by c.CREATE_TIME desc) where ROWNUM < 2");
+        sql.append("select * from (select to_char(c.create_time,'yyyy-MM-dd HH24:mm:ss') as CREATE_TIME from LOGOINFO c where c.sourceid=:sourceid and c.type=:type order by c.CREATE_TIME desc) where ROWNUM < 2");
         Map map=new HashMap();
         map.put("sourceid",sourceid);
         map.put("type",type);
