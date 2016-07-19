@@ -37,7 +37,7 @@ public class ProductController {
         List<Map> list=recordInfoService.findProduct(p);
         for (Map map:list) {
             RepProductModel product=new RepProductModel();
-            product.setProductname(ConvertUtil.safeToString(map.get("PRODUCT_NAME"),""));
+            product.setProductname(ConvertUtil.safeToString(map.get("GENERIC_NAME"),""));
             product.setCompanyname(ConvertUtil.safeToString(map.get("MANUFACTURER"),""));
             product.setId(ConvertUtil.safeToString(map.get("ID"),""));
             product.setEvaluation(ConvertUtil.safeToString(map.get("POINT"),""));

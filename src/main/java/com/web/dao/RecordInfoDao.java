@@ -3,6 +3,7 @@ package com.web.dao;
 
 import com.common.BaseDao;
 import com.common.SearchTemplate;
+import com.utils.ConvertUtil;
 import com.web.entity.*;
 import com.web.model.ProductCommentModel;
 import com.web.model.ReportProductVO;
@@ -180,7 +181,7 @@ public class RecordInfoDao extends BaseDao {
 
     public List<Map> findProduct(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point from draft_permit t  ");
+        sql.append("select t.id,t.GENERIC_NAME,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point from draft_permit t  ");
         sql.append(" where 1=1  ");
         if(map.containsKey("productname") && !"".equals(map.get("productname"))){
             sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
@@ -191,7 +192,7 @@ public class RecordInfoDao extends BaseDao {
 
     public List<Map> findProductCollect(Map map) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.id,t.product_name,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point  from COLLECT b left join draft_permit t on b.SOURCEID=t.id ");
+        sql.append("select t.id,t.GENERIC_NAME,t.picurl,t.manufacturer, (select avg(a.point) from product_comment a where t.id=a.productid ) as point  from COLLECT b left join draft_permit t on b.SOURCEID=t.id ");
         sql.append(" where 1=1 and userid=:userid  and b.type=2  ");
         if(map.containsKey("productname") && !"".equals(map.get("productname"))){
             sql.append(" and t.product_name like '%").append(map.get("productname")).append("%'");
@@ -240,5 +241,63 @@ public class RecordInfoDao extends BaseDao {
         }else{
             return "1";
         }
+    }
+
+
+    /**
+     * 查询企业收藏
+     *
+     * @param map
+     * @return
+     */
+    public SearchTemplate searchCollectCompany(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select t.IDCARD_NO, t.com_name,t.USER_TYPE,(select count(a.id) from collect a where a.type=1 and a.SOURCEID=t.IDCARD_NO ) as csize, ");
+        sql.append("(select count(b.id) from LOGOINFO b where b.type=1 and b.SOURCEID=t.IDCARD_NO ) as lsize ");
+        sql.append(" from record_info t  where 1=1  ");
+        return  super.search(sql.toString(),map);
+    }
+
+    public String findCollectnew(String sourceid,int type) {
+        String result="";
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from (select to_char(c.create_time,'yyyy-MM-dd HH24:mm:ss') from collect c where c.sourceid=:sourceid and c.type=:type order by c.CREATE_TIME desc) where ROWNUM < 2");
+        Map map=new HashMap();
+        map.put("sourceid",sourceid);
+        map.put("type",type);
+        List<Map> list = super.findResult(sql.toString(),map);
+        if(list.size()>0){
+            result= ConvertUtil.safeToString(list.get(0).get("CREATE_TIME"),"");
+        }
+        return result;
+    }
+
+    public String findlogtnew(String sourceid,int type) {
+        String result="";
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from (select to_char(c.create_time,'yyyy-MM-dd HH24:mm:ss') from LOGOINFO c where c.sourceid=:sourceid and c.type=:type order by c.CREATE_TIME desc) where ROWNUM < 2");
+        Map map=new HashMap();
+        map.put("sourceid",sourceid);
+        map.put("type",type);
+        List<Map> list = super.findResult(sql.toString(),map);
+        if(list.size()>0){
+            result= ConvertUtil.safeToString(list.get(0).get("CREATE_TIME"),"");
+        }
+        return result;
+    }
+
+
+    /**
+     * 查询商品收藏
+     *
+     * @param map
+     * @return
+     */
+    public SearchTemplate searchCollectProduct(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append(" select t.id,t.GENERIC_NAME,t.SERVICE_SECTOR,(select count(a.id) from collect a where a.type=2 and a.SOURCEID=t.id ) as csize, ");
+        sql.append(" (select count(b.id) from LOGOINFO b where b.type=2 and b.SOURCEID=t.id ) as lsize ");
+        sql.append(" from draft_permit t  ");
+        return  super.search(sql.toString(),map);
     }
 }

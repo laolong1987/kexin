@@ -286,4 +286,33 @@ public class RecordInfoService {
         loginfo.setUserid(userid);
         recordInfoDao.save(loginfo);
     }
+
+    /**
+     * 查询企业收藏
+     *
+     * @param map
+     * @return
+     */
+    public SearchTemplate searchCollectCompany(Map map){
+        return recordInfoDao.searchCollectCompany(map);
+    }
+
+    public String findCollectnew(String sourceid,int type){
+        return recordInfoDao.findCollectnew(sourceid,type);
+    }
+
+    public String findlogtnew(String sourceid,int type){
+        return recordInfoDao.findlogtnew(sourceid,type);
+    }
+
+
+    /**
+     * 查询商品收藏
+     *
+     * @param map
+     * @return
+     */
+    public SearchTemplate searchCollectProduct(Map map){
+        return recordInfoDao.searchCollectProduct(map);
+    }
 }
