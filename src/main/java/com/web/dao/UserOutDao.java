@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.common.BaseDao;
+import com.common.SearchTemplate;
 import com.web.entity.USER_OUT;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,18 @@ public class UserOutDao extends BaseDao {
 
         return super.findObjects(sql.toString(), user);
     }
+
+    /**
+        * 后台用户管理查询
+        *
+        * @param map
+        *
+        * @return
+        */
+       public SearchTemplate findUserManageInfo(Map map) {
+           StringBuffer sql = new StringBuffer();
+           sql.append("select t.mobile_phone,t.name,t.create_time,(select count(*) from COLLECT c where c.userid=t.mobile_phone and c.type=1) as collectEp,(select count(*) from COLLECT c where c.userid=t.mobile_phone and c.type=2) as collectGoods,((select count(*) from Report_Company r where r.user_id=t.mobile_phone ) + (select count(*) from Report_Product rp where rp.user_id=t.mobile_phone )) as reportNum, (select to_char(max(uot.create_time),'yyyy-MM-dd HH24:mm:ss') from USER_OUT_TOKEN uot  where uot.phone=t.mobile_phone ) as login_time from USER_OUT t where t.role_type='MOBILE_USER' ");
+           sql.append(" order by t.create_time desc");
+           return super.search(sql.toString(), map);
+       }
 }

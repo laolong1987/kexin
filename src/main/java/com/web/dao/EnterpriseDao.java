@@ -19,9 +19,9 @@ public class EnterpriseDao extends BaseDao {
      *
      * @return
      */
-    public List<Map> findEnterpriseInfoByKeyWords(String keywords,int limit,int offset) {
+    public List<Map> findEnterpriseInfoByKeyWords(String keywords, int limit, int offset) {
         StringBuffer sql = new StringBuffer();
-        sql .append("select W.*,(select count(1) from DRAFT_PERMIT r where  W.username=r.company_user ) as num from (");
+        sql.append("select W.*,(select count(1) from DRAFT_PERMIT r where  W.username=r.company_user ) as num from (");
         sql.append(" select * from (select t.username,t.record_no,t.com_name,t.role_type,t.reg_address,ROWNUM as RN From RECORD_INFO t where 1=1 ");
 
         if (!"".equals(keywords) && keywords != null) {
@@ -29,10 +29,10 @@ public class EnterpriseDao extends BaseDao {
             sql.append(keywords);
             sql.append("%'");
         }
-sql.append(" ) where RN> ");
+        sql.append(" ) where RN> ");
         sql.append(offset);
         sql.append(" and RN<=");
-        sql.append(offset +limit);
+        sql.append(offset + limit);
         sql.append(") W");
 
         List<Map> enterpriseList = super.findResult(sql.toString(), new HashMap());
@@ -72,6 +72,38 @@ sql.append(" ) where RN> ");
         List<Map> certificateList = super.findResult(sql.toString(), new HashMap());
 
         return certificateList;
+    }
+
+    /**
+     * 查询已收藏的企业信息
+     *
+     * @param userid
+     * @param limit
+     * @param offset
+     *
+     * @return
+     */
+    public List<Map> findCollectedEnterpriseInfo(String userid, String keywords, int limit, int offset) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select W.*,(select count(1) from DRAFT_PERMIT r where  W.username=r.company_user ) as num from (");
+        sql.append(" select * from (select t.username,t.record_no,t.com_name,t.user_type,t.reg_address,ROWNUM as RN From RECORD_INFO t where t.username in (");
+        sql.append(" select sourceid from collect c where c.type=1 and c.userid ='");
+        sql.append(userid);
+        sql.append("' )");
+        if (!"".equals(keywords) && keywords != null) {
+            sql.append(" and t.com_name like '%");
+            sql.append(keywords);
+            sql.append("%'");
+        }
+        sql.append(" ) where RN> ");
+        sql.append(offset);
+        sql.append(" and RN<=");
+        sql.append(offset + limit);
+        sql.append(") W");
+
+        List<Map> enterpriseList = super.findResult(sql.toString(), new HashMap());
+
+        return enterpriseList;
     }
 
 

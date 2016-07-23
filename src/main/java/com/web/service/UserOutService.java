@@ -1,7 +1,9 @@
 package com.web.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.common.SearchTemplate;
 import com.web.dao.UserOutDao;
 import com.web.entity.USER_OUT;
 import com.web.model.LoginModel;
@@ -54,4 +56,15 @@ public class UserOutService {
     public void saveUserOut(USER_OUT user) {
         userOutDao.save(user);
     }
+
+    /**
+        * 查询警示信息
+        *
+        * @param map
+        *
+        * @return
+        */
+       public SearchTemplate findUserManageInfo(Map map) {
+           return userOutDao.findUserManageInfo(map);
+       }
 }

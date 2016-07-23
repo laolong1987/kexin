@@ -5,6 +5,7 @@ import java.util.*;
 import com.utils.DateUtil;
 import com.utils.StringUtil;
 import com.web.dao.EnterpriseDao;
+import com.web.dao.RecordInfoDao;
 import com.web.entity.RecordInfo;
 import com.web.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,26 +59,9 @@ public class EnterpriseService {
      *
      * @return
      */
-    public EnterpriseDetailModel findEnterpriseInfoByID(String id) {
+    public List<RecordInfo> findEnterpriseInfoByID(String id) {
         List<RecordInfo> recordInfoList = enterpriseDao.findEnterpriseInfoByID(id);
-        EnterpriseDetailModel model = new EnterpriseDetailModel();
-        if (recordInfoList.size() > 0) {
-            RecordInfo recordInfo = recordInfoList.get(0);
-            model.setReg_address(recordInfo.getReg_address());
-            model.setCom_name(recordInfo.getCom_name());
-            model.setRole_type(recordInfo.getRole_type());
-            model.setAddress(recordInfo.getAddress());
-            model.setAnnual_check(recordInfo.getAnnual_check());
-            model.setFound_date(DateUtil.FormatUIDate(recordInfo.getFound_date()));
-            model.setIs_manu_import(recordInfo.getIs_manu_import());
-            model.setLaw_person(recordInfo.getLaw_person());
-            model.setLp_phone(recordInfo.getLp_phone());
-            model.setReg_branch(recordInfo.getReg_branch());
-            model.setReg_capital(recordInfo.getReg_capital());
-            model.setReg_on(recordInfo.getReg_no());
-            model.setValid_period(DateUtil.FormatUIDate(recordInfo.getValid_period()));
-        }
-        return model;
+        return recordInfoList;
     }
 
     /**
@@ -101,6 +85,49 @@ public class EnterpriseService {
             models.add(model);
         }
         return models;
+    }
+
+    /**
+     * @param userid
+     * @param page
+     * @param pageSize
+     *
+     * @return
+     */
+    public List<EnterpriseModel> findCollectdEnterpriseInfo(String userid, String keywords, String page, String pageSize) {
+        int offset = 0;
+        int limit = 10;
+        if (pageSize != null && !"".equals(pageSize)) {
+            limit = Integer.parseInt(pageSize);
+        }
+        if (page != null && !"".equals(page)) {
+            offset = (Integer.parseInt(page) - 1) * limit;
+        }
+        List<Map> res_list = enterpriseDao.findCollectedEnterpriseInfo(userid, keywords, limit, offset);
+        List<EnterpriseModel> enterpriseModelList = new ArrayList<>();
+        for (Map map : res_list) {
+            EnterpriseModel model = new EnterpriseModel();
+            model.setCom_name(StringUtil.safeToString(map.get("COM_NAME"), ""));
+            String user_type = StringUtil.safeToString(map.get("USER_TYPE"), "");
+            if ("10".equals(user_type)) {
+                model.setRole_type("生产型企业或机构");
+            } else if ("20".equals(user_type)) {
+                model.setRole_type("经营型企业或机构");
+            } else if ("30".equals(user_type)) {
+                model.setRole_type("服务型企业或机构");
+            } else if ("50".equals(user_type)) {
+                model.setRole_type("企业或机构消费者");
+            } else if ("60".equals(user_type)) {
+                model.setRole_type("个人消费者");
+            }
+
+            model.setReg_address(StringUtil.safeToString(map.get("REG_ADDRESS"), ""));
+            model.setProduct_num(StringUtil.safeToString(map.get("NUM"), ""));
+            model.setEid(StringUtil.safeToString(map.get("USERNAME"), ""));
+            model.setRecord_no(StringUtil.safeToString(map.get("RECORD_NO"), ""));
+            enterpriseModelList.add(model);
+        }
+        return enterpriseModelList;
     }
 
 

@@ -35,6 +35,8 @@ public class EnterpriseDetailModel {
 
     private List<CertificateModel> certificateModels;
 
+    private boolean collected;
+
     public String getCom_name() {
         return com_name;
     }
@@ -141,6 +143,14 @@ public class EnterpriseDetailModel {
 
     public List<CertificateModel> getCertificateModels() {
         return certificateModels;
+    }
+
+    public boolean isCollected() {
+        return collected;
+    }
+
+    public void setCollected(boolean collected) {
+        this.collected = collected;
     }
 
     public void setCertificateModels(List<CertificateModel> certificateModels) {
