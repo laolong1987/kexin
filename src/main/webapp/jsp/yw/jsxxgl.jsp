@@ -28,7 +28,7 @@
       </div>
       <div class="tian"></div>
       <div style="padding-left:10px;">
-        <input name="" type="button" class="btn_cld" value="新建警示信息" onclick="location='xjjsxx.html'"/>
+        <a class="btn_cld" href="">新建警示信息</a>
       </div>
       <div class="tian"></div>
       <div class="edit_table">
