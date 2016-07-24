@@ -22,7 +22,7 @@ public class EnterpriseDao extends BaseDao {
     public List<Map> findEnterpriseInfoByKeyWords(String keywords, int limit, int offset) {
         StringBuffer sql = new StringBuffer();
         sql.append("select W.*,(select count(1) from DRAFT_PERMIT r where  W.username=r.company_user ) as num from (");
-        sql.append(" select * from (select t.username,t.record_no,t.com_name,t.role_type,t.reg_address,ROWNUM as RN From RECORD_INFO t where 1=1 ");
+        sql.append(" select * from (select t.username,t.record_no,t.com_name,t.user_type,t.reg_address,ROWNUM as RN From RECORD_INFO t where 1=1 ");
 
         if (!"".equals(keywords) && keywords != null) {
             sql.append(" and t.com_name like '%");

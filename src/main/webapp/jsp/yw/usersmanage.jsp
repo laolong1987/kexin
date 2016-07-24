@@ -39,96 +39,17 @@
             <td width="11%">收藏商品数量</td>
             <td width="11%">举报次数</td>
           </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
-          <tr>
-            <td>150****0722</td>
-            <td>wenly</td>
-            <td>2016-06-05</td>
-            <td width="18%">2016-06-05 12:15:03</td>
-            <td width="15%">10</td>
-            <td width="11%">5</td>
-            <td width="11%">3</td>
-          </tr>
+          <c:forEach var="obj" items="${list}">
+            <tr>
+              <td>${obj.MOBILE_PHONE}</td>
+              <td>${obj.NAME}</td>
+              <td>${obj.CREATE_TIME}</td>
+              <td width="18%">${obj.LOGIN_TIME}</td>
+              <td width="15%">${obj.COLLECTEP}</td>
+              <td width="11%">${obj.COLLECTGOODS}</td>
+              <td width="11%">${obj.REPORTNUM}</td>
+            </tr>
+          </c:forEach>
         </table>
       </div>
 

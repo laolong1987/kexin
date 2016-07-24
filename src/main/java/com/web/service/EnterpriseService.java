@@ -41,8 +41,19 @@ public class EnterpriseService {
         for (Map map : res_list) {
             EnterpriseModel model = new EnterpriseModel();
             model.setCom_name(StringUtil.safeToString(map.get("COM_NAME"), ""));
-            String role_type = StringUtil.safeToString(map.get("ROLE_TYPE"), "");
-            model.setRole_type(role_type);
+            String user_type = StringUtil.safeToString(map.get("USER_TYPE"), "");
+            if ("10".equals(user_type)) {
+                model.setRole_type("生产型企业或机构");
+            } else if ("20".equals(user_type)) {
+                model.setRole_type("经营型企业或机构");
+            } else if ("30".equals(user_type)) {
+                model.setRole_type("服务型企业或机构");
+            } else if ("50".equals(user_type)) {
+                model.setRole_type("企业或机构消费者");
+            } else if ("60".equals(user_type)) {
+                model.setRole_type("个人消费者");
+            }
+
             model.setReg_address(StringUtil.safeToString(map.get("REG_ADDRESS"), ""));
             model.setProduct_num(StringUtil.safeToString(map.get("NUM"), ""));
             model.setEid(StringUtil.safeToString(map.get("USERNAME"), ""));
