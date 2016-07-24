@@ -73,7 +73,7 @@ public class ReportController {
             }
         }
         //添加举报提醒
-        recordInfoService.runreminde();
+        recordInfoService.runreminde(reportProduct.getProduct_name(),reportProduct.getCompany_name(),reportProduct.getTitle(),reportProduct.getDescription());
 
         return reportProduct;
     }
@@ -118,7 +118,7 @@ public class ReportController {
         }
         }
         //添加举报提醒
-        recordInfoService.runreminde();
+        recordInfoService.runreminde("",reportCompany.getCompany_name(),reportCompany.getTitle(),reportCompany.getDescription());
         return reportCompany;
     }
 

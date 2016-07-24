@@ -38,7 +38,7 @@ public class UploadFileController {
 
     @RequestMapping(value = "/uploadfile", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Uploadfile adduploadfile(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public String adduploadfile(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
 
         String uuid=request.getParameter("uuid");
         int file_type=ConvertUtil.safeToInteger(request.getParameter("file_type"),1);
@@ -70,7 +70,7 @@ public class UploadFileController {
         uploadfile.setFilepath(fileuuid);
         uploadfile.setType(0);
         uploadFileService.saveUploadFile(uploadfile);
-        return uploadfile;
+        return uploadfile.getId();
     }
 
 

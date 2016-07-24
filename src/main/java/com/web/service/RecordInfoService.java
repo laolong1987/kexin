@@ -116,15 +116,30 @@ public class RecordInfoService {
     }
 
 
-    private static String TITLE="你有一个举报要处理";
-    private static String CONTENT="你有一个举报要处理";
+    private static String TITLE="可信平台举报信息提醒";
+//    private static String CONTENT="尊敬的用户，您好！\n您有新的举报信息要处理。\n被举报商品名称：XXXX \n被举报企业名称：XXXX \\n举报标题：XXXX \\n举报内容：XXXX 请访问url进行处理。";
 
-    public void runreminde(){
+    public String getcontent(String productname,String companyname,String title,String content){
+        StringBuilder result=new StringBuilder();
+        result.append("尊敬的用户，您好！\n您有新的举报信息要处理。\n");
+        if(null!=productname && !"".equals(productname)) {
+            result.append("被举报商品名称：").append(productname).append("\n");
+        }
+        if(null!=companyname && !"".equals(companyname)){
+            result.append("被举报企业名称：").append(companyname).append("\n");
+        }
+        result.append("举报标题：").append(title).append("\n");
+        result.append("举报内容：").append(content).append("\n");
+        result.append("请访问<a href='http://114.55.67.233:8080/kexin/admin/login'>可信平台</a>进行处理。");
+        return result.toString();
+    }
+
+    public void runreminde(String productname,String companyname,String title,String content){
         List<ReportReminder> list=recordInfoDao.findReportReminder();
         for (ReportReminder remider:list ) {
             if(null!=remider.getEmail() && !"".equals(remider.getEmail())){
                 try {
-                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,CONTENT);
+                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,getcontent(productname,companyname,title,content));
 //                    mailSender.batchSend(TITLE,CONTENT,false,remider.getEmail());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -133,7 +148,7 @@ public class RecordInfoService {
             if(null!=remider.getPhone() && !"".equals(remider.getPhone())){
                 if(reportRules(remider.getDay(),remider.getTime())){
                     //发送短信
-                    messageSender.batchSend(CONTENT, remider.getPhone());
+                    messageSender.batchSend("您有1条新的质量投诉信息要处理。", remider.getPhone());
                 }else{
                     //保存到数据库
                     ReportSms sms=new ReportSms();
@@ -173,7 +188,7 @@ public class RecordInfoService {
 
         for (Map.Entry<String, Integer> entry : sendmap.entrySet()) {
             //发送短信
-            messageSender.batchSend("你有"+entry.getValue()+"个举报要处理", entry.getKey());
+            messageSender.batchSend("您有"+entry.getValue()+"条新的质量投诉信息要处理。", entry.getKey());
         }
 
         for(String s:dellist){

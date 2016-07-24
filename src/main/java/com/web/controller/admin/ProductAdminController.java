@@ -129,9 +129,6 @@ public class ProductAdminController {
         //设置左边菜单高亮
         request.setAttribute("m1","ahover");
         request.setAttribute("productid",productid);
-
-
-
         return "/jsp/yw/ckpl";
     }
 
