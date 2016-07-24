@@ -2,13 +2,18 @@ package com.web.controller.admin;
 
 import com.common.SearchTemplate;
 import com.utils.ConvertUtil;
+import com.web.entity.ProductReminder;
+import com.web.entity.ReportReminder;
+import com.web.entity.USER_IN;
 import com.web.service.RecordInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,4 +137,52 @@ public class ProductAdminController {
         return "/jsp/yw/ckpl";
     }
 
+
+    @RequestMapping(value = "/showproductreminder")
+    public String showproductreminder(HttpServletRequest request,
+                                     HttpServletResponse response) {
+
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user_in");
+        ProductReminder productReminder= recordInfoService.findProductReminder(user_in.getUesername());
+        if(null!=productReminder){
+            request.setAttribute("reminder",productReminder);
+        }
+        //设置左边菜单高亮
+        request.setAttribute("m2","ahover");
+        return "/jsp/yw/spzlznyjsz";
+    }
+
+    @RequestMapping(value = "/addproductreminder")
+    @ResponseBody
+    public String addproductreminder(HttpServletRequest request,
+                                    HttpServletResponse response) {
+        String email=ConvertUtil.safeToString(request.getParameter("email"),"");
+        String phone=ConvertUtil.safeToString(request.getParameter("phone"),"");
+        int day=ConvertUtil.safeToInteger(request.getParameter("day"),0);
+        int time=ConvertUtil.safeToInteger(request.getParameter("time"),0);
+        int minpoint=ConvertUtil.safeToInteger(request.getParameter("minpoint"),0);
+        int maxpoint=ConvertUtil.safeToInteger(request.getParameter("maxpoint"),0);
+        int minisfalse=ConvertUtil.safeToInteger(request.getParameter("minisfalse"),0);
+        int maxisfalse=ConvertUtil.safeToInteger(request.getParameter("maxisfalse"),0);
+        String keywords=ConvertUtil.safeToString(request.getParameter("keywords"),"");
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user_in");
+        ProductReminder productReminder= recordInfoService.findProductReminder(user_in.getUesername());
+        if(null==productReminder){
+            productReminder=new ProductReminder();
+            productReminder.setCreate_time(new Date());
+            productReminder.setUser_id(user_in.getUesername());
+        }
+        productReminder.setUpdate_time(new Date());
+        productReminder.setPhone(phone);
+        productReminder.setEmail(email);
+        productReminder.setDay(day);
+        productReminder.setTime(time);
+        productReminder.setMinisfalse(minisfalse);
+        productReminder.setMaxisfalse(maxisfalse);
+        productReminder.setMinpoint(minpoint);
+        productReminder.setMaxpoint(maxpoint);
+        productReminder.setKeywords(keywords);
+        recordInfoService.saveProductReminder(productReminder);
+        return "ok";
+    }
 }

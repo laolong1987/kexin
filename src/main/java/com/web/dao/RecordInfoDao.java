@@ -172,6 +172,21 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ProductReminder> findProductReminder(String userid) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from PRODUCT_REMINDER t where 1=1");
+        sql.append(" and user_id=:userid  ");
+        Map map=new HashMap();
+        map.put("userid",userid);
+        List<ProductReminder> list = super.findObjects(sql.toString(),map, ProductReminder.class);
+        return list;
+    }
+
         public List<ReportReminder> findReportReminder() {
         StringBuffer sql = new StringBuffer();
         sql.append("select * from REPORT_REMINDER t where 1=1");

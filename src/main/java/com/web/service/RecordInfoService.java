@@ -111,8 +111,26 @@ public class RecordInfoService {
         }
     }
 
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public ProductReminder findProductReminder(String userid){
+        List<ProductReminder> list=recordInfoDao.findProductReminder(userid);
+        if(list.size()>0){
+            return list.get(0);
+        }else{
+            return null;
+        }
+    }
+
     public  void savereportReminder(ReportReminder reportReminder){
         recordInfoDao.save(reportReminder);
+    }
+
+    public  void saveProductReminder(ProductReminder productReminder){
+        recordInfoDao.save(productReminder);
     }
 
 
@@ -237,6 +255,10 @@ public class RecordInfoService {
             }
         }
         return result;
+    }
+
+    public void runproductreminde(){
+        
     }
 
     /**
