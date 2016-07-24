@@ -1,5 +1,7 @@
 package com.web.model;
 
+import java.util.List;
+
 /**
  * Created by gaoyang on 16/6/28.
  */
@@ -11,6 +13,15 @@ public class ReportCompanyModel {
     private String uuid;
     private String userId;
     private String address;
+    private List<String> fileids;
+
+    public List<String> getFileids() {
+        return fileids;
+    }
+
+    public void setFileids(List<String> fileids) {
+        this.fileids = fileids;
+    }
 
     public String getAddress() {
         return address;

@@ -106,6 +106,58 @@ public class RecordInfoDao extends BaseDao {
     }
 
     /**
+     * 查询产品
+     *
+     * @param map
+     * @return
+     */
+    public SearchTemplate searchProduct(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from(select t.id,t.GENERIC_NAME,t.SERVICE_SECTOR,(select count(a.id) from product_comment a where a.PRODUCTID=t.id) as csize, ");
+        sql.append(" (select count(a.id) from product_comment a where a.PRODUCTID=t.id and a.ISFALSE=1) as fsize, ");
+        sql.append(" floor((select avg(a.POINT) from product_comment a where a.PRODUCTID=t.id)) as fs ");
+        sql.append(" from draft_permit t ) where 1=1 ");
+        if (map.containsKey("productname") && !"".equals(map.get("productname"))){
+            sql.append(" and GENERIC_NAME like :productname ");
+            map.put("productname", "%" + map.get("productname") + "%");
+        }
+        if (map.containsKey("companyname") && !"".equals(map.get("companyname"))){
+            sql.append(" and SERVICE_SECTOR like :companyname ");
+            map.put("companyname", "%" + map.get("companyname") + "%");
+        }
+        if (map.containsKey("beginpoint") && !"".equals(map.get("beginpoint"))){
+            sql.append(" and fs >=:beginpoint ");
+        }
+        if (map.containsKey("endpoint") && !"".equals(map.get("endpoint"))){
+            sql.append(" and fs <=:endpoint ");
+        }
+        if (map.containsKey("beginfalse") && !"".equals(map.get("beginfalse"))){
+            sql.append(" and fsize >=:beginfalse ");
+        }
+        if (map.containsKey("endfalse") && !"".equals(map.get("endfalse"))){
+            sql.append(" and fsize <=:endfalse ");
+        }
+        return  super.search(sql.toString(),map);
+    }
+
+
+    /**
+     * 查询产品
+     * @return
+     */
+    public List<Map> searchProduct3(String id) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.id,t.GENERIC_NAME,t.SERVICE_SECTOR,(select count(a.id) from product_comment a where a.PRODUCTID=t.id) as csize, ");
+        sql.append(" (select count(a.id) from product_comment a where a.PRODUCTID=t.id and a.ISFALSE=1) as fsize, ");
+        sql.append(" floor((select avg(a.POINT) from product_comment a where a.PRODUCTID=t.id)) as fs ");
+        sql.append(" from draft_permit t where t.id=:id");
+        Map map=new HashMap();
+        map.put("id",id);
+        List<Map> list = super.findResult(sql.toString(),map);
+        return list;
+    }
+
+    /**
      * 查询
      *
      * @return
@@ -298,6 +350,14 @@ public class RecordInfoDao extends BaseDao {
         sql.append(" select t.id,t.GENERIC_NAME,t.SERVICE_SECTOR,(select count(a.id) from collect a where a.type=2 and a.SOURCEID=t.id ) as csize, ");
         sql.append(" (select count(b.id) from LOGOINFO b where b.type=2 and b.SOURCEID=t.id ) as lsize ");
         sql.append(" from draft_permit t  ");
+        return  super.search(sql.toString(),map);
+    }
+
+
+    public SearchTemplate searchProductComment(Map map) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time,t.DIRECTIONS,t.ISFALSE,t.POINT ,a.name,t.userid from product_comment t");
+        sql.append(" left  join user_out a on t.USERID=a.MOBILE_PHONE where a.role_type='MOBILE_USER' and t.productid=:productid ");
         return  super.search(sql.toString(),map);
     }
 }

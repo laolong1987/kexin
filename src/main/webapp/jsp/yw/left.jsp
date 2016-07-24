@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="edit_left">
     <ul>
-        <li><a href="spzlyj.html" class="${m1}">商品质量预警</a></li>
+        <li><a href="${ctx}/admin/product/showproduct" class="${m1}">商品质量预警</a></li>
         <li><a href="spzlznyjsz.html" class="${m2}">商品质量智能预警设置</a></li>
         <li><a href="${ctx}/admin/report/showreportcompany" class="${m3}">企业举报信息处理</a></li>
         <li><a href="${ctx}/admin/report/showreportproduct" class="${m4}">商品举报信息处理</a></li>

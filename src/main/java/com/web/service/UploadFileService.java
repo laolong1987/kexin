@@ -31,6 +31,10 @@ public class UploadFileService {
         return uploadFileDao.findUploadfileByReportId(uuid,type);
     }
 
+    public List<Uploadfile> findUploadfileByIDS(List<String> ids){
+        return uploadFileDao.findUploadfileByIDS(ids);
+    }
+
     public Uploadfile getUploadfile(String id){
         return (Uploadfile) uploadFileDao.getObjectById(id,Uploadfile.class);
     }

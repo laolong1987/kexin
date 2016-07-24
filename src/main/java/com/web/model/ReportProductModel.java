@@ -1,6 +1,7 @@
 package com.web.model;
 
 import javax.persistence.Column;
+import java.util.List;
 
 /**
  * Created by gaoyang on 16/6/26.
@@ -15,6 +16,15 @@ public class ReportProductModel {
     private String uuid;
     private String code;
     private String user_id;
+    private List<String> fileids;
+
+    public List<String> getFileids() {
+        return fileids;
+    }
+
+    public void setFileids(List<String> fileids) {
+        this.fileids = fileids;
+    }
 
     public String getCompany_name() {
         return company_name;

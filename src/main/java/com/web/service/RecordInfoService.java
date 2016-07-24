@@ -315,4 +315,23 @@ public class RecordInfoService {
     public SearchTemplate searchCollectProduct(Map map){
         return recordInfoDao.searchCollectProduct(map);
     }
+
+
+    /**
+     * 查询产品
+     *
+     * @param map
+     * @return
+     */
+    public SearchTemplate searchProduct(Map map){
+        return recordInfoDao.searchProduct(map);
+    }
+
+    public SearchTemplate searchProductComment(Map map){
+        return recordInfoDao.searchProductComment(map);
+    }
+
+    public List<Map> searchProduct3(String id){
+        return recordInfoDao.searchProduct3(id);
+    }
 }

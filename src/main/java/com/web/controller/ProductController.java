@@ -94,8 +94,10 @@ public class ProductController {
             productDetailModel.setEvaluation(recordInfoService.getProductCommentpoint(id));
 
             //判断是否收藏 0 无收藏 1 收藏了
-            productDetailModel.setIscollect(recordInfoService.findCollect(id,2,userid));
+            if(!"0".equals(userid)){
+                productDetailModel.setIscollect(recordInfoService.findCollect(id,2,userid));
 
+            }
             //记录日志
             recordInfoService.setlog(userid,2,id);
         }

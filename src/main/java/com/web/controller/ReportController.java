@@ -48,29 +48,30 @@ public class ReportController {
         reportProduct.setUser_id(reportProductModel.getUser_id());
         recordInfoService.saveReportProduct(reportProduct);
 
-        //根据UUID查询文件
-        List<Uploadfile> list= uploadFileService.findUploadfileByUUID(reportProductModel.getUuid());
-        for(Uploadfile file:list){
-            file.setType(1);
-            file.setUpdate_time(new Date());
-            file.setReport_id(reportProduct.getId());
-            file.setReport_type(2);
-            uploadFileService.saveUploadFile(file);
+        if(reportProductModel.getFileids().size()>0) {
+            //根ID查询文件
+            List<Uploadfile> list = uploadFileService.findUploadfileByIDS(reportProductModel.getFileids());
+            for (Uploadfile file : list) {
+                file.setType(1);
+                file.setUpdate_time(new Date());
+                file.setReport_id(reportProduct.getId());
+                file.setReport_type(2);
+                uploadFileService.saveUploadFile(file);
 
-            //把文件转移出临时目录
-            /**构建保存的目录**/
-            String tmpPathDir = "/tmp";
-            String filePathDir = "/file";
-            String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
-            String fileRealPathDir = request.getSession().getServletContext().getRealPath(filePathDir);
+                //把文件转移出临时目录
+                /**构建保存的目录**/
+                String tmpPathDir = "/tmp";
+                String filePathDir = "/file";
+                String tmpRealPathDir = request.getSession().getServletContext().getRealPath(tmpPathDir);
+                String fileRealPathDir = request.getSession().getServletContext().getRealPath(filePathDir);
 
-            /**根据真实路径创建目录**/
-            String fileName = tmpRealPathDir + File.separator + file.getFilepath();
-            File file1 = new File(fileName);
-            File file2 = new File(fileRealPathDir);
-            FileUtils.copyFileToDirectory(file1,file2);
+                /**根据真实路径创建目录**/
+                String fileName = tmpRealPathDir + File.separator + file.getFilepath();
+                File file1 = new File(fileName);
+                File file2 = new File(fileRealPathDir);
+                FileUtils.copyFileToDirectory(file1, file2);
+            }
         }
-
         //添加举报提醒
         recordInfoService.runreminde();
 
@@ -92,8 +93,9 @@ public class ReportController {
         reportCompany.setAddress(reportCompanyModel.getAddress());
         recordInfoService.saveReportCompany(reportCompany);
 
+        if(reportCompanyModel.getFileids().size()>0){
         //根ID查询文件
-        List<Uploadfile> list= uploadFileService.findUploadfileByUUID(reportCompanyModel.getUuid());
+        List<Uploadfile> list= uploadFileService.findUploadfileByIDS(reportCompanyModel.getFileids());
         for (Uploadfile file:list ) {
             file.setType(1);
             file.setUpdate_time(new Date());
@@ -114,7 +116,7 @@ public class ReportController {
             File file2 = new File(fileRealPathDir);
             FileUtils.copyFileToDirectory(file1,file2);
         }
-
+        }
         //添加举报提醒
         recordInfoService.runreminde();
         return reportCompany;
