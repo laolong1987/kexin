@@ -46,11 +46,14 @@
           </tr>
           <tr>
             <td width="25%" align="right">关联企业：</td>
-            <td><input name="enterprise" type="text" value="${waring.enterprise}" class="intext"/></td>
+            <td><input name="enterprise" id="enterprise" type="text" value="${waring.enterprise}" onchange="searchEnterprise()" class="intext"/><span style="margin-left:36px" id="e-tip"></span></td>
+
+            <input type="hidden" name="eid" id="eid" value="${waring.eid}">
           </tr>
           <tr>
             <td width="25%" align="right">关联商品：</td>
             <td><input name="product" type="text"  value="${waring.product}"  class="intext"/></td>
+            <input type="hidden" name="eid" id="pid" value="${waring.pid}">
           </tr>
           <tr>
             <td width="25%" align="right">内容：</td>
@@ -76,5 +79,24 @@
 <!-- 底部菜单-->
 <%@include file="footer.jsp" %>
 </body>
+
+<script>
+  function searchEnterprise(){
+    var enterprise=$("#enterprise").val();
+    $.ajax({
+      url:"matchEnterprise",
+      type:"POST",
+      data:{"enterprise":enterprise},
+      success:function(res){
+        if(res!='false'){
+          $("#eid").val(res);
+        }else{
+          $("#e-tip").text("该企业不存在");
+        }
+      }
+    })
+  }
+
+</script>
 
 </html>

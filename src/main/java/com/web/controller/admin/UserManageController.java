@@ -56,6 +56,6 @@ public class UserManageController {
          request.setAttribute("page", page);
          //设置左边菜单高亮
          request.setAttribute("m6", "ahover");
-         return "/jsp/yw/jsxxgl";
+         return "/jsp/yw/usersmanage";
      }
 }
