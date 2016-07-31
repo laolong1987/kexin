@@ -13,7 +13,7 @@
         <li><a href="${ctx}/admin/report/showreportcompany" class="${m3}">企业举报信息处理</a></li>
         <li><a href="${ctx}/admin/report/showreportproduct" class="${m4}">商品举报信息处理</a></li>
         <li><a href="${ctx}/admin/report/showreportreminder" class="${m5}">举报信息提醒设置</a></li>
-        <li><a href="jsxxgl.html" class="${m6}">警示信息管理</a></li>
-        <li><a href="grxxgl.html" class="${m7}">个人信息管理</a></li>
+        <li><a href="${ctx}/admin/warings/list-warings" class="${m6}">警示信息管理</a></li>
+        <li><a href="${ctx}/admin/user/personal" class="${m7}">个人信息管理</a></li>
     </ul>
 </div>

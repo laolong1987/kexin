@@ -5,12 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.common.SearchTemplate;
-import com.utils.ConvertUtil;
-import com.utils.DateUtil;
-import com.web.entity.WaringsInfo;
+import com.utils.*;
+import com.web.entity.*;
 import com.web.model.EnterpriseModel;
-import com.web.service.EnterpriseService;
-import com.web.service.WaringsInfoService;
+import com.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +25,13 @@ public class WaringController {
 
     @Autowired
     private EnterpriseService enterpriseService;
+
+    @Autowired
+    private RecordInfoService recordInfoService;
+
+    @Autowired
+    private SupervisorService supervisorService;
+
 
     @RequestMapping(value = "/list-warings", method = RequestMethod.GET)
     public String listWarings(HttpServletRequest request, HttpServletResponse response) {
@@ -71,7 +76,14 @@ public class WaringController {
         if (id != null && !"".equals(id)) {
             WaringsInfo waringsInfo = waringsInfoService.findWaringsInfoById(id);
             request.setAttribute("waring", waringsInfo);
+        }else{
+            USER_IN user = (USER_IN) request.getSession().getAttribute("user_in");
+            Supervisor supervisor = supervisorService.findSupervisor(user.getUesername());
+            WaringsInfo waringsInfo =new WaringsInfo();
+            waringsInfo.setPublish_department(supervisor.getGov_name() + supervisor.getDepart_name());
+            request.setAttribute("waring", waringsInfo);
         }
+
 
         request.setAttribute("publish_date", publish_date);
         //设置左边菜单高亮
@@ -98,7 +110,7 @@ public class WaringController {
         warinsInfo.setTitle(title);
         warinsInfo.setEnterprise(enterprise);
         waringsInfoService.saveWaringsInfo(warinsInfo);
-        return "/jsp/yw/xjjsxx";
+        return "redirect:list-warings";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -121,13 +133,29 @@ public class WaringController {
     @RequestMapping(value = "/matchEnterprise", method = RequestMethod.POST)
     @ResponseBody
     public String matchEnterprise(HttpServletRequest request, HttpServletResponse response) {
-       String enterprise=request.getParameter("enterprise");
+        String enterprise = request.getParameter("enterprise");
         List<EnterpriseModel> list = enterpriseService.findEnterpriseInfoByKeyWords(enterprise, null, null);
-        String res="false";
-        if(list.size()>0){
-            res=list.get(0).getEid();
+        String res = "false";
+        if (list.size() > 0) {
+            res = list.get(0).getEid();
         }
-       return res;
+        return res;
+    }
+
+    @RequestMapping(value = "/matchProduct", method = RequestMethod.POST)
+    @ResponseBody
+    public String matchProduct(HttpServletRequest request, HttpServletResponse response) {
+        String enterprise = request.getParameter("enterprise");
+        String product = request.getParameter("product");
+        Map<String, String> queryParameter = new HashMap<>();
+        queryParameter.put("productname", product);
+        queryParameter.put("companyname", enterprise);
+        List<Map<String, Object>> list = recordInfoService.searchProduct(queryParameter).getValues();
+        String res = "false";
+        if (list.size() > 0) {
+            res = StringUtil.safeToString(list.get(0).get("ID"), "");
+        }
+        return res;
     }
 
 

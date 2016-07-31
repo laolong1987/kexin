@@ -10,7 +10,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%@include file="common.jsp" %>
+  <%@include file="common2.jsp" %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title>企业举报信息处理 </title>
 </head>
@@ -21,7 +21,7 @@
 <div class="bodymain">
   <div class="bodycon">
     <!-- 左边菜单 -->
-    <%@include file="left.jsp" %>
+    <%@include file="left2.jsp" %>
     <div class="edit_right">
       <div class="eh2title">
         当前位置：用户管理
@@ -57,25 +57,25 @@
       <div class="page_box">
         <div class="page">
           <c:if test="${1!=page}">
-            <a class='n2 over' href="${ctx}/admin/warings/list-warings?page=1">首页</a>
+            <a class='n2 over' href="${ctx}/admin/user/list-warings?page=1">首页</a>
             <a class='n2 over'
-               href="${ctx}/admin/warings/list-warings?page=${page-1}">上一页</a>
+               href="${ctx}/admin/user/manage?page=${page-1}">上一页</a>
           </c:if>
           <c:forEach begin="${begin}" end="${end}" varStatus="status">
             <c:if test="${status.current==page}">
               <a class='n1 selected'
-                 href="${ctx}/admin/warings/list-warings?page=${status.current}">${status.current}</a>
+                 href="${ctx}/admin/user/manage?page=${status.current}">${status.current}</a>
             </c:if>
             <c:if test="${status.current!=page}">
               <a class='n1'
-                 href="${ctx}/admin/warings/list-warings?page=${status.current}">${status.current}</a>
+                 href="${ctx}/admin/user/manage?page=${status.current}">${status.current}</a>
             </c:if>
 
           </c:forEach>
           <c:if test="${page!=max}">
-            <a class=n2 href="${ctx}/admin/warings/list-warings?page=${page+1}">下一页</a>
+            <a class=n2 href="${ctx}/admin/user/manage?page=${page+1}">下一页</a>
             <a class=n2
-               href=""${ctx}/admin/warings/list-warings?page=${max}">末页</a>
+               href="${ctx}/admin/user/manage?page=${max}">末页</a>
           </c:if>
         </div>
 

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.utils.StringUtil;
 
-public class InterceptorAdmin implements HandlerInterceptor {
+public class InterceptorOperator implements HandlerInterceptor {
 
     /**
      * 在DispatcherServlet完全处理完请求后被调用
@@ -41,10 +41,16 @@ public class InterceptorAdmin implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object object) throws Exception {
         // TODO Auto-generated method stub
-        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user");
+        USER_IN user_in = (USER_IN) request.getSession().getAttribute("user_in");
 
         if (user_in != null) {
-            return true;
+            if (user_in.getRole_type().equals("SUPERADMIN")) {
+                return true;
+            } else {
+                response.sendRedirect(request.getContextPath() + "/admin/login");
+                return false;
+            }
+
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/login");
             return false;

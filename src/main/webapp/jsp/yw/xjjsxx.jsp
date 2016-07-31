@@ -28,46 +28,55 @@
       </div>
       <div class="tian"></div>
       <div class="edit_table">
-        <form name="addWaring" id="addWaring" action="${ctx}/admin/warings/add" method="post">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="25%" align="right">标题：</td>
-            <td><input name="title" type="text" class="intext" value="${waring.title}" style="width:500px;"/>
-            </td>
-          </tr>
-          <tr>
-            <td width="25%" align="right">发布单位：</td>
-            <td>XXXX工商局</td>
-            <input name="department" type="hidden" value="XXXX工商局">
-          </tr>
-          <tr>
-            <td width="25%" align="right">发布时间：</td>
-            <td>${publish_date}</td>
-          </tr>
-          <tr>
-            <td width="25%" align="right">关联企业：</td>
-            <td><input name="enterprise" id="enterprise" type="text" value="${waring.enterprise}" onchange="searchEnterprise()" class="intext"/><span style="margin-left:36px" id="e-tip"></span></td>
+        <form name="addWaring" id="addWaring" action="${ctx}/admin/warings/add"
+              method="post">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="25%" align="right">标题：</td>
+              <td><input name="title" type="text" class="intext"
+                         value="${waring.title}" style="width:500px;"/>
+              </td>
+            </tr>
+            <tr>
+              <td width="25%" align="right">发布单位：</td>
+              <td>${waring.publish_department}</td>
+              <input name="department" type="hidden" value="${waring.publish_department}">
+            </tr>
+            <tr>
+              <td width="25%" align="right">发布时间：</td>
+              <td>${publish_date}</td>
+            </tr>
+            <tr>
+              <td width="25%" align="right">关联企业：</td>
+              <td><input name="enterprise" id="enterprise" type="text"
+                         value="${waring.enterprise}"
+                         onchange="searchEnterprise()" class="intext"/><span
+                style="margin-left:36px" id="e-tip"></span></td>
 
-            <input type="hidden" name="eid" id="eid" value="${waring.eid}">
-          </tr>
-          <tr>
-            <td width="25%" align="right">关联商品：</td>
-            <td><input name="product" type="text"  value="${waring.product}"  class="intext"/></td>
-            <input type="hidden" name="eid" id="pid" value="${waring.pid}">
-          </tr>
-          <tr>
-            <td width="25%" align="right">内容：</td>
-            <td>
-              <textarea name="content"  style="width:500px;" rows="10">${waring.content}</textarea>
-            </td>
-          </tr>
-          <input name="id" type="hidden" value="${waring.id}">
-          <tr>
-            <td align="right">&nbsp; </td>
-            <td><input  type="submit" class="btn_cld" value="提交"/></td>
-          </tr>
+              <input type="hidden" name="eid" id="eid" value="${waring.eid}">
+            </tr>
+            <tr>
+              <td width="25%" align="right">关联商品：</td>
+              <td>
+                <input name="product" id="product" type="text" value="${waring.product}" onchange="searchProduct()" class="intext"/>
+                <span style="margin-left:36px" id="p-tip"></span>
+              </td>
+              <input type="hidden" name="pid" id="pid" value="${waring.pid}">
+            </tr>
+            <tr>
+              <td width="25%" align="right">内容：</td>
+              <td>
+                <textarea name="content" style="width:500px;"
+                          rows="10">${waring.content}</textarea>
+              </td>
+            </tr>
+            <input name="id" type="hidden" value="${waring.id}">
+            <tr>
+              <td align="right">&nbsp; </td>
+              <td><input type="submit" class="btn_cld" value="提交"/></td>
+            </tr>
 
-        </table>
+          </table>
         </form>
       </div>
 
@@ -81,17 +90,42 @@
 </body>
 
 <script>
-  function searchEnterprise(){
-    var enterprise=$("#enterprise").val();
+  function searchEnterprise() {
+    var enterprise = $("#enterprise").val();
+    var product = $("#product").val();
     $.ajax({
-      url:"matchEnterprise",
-      type:"POST",
-      data:{"enterprise":enterprise},
-      success:function(res){
-        if(res!='false'){
+      url: "matchEnterprise",
+      type: "POST",
+      data: {"enterprise": enterprise},
+      success: function (res) {
+        if (res != 'false') {
           $("#eid").val(res);
-        }else{
+          $("#e-tip").text("");
+        } else {
           $("#e-tip").text("该企业不存在");
+        }
+      }
+    })
+
+    if (product != '') {
+      searchProduct();
+    }
+  }
+
+  function searchProduct() {
+    var enterprise = $("#enterprise").val();
+    var product = $("#product").val();
+    $.ajax({
+      url: "matchProduct",
+      type: "POST",
+      data: {"enterprise": enterprise, "product": product},
+      success: function (res) {
+        if (res != 'false') {
+          $("#pid").val(res);
+          $("#p-tip").text("");
+
+        } else {
+          $("#p-tip").text("该商品不存在");
         }
       }
     })

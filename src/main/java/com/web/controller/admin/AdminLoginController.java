@@ -40,7 +40,12 @@ public class AdminLoginController {
                 request.setAttribute("tip", "密码错误,请重试");
             } else {
                 request.getSession().setAttribute("user_in", user_in);
-                return "redirect:/admin/report/showreportcompany";
+                if (user_in.getRole_type().equals("SUPERVISOR")) {
+                    return "redirect:/admin/report/showreportcompany";
+                }else{
+                    return "redirect:/admin/user/manage";
+                }
+
             }
         } else {
             request.setAttribute("tip", "用户名密码不可为空");
