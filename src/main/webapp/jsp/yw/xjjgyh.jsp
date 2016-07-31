@@ -10,9 +10,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%@include file="common.jsp" %>
+  <%@include file="common2.jsp" %>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>企业举报信息处理 </title>
+  <title>新建监管用户 </title>
 </head>
 <body>
 <!-- 头部 -->
@@ -21,7 +21,7 @@
 <div class="bodymain">
   <div class="bodycon">
     <!-- 左边菜单 -->
-    <%@include file="left.jsp" %>
+    <%@include file="left2.jsp" %>
     <div class="edit_right">
     <div class="eh2title">
       当前位置：新建监管用户

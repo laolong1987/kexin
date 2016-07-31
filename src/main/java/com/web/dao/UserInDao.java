@@ -19,8 +19,6 @@ public class UserInDao extends BaseDao {
         if (user.getUesername() != null && !"".equals(user.getUesername())) {
             sql.append(" and u.uesername =:uesername");
         }
-
-
         return super.findObjects(sql.toString(), user);
     }
 }

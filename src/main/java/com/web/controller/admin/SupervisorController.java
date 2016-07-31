@@ -1,10 +1,11 @@
 package com.web.controller.admin;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.common.SearchTemplate;
+import com.utils.ConvertUtil;
 import com.utils.MD5Util;
 import com.web.entity.Supervisor;
 import com.web.entity.USER_IN;
@@ -28,7 +29,8 @@ public class SupervisorController {
     private SupervisorService supervisorService;
 
     @RequestMapping(value = "add-user", method = RequestMethod.GET)
-    public String addSupervisor() {
+    public String addSupervisor(HttpServletRequest request, HttpServletResponse response) {
+        request.setAttribute("m5", "ahover");
         return "/jsp/yw/xjjgyh";
     }
 
@@ -68,7 +70,7 @@ public class SupervisorController {
             supervisor.setUesername(username);
             supervisor.setName(name);
             supervisor.setSex(gender);
-            supervisor.setDepart_name(company);
+            supervisor.setGov_name(company);
             supervisor.setDepart_name(department);
             supervisor.setContact_phone(phone);
             supervisor.setEmail(email);
@@ -80,6 +82,7 @@ public class SupervisorController {
             supervisor.setPostcode("Empty String");
             supervisor.setVerify_status("未审核");
             supervisor.setInspect_status("Empty String");
+            supervisor.setRecord_time(new Date());
             supervisorService.saveSupervisor(supervisor);
             tip="添加成功";
         }
@@ -99,5 +102,41 @@ public class SupervisorController {
         }
         return  res;
     }
+
+    @RequestMapping(value = "/manage", method = RequestMethod.GET)
+        public String listWarings(HttpServletRequest request, HttpServletResponse response) {
+            int page = ConvertUtil.safeToInteger(request.getParameter("page"), 1);
+            int pageSize = 10;
+            Map p = new HashMap();
+            p.put("page", page);
+            p.put("pageSize", pageSize);
+            SearchTemplate searchTemplate = supervisorService.findSupervisorManageInfo(p);
+            request.setAttribute("list", searchTemplate.getValues());
+            int max = searchTemplate.getCount() / pageSize;
+            if (searchTemplate.getCount() % 10 != 0) {
+                max++;
+            }
+            int begin = page - 1;
+            int end = page + 1;
+            if (begin < 1) {
+                begin = 1;
+                if (end < max) {
+                    end++;
+                }
+            }
+            if (end > max) {
+                end = max;
+                if (begin > 1) {
+                    begin--;
+                }
+            }
+            request.setAttribute("max", max);
+            request.setAttribute("begin", begin);
+            request.setAttribute("end", end);
+            request.setAttribute("page", page);
+            //设置左边菜单高亮
+            request.setAttribute("m5", "ahover");
+            return "/jsp/yw/jgyhgl";
+        }
 
 }

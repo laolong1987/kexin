@@ -14,7 +14,11 @@ public class Warings {
 
     private String enterprise;
 
+    private String eid;
+
     private String product;
+
+    private String pid;
 
     private String content;
 
@@ -68,5 +72,21 @@ public class Warings {
 
     public void setPublish_time(String publish_time) {
         this.publish_time = publish_time;
+    }
+
+    public String getEid() {
+        return eid;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 }

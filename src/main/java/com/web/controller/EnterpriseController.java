@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.utils.DateUtil;
+import com.utils.StringUtil;
 import com.web.entity.RecordInfo;
 import com.web.model.*;
 import com.web.service.EnterpriseService;
@@ -40,6 +41,18 @@ public class EnterpriseController {
             model.setReg_address(recordInfo.getReg_address());
             model.setCom_name(recordInfo.getCom_name());
             model.setRole_type(recordInfo.getRole_type());
+            String user_type = StringUtil.safeToString(recordInfo.getUser_type(), "");
+            if ("10".equals(user_type)) {
+                model.setRole_type("生产型企业或机构");
+            } else if ("20".equals(user_type)) {
+                model.setRole_type("经营型企业或机构");
+            } else if ("30".equals(user_type)) {
+                model.setRole_type("服务型企业或机构");
+            } else if ("50".equals(user_type)) {
+                model.setRole_type("企业或机构消费者");
+            } else if ("60".equals(user_type)) {
+                model.setRole_type("个人消费者");
+            }
             model.setAddress(recordInfo.getAddress());
             model.setAnnual_check(recordInfo.getAnnual_check());
             model.setFound_date(DateUtil.FormatUIDate(recordInfo.getFound_date()));

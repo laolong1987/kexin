@@ -29,6 +29,8 @@ public class WaringsInfoService {
             warings.setTitle(waringsInfo.getTitle());
             warings.setContent(waringsInfo.getContent());
             warings.setEnterprise(waringsInfo.getEnterprise());
+            warings.setEid(waringsInfo.getEid());
+            warings.setPid(waringsInfo.getPid());
             warings.setProduct(waringsInfo.getProduct());
             warings.setPublish_department(waringsInfo.getPublish_department());
             warings.setPublish_time(DateUtil.FormatUIDate(waringsInfo.getCreate_time()));

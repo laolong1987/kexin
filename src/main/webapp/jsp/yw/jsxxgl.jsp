@@ -28,7 +28,7 @@
       </div>
       <div class="tian"></div>
       <div style="padding-left:10px;">
-        <a class="btn_cld" href="">新建警示信息</a>
+        <a class="btn_cld" href="${ctx}/admin/warings/add"> <input type="button" class="btn_cld" value="新建警示信息" /></a>
       </div>
       <div class="tian"></div>
       <div class="edit_table">
@@ -69,7 +69,7 @@
           </c:forEach>
           <c:if test="${page!=max}">
             <a class=n2 href="${ctx}/admin/warings/list-warings?page=${page+1}">下一页</a>
-            <a class=n2 href=""${ctx}/admin/warings/list-warings?page=${max}">末页</a>
+            <a class=n2 href="${ctx}/admin/warings/list-warings?page=${max}">末页</a>
           </c:if>
 
         </div>
