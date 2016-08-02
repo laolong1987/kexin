@@ -187,6 +187,20 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ProductReminder> findProductReminder() {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from PRODUCT_REMINDER t where 1=1");
+        Map map=new HashMap();
+        List<ProductReminder> list = super.findObjects(sql.toString(),map, ProductReminder.class);
+        return list;
+    }
+
         public List<ReportReminder> findReportReminder() {
         StringBuffer sql = new StringBuffer();
         sql.append("select * from REPORT_REMINDER t where 1=1");
@@ -229,6 +243,20 @@ public class RecordInfoDao extends BaseDao {
         return list;
     }
 
+    /**
+     * 查询
+     *
+     * @param
+     * @return
+     */
+    public List<Map> searchProductSMS() {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select t.id,a.day,a.time,a.phone from product_sms t ");
+        sql.append(" left join PRODUCT_REMINDER a on t.USER_ID=a.USER_ID where t.status=0 ");
+
+        List<Map> list = super.findResult(sql.toString(),new HashMap());
+        return list;
+    }
 
     /**
      * 查询
@@ -374,5 +402,13 @@ public class RecordInfoDao extends BaseDao {
         sql.append("select to_char(t.create_time,'yyyy-MM-dd HH24:mm:ss') as create_time,t.DIRECTIONS,t.ISFALSE,t.POINT ,a.name,t.userid from product_comment t");
         sql.append(" left  join user_out a on t.USERID=a.MOBILE_PHONE where a.role_type='MOBILE_USER' and t.productid=:productid ");
         return  super.search(sql.toString(),map);
+    }
+
+    public Integer searchproductCommentisfalse(String productid){
+        StringBuffer sql=new StringBuffer();
+        sql.append("select count(id) from product_comment t where productid=:productid and isfalse=1 ");
+        Map map=new HashMap();
+        map.put("productid",productid);
+        return ConvertUtil.safeToInteger(super.getUniqueResult(sql.toString(),map),0);
     }
 }

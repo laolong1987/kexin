@@ -32,9 +32,9 @@ public class ReportController {
     @Autowired
     UploadFileService uploadFileService;
 
-    @RequestMapping(value="/report-products", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value="/report-products", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public ReportProduct addReportProduct(ReportProductModel reportProductModel,HttpServletRequest request) throws IOException {
+    public ReportProduct addReportProduct(@RequestBody ReportProductModel reportProductModel,HttpServletRequest request) throws IOException {
         ReportProduct reportProduct=new ReportProduct();
         reportProduct.setUuid(reportProductModel.getUuid());
         reportProduct.setStatus(0);
@@ -78,9 +78,9 @@ public class ReportController {
         return reportProduct;
     }
 
-    @RequestMapping(value="/report-company", method = RequestMethod.POST,consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(value="/report-company", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public ReportCompany addReportCompany(ReportCompanyModel reportCompanyModel, HttpServletRequest request) throws IOException {
+    public ReportCompany addReportCompany(@RequestBody ReportCompanyModel reportCompanyModel,HttpServletRequest request) throws IOException {
         ReportCompany reportCompany=new ReportCompany();
         reportCompany.setUuid(reportCompanyModel.getUuid());
         reportCompany.setStatus(0);
@@ -92,7 +92,6 @@ public class ReportController {
         reportCompany.setUser_id(reportCompanyModel.getUserId());
         reportCompany.setAddress(reportCompanyModel.getAddress());
         recordInfoService.saveReportCompany(reportCompany);
-
         if(reportCompanyModel.getFileids().size()>0){
         //根ID查询文件
         List<Uploadfile> list= uploadFileService.findUploadfileByIDS(reportCompanyModel.getFileids());

@@ -22,6 +22,9 @@ public class ReportTask {
         //每天23点执行
         System.out.println("task---------sendsms-----start");
         recordInfoService.runremindesms();
+
+        recordInfoService.runproductremindesms();
+
         System.out.println("task---------sendsms-----end");
     }
 }

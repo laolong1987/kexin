@@ -152,6 +152,17 @@ public class RecordInfoService {
         return result.toString();
     }
 
+    public String getcontent2(String productid,int point,String content){
+        DraftPermit product = getProduct(productid);
+        StringBuilder result=new StringBuilder();
+        result.append("尊敬的用户，您好！\n您有新的评论信息要处理。\n");
+        result.append("商品名称：").append(product.getGeneric_name()).append("\n");
+        result.append("评论分数：").append(point).append("\n");
+        result.append("评论内容：").append(content).append("\n");
+        result.append("请访问<a href='http://114.55.67.233:8080/kexin/admin/login'>可信平台</a>进行处理。");
+        return result.toString();
+    }
+
     public void runreminde(String productname,String companyname,String title,String content){
         List<ReportReminder> list=recordInfoDao.findReportReminder();
         for (ReportReminder remider:list ) {
@@ -257,9 +268,95 @@ public class RecordInfoService {
         return result;
     }
 
-    public void runproductreminde(){
-        
+    public void runproductreminde(String content,String productid,int point){
+        List<ProductReminder> list=recordInfoDao.findProductReminder();
+        int i=recordInfoDao.searchproductCommentisfalse(productid);
+        String co=getcontent2(productid,point,content);
+        for(ProductReminder reminder:list) {
+            String keywords=ConvertUtil.safeToString(reminder.getKeywords(),"");
+            if(!"".equals(keywords)){
+                String kw[] =keywords.split(";");
+                for (String k:kw) {
+                    if(-1!=content.indexOf(k)){
+                      sendmessage(reminder,co);
+                    }
+                }
+            }
+            //评分
+            else if(point >=reminder.getMinpoint() || point <= reminder.getMaxpoint()){
+                sendmessage(reminder,co);
+            }
+            //判断次数
+            else if(i >=reminder.getMinisfalse() || i<=reminder.getMaxisfalse()){
+                sendmessage(reminder,co);
+            }
+        }
     }
+
+    private static String TITLE2="可信平台评论信息提醒";
+
+    public void sendmessage(ProductReminder reminder,String content){
+        if(null!=reminder.getEmail() && !"".equals(reminder.getEmail())){
+            try {
+                SentEmailUtils.sentEmailNullFile(reminder.getEmail(),TITLE2,content);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(null!=reminder.getPhone() && !"".equals(reminder.getPhone())){
+            if(reportRules(reminder.getDay(),reminder.getTime())){
+                //发送短信
+                messageSender.batchSend("您有1条新的评论信息要处理。", reminder.getPhone());
+            }else{
+                //保存到数据库
+                ProductSms sms=new ProductSms();
+                sms.setCreate_time(new Date());
+                sms.setUpdate_time(new Date());
+                sms.setUser_id(reminder.getUser_id());
+                sms.setStatus(0);
+                recordInfoDao.save(sms);
+            }
+        }
+    }
+
+
+    @Transactional
+    public void runproductremindesms(){
+        List<Map> list= recordInfoDao.searchProductSMS();
+        Map<String,Integer> sendmap=new HashMap<>();
+        List<String> dellist=new ArrayList<>();
+        for (Map map:list) {
+            String phone= ConvertUtil.safeToString(map.get("PHONE"),"");
+            String id= ConvertUtil.safeToString(map.get("ID"),"");
+            int time= ConvertUtil.safeToInteger(map.get("TIME"),1);
+            int day= ConvertUtil.safeToInteger(map.get("DAY"),1);
+            if(null!=phone && !"".equals(phone)){
+                if(reportRules(day,time)){
+                    //发送短信
+                    if(sendmap.containsKey(phone)){
+                        int a=sendmap.get(phone)+1;
+                        sendmap.put(phone,a) ;
+                    }else{
+                        sendmap.put(phone,1) ;
+                    }
+                    dellist.add(id);
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : sendmap.entrySet()) {
+            //发送短信
+            messageSender.batchSend("您有"+entry.getValue()+"条新的商品评论信息要处理。", entry.getKey());
+        }
+
+        for(String s:dellist){
+            ReportSms sms= (ReportSms)recordInfoDao.getObjectById(s,ReportSms.class);
+            sms.setStatus(1);
+            recordInfoDao.save(sms);
+        }
+
+    }
+
 
     /**
      * 查询

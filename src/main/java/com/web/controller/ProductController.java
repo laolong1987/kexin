@@ -116,6 +116,9 @@ public class ProductController {
         productComment.setPoint(commentModel.getPoint());
         productComment.setIsfalse(commentModel.getIsfalse());
         recordInfoService.saveProductComment(productComment);
+
+        //预警检测
+        recordInfoService.runproductreminde(productComment.getDirections(),productComment.getProductid(),productComment.getPoint());
         return productComment;
     }
 
