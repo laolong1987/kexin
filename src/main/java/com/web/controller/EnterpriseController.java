@@ -53,7 +53,7 @@ public class EnterpriseController {
             } else if ("60".equals(user_type)) {
                 model.setRole_type("个人消费者");
             }
-            model.setAddress(recordInfo.getAddress());
+            model.setAddress(recordInfo.getProvince() + "-" + recordInfo.getCity() +"-" +recordInfo.getCounty());
             model.setAnnual_check(recordInfo.getAnnual_check());
             model.setFound_date(DateUtil.FormatUIDate(recordInfo.getFound_date()));
             model.setIs_manu_import(recordInfo.getIs_manu_import());

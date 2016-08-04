@@ -17,6 +17,10 @@ public class CertificateModel {
 
     private String certificateNo;
 
+    private String certificateImg;
+
+    private String range;
+
 
     public String getCertificate_name() {
         return certificate_name;
@@ -64,5 +68,21 @@ public class CertificateModel {
 
     public void setCertificateNo(String certificateNo) {
         this.certificateNo = certificateNo;
+    }
+
+    public String getCertificateImg() {
+        return certificateImg;
+    }
+
+    public void setCertificateImg(String certificateImg) {
+        this.certificateImg = certificateImg;
+    }
+
+    public String getRange() {
+        return range;
+    }
+
+    public void setRange(String range) {
+        this.range = range;
     }
 }
