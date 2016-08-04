@@ -88,11 +88,14 @@ public class EnterpriseService {
         for (Map map : res_list) {
             CertificateModel model = new CertificateModel();
             model.setCertificate_name(StringUtil.safeToString(map.get("CERTIFICATE_NAME"), ""));
-            model.setCertificateNo("");
+            model.setCertificateNo(StringUtil.safeToString(map.get("CERTIFICATE_NO"), ""));
             model.setIssue_branch(StringUtil.safeToString(map.get("ISSUE_BRANCH"), ""));
             model.setValid_period(StringUtil.safeToString(map.get("VALID_PERIOD"), ""));
             model.setPermit_name(StringUtil.safeToString(map.get("PERMIT_NAME"), ""));
             model.setIssue_date(StringUtil.safeToString(map.get("ISSUE_DATE"), ""));
+            String certificate_order=StringUtil.safeToString(map.get("CERTIFICATE_ORDER"), "");
+            model.setCertificateImg("http://www.ecdata.org.cn/srv/mShowPartyPicAction.action?fileName=&type=&recordNo=" + record_no +"&order=" +certificate_order);
+            model.setRange(StringUtil.safeToString(map.get("RANGE"), ""));
             models.add(model);
         }
         return models;

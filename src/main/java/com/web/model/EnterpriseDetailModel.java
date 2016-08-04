@@ -33,6 +33,8 @@ public class EnterpriseDetailModel {
 
     private String valid_period;
 
+    private String reg_certificate;
+
     private List<CertificateModel> certificateModels;
 
     private boolean collected;
@@ -155,5 +157,13 @@ public class EnterpriseDetailModel {
 
     public void setCertificateModels(List<CertificateModel> certificateModels) {
         this.certificateModels = certificateModels;
+    }
+
+    public String getReg_certificate() {
+        return reg_certificate;
+    }
+
+    public void setReg_certificate(String reg_certificate) {
+        this.reg_certificate = reg_certificate;
     }
 }

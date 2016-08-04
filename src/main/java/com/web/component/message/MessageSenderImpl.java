@@ -68,7 +68,7 @@ public class MessageSenderImpl implements MessageSender {
         form.set("ddtkey", "zhihuixinyuan");
         form.set("secretkey", DigestUtils.md5Hex("zhihuixinyuan2016"));
         form.set("mobile", mobiles);
-        form.set("content", "【可信平台】" + message);
+        form.set("content", "【可信交易服务平台】" + message);
         return form;
     }
 
