@@ -8,10 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="tophead">
     <div class="topnav">
-        <p class="tleft">尊敬的sc004_43，您好，欢迎登录！</p>
+        <p class="tleft">尊敬的${sessionScope.user_in.username}，您好，欢迎登录！</p>
         <p class="tright">
-            <a href="">sc004_43</a>|
-            <a href="">退出</a>|
+            <a href="${ctx}/admin/user/personal">${sessionScope.user_in.username}</a>|
+            <a href="${ctx}/admin/user/logout">退出</a>|
             <a href="">下载中心</a>|
             <a href="">问题咨询</a>|
             <a href="">返回首页</a>
