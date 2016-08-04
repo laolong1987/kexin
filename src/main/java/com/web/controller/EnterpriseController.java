@@ -62,12 +62,15 @@ public class EnterpriseController {
             model.setReg_branch(recordInfo.getReg_branch());
             model.setReg_capital(recordInfo.getReg_capital());
             model.setReg_on(recordInfo.getReg_no());
-            String collected = recordInfoService.findCollect(recordInfo.getUsername(), 1, userid);
-            if ("0".equals(collected)) {
-                model.setCollected(false);
-            } else {
-                model.setCollected(true);
+            if (userid != null && !"".equals(userid)) {
+                String collected = recordInfoService.findCollect(recordInfo.getUsername(), 1, userid);
+                if ("0".equals(collected)) {
+                    model.setCollected(false);
+                } else {
+                    model.setCollected(true);
+                }
             }
+
             model.setValid_period(DateUtil.FormatUIDate(recordInfo.getValid_period()));
         }
         List<CertificateModel> certificateList = enterpriseService.findCertificateByRecordNo(record_no);
