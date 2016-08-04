@@ -37,11 +37,19 @@ public class ProductController {
         List<Map> list=recordInfoService.findProduct(p);
         for (Map map:list) {
             RepProductModel product=new RepProductModel();
-            product.setProductname(ConvertUtil.safeToString(map.get("GENERIC_NAME"),""));
+            String productn=ConvertUtil.safeToString(map.get("PRODUCT_NAME"),"");
+            if(!"".equals(productn)){
+                product.setProductname(productn);
+            }else{
+                product.setProductname(ConvertUtil.safeToString(map.get("GENERIC_NAME"),""));
+            }
             product.setCompanyname(ConvertUtil.safeToString(map.get("MANUFACTURER"),""));
             product.setId(ConvertUtil.safeToString(map.get("ID"),""));
             product.setEvaluation(ConvertUtil.safeToString(map.get("POINT"),""));
-            String picurl= ConvertUtil.safeToString(map.get("PICURL"),"");
+            String picurl= ConvertUtil.safeToString(map.get("MANUAL_FILE"),"");
+            if("".equals(picurl)){
+                picurl=ConvertUtil.safeToString(map.get("PICURL"),"");
+            }
             if(!"".equals(picurl)){
                 String ps[]=picurl.split(";");
                 product.setPicurl(IMGURL+ps[0]);
@@ -64,14 +72,14 @@ public class ProductController {
             }else{
                 productDetailModel.setProductname(product.getGeneric_name());
             }
-            productDetailModel.setBrands(ConvertUtil.safeToString(product.getBarcode(),""));
-            productDetailModel.setCompanyname(ConvertUtil.safeToString(product.getService_sector(),""));
-            productDetailModel.setCampanyaddress(ConvertUtil.safeToString(product.getService_address(),""));
+            productDetailModel.setBrands(ConvertUtil.safeToString(product.getBrand(),""));
+            productDetailModel.setCompanyname(ConvertUtil.safeToString(product.getManufacturer(),""));
+            productDetailModel.setCampanyaddress(ConvertUtil.safeToString(product.getManu_address(),""));
             if(!"".equals(ConvertUtil.safeToString(product.getProduction_license_file(),""))){
                 productDetailModel.setLicense(IMGURL+product.getProduction_license_file());
                 productDetailModel.setLicense(productDetailModel.getLicense().replaceAll(";",""));
             }
-            String picurl= ConvertUtil.safeToString(product.getPicurl(),"");
+            String picurl= ConvertUtil.safeToString(product.getManual_file(),"");
             List<String> list2=new ArrayList<>();
             if(!"".equals(picurl)){
                 String ps[]=picurl.split(";");
