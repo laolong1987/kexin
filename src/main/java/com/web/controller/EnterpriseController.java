@@ -62,6 +62,7 @@ public class EnterpriseController {
             model.setReg_branch(recordInfo.getReg_branch());
             model.setReg_capital(recordInfo.getReg_capital());
             model.setReg_on(recordInfo.getReg_no());
+            model.setReg_certificate("http://www.ecdata.org.cn/srv/mShowPartyPicAction.action?fileName=&type=1002&recordNo=" + recordInfo.getRecord_no());
             if (userid != null && !"".equals(userid)) {
                 String collected = recordInfoService.findCollect(recordInfo.getUsername(), 1, userid);
                 if ("0".equals(collected)) {
