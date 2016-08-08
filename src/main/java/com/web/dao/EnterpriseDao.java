@@ -66,7 +66,7 @@ public class EnterpriseDao extends BaseDao {
      */
     public List<Map> findCertificateByRecordNo(String record_no) {
         StringBuffer sql = new StringBuffer();
-        sql.append("select t.certificate_name,t.permit_name,to_char(t.valid_period,'yyyy-MM-dd') as valid_period,to_char(t.issue_date,'yyyy-MM-dd') as issue_date, t.issue_branch from CERTIFICATE t where t.record_no='");
+        sql.append("select t.certificate_name,t.certificate_order,t.range,t.certificate_no,t.permit_name,to_char(t.valid_period,'yyyy-MM-dd') as valid_period,to_char(t.issue_date,'yyyy-MM-dd') as issue_date, t.issue_branch from CERTIFICATE t where t.record_no='");
         sql.append(record_no);
         sql.append("'");
         List<Map> certificateList = super.findResult(sql.toString(), new HashMap());

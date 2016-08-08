@@ -53,7 +53,7 @@ public class EnterpriseController {
             } else if ("60".equals(user_type)) {
                 model.setRole_type("个人消费者");
             }
-            model.setAddress(recordInfo.getAddress());
+            model.setAddress(recordInfo.getProvince() + "-" + recordInfo.getCity() +"-" +recordInfo.getCounty());
             model.setAnnual_check(recordInfo.getAnnual_check());
             model.setFound_date(DateUtil.FormatUIDate(recordInfo.getFound_date()));
             model.setIs_manu_import(recordInfo.getIs_manu_import());
@@ -62,6 +62,7 @@ public class EnterpriseController {
             model.setReg_branch(recordInfo.getReg_branch());
             model.setReg_capital(recordInfo.getReg_capital());
             model.setReg_on(recordInfo.getReg_no());
+            model.setReg_certificate("http://www.ecdata.org.cn/srv/mShowPartyPicAction.action?fileName=&type=1002&recordNo=" + recordInfo.getRecord_no());
             if (userid != null && !"".equals(userid)) {
                 String collected = recordInfoService.findCollect(recordInfo.getUsername(), 1, userid);
                 if ("0".equals(collected)) {
