@@ -80,6 +80,9 @@ public class ProductController {
                 productDetailModel.setLicense(productDetailModel.getLicense().replaceAll(";",""));
             }
             String picurl= ConvertUtil.safeToString(product.getManual_file(),"");
+            if("".equals(picurl)){
+                picurl=ConvertUtil.safeToString(product.getPicurl(),"");
+            }
             List<String> list2=new ArrayList<>();
             if(!"".equals(picurl)){
                 String ps[]=picurl.split(";");
