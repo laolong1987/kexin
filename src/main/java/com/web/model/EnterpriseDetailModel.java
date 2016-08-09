@@ -35,6 +35,18 @@ public class EnterpriseDetailModel {
 
     private String reg_certificate;
 
+    private boolean have_site;
+
+    private String site_icp_no;
+
+    private String domain;
+
+    private String site_in_charge;
+
+    private String site_issue_date;
+
+    private String real_business_scope;
+
     private List<CertificateModel> certificateModels;
 
     private boolean collected;
@@ -165,5 +177,53 @@ public class EnterpriseDetailModel {
 
     public void setReg_certificate(String reg_certificate) {
         this.reg_certificate = reg_certificate;
+    }
+
+    public boolean isHave_site() {
+        return have_site;
+    }
+
+    public void setHave_site(boolean have_site) {
+        this.have_site = have_site;
+    }
+
+    public String getSite_icp_no() {
+        return site_icp_no;
+    }
+
+    public void setSite_icp_no(String site_icp_no) {
+        this.site_icp_no = site_icp_no;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getSite_in_charge() {
+        return site_in_charge;
+    }
+
+    public void setSite_in_charge(String site_in_charge) {
+        this.site_in_charge = site_in_charge;
+    }
+
+    public String getSite_issue_date() {
+        return site_issue_date;
+    }
+
+    public void setSite_issue_date(String site_issue_date) {
+        this.site_issue_date = site_issue_date;
+    }
+
+    public String getReal_business_scope() {
+        return real_business_scope;
+    }
+
+    public void setReal_business_scope(String real_business_scope) {
+        this.real_business_scope = real_business_scope;
     }
 }

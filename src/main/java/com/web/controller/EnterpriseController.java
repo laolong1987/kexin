@@ -62,6 +62,16 @@ public class EnterpriseController {
             model.setReg_branch(recordInfo.getReg_branch());
             model.setReg_capital(recordInfo.getReg_capital());
             model.setReg_on(recordInfo.getReg_no());
+            model.setReal_business_scope(model.getReal_business_scope());
+            if("Y".equals(recordInfo.getHave_site())){
+                model.setHave_site(true);
+                model.setSite_icp_no(recordInfo.getSite_icp_no());
+                model.setDomain(recordInfo.getSite_dns());
+                model.setSite_in_charge(recordInfo.getSite_in_charge());
+                model.setSite_issue_date(DateUtil.FormatUIDate(recordInfo.getSite_issue_date()));
+            }else{
+                model.setHave_site(false);
+            }
             model.setReg_certificate("http://www.ecdata.org.cn/srv/mShowPartyPicAction.action?fileName=&type=1002&recordNo=" + recordInfo.getRecord_no());
             if (userid != null && !"".equals(userid)) {
                 String collected = recordInfoService.findCollect(recordInfo.getUsername(), 1, userid);
