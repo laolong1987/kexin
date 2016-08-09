@@ -411,4 +411,20 @@ public class RecordInfoDao extends BaseDao {
         map.put("productid",productid);
         return ConvertUtil.safeToInteger(super.getUniqueResult(sql.toString(),map),0);
     }
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ProductAttr> findProductAttr(Integer template_id) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from product_attr t where t.template_id=:template_id ");
+        sql.append(" and t.is_show=1  order by t.sequence asc, t.DISPLAY_POSITION asc  ");
+        Map map=new HashMap();
+        map.put("template_id",template_id);
+        List<ProductAttr> list = super.findObjects(sql.toString(),map, ProductAttr.class);
+        return list;
+    }
+
 }

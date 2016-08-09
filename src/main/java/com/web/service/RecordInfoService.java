@@ -468,4 +468,13 @@ public class RecordInfoService {
     public List<Map> searchProduct3(String id){
         return recordInfoDao.searchProduct3(id);
     }
+
+    /**
+     * 查询
+     *
+     * @return
+     */
+    public List<ProductAttr> findProductAttr(Integer template_id){
+        return recordInfoDao.findProductAttr(template_id);
+    }
 }
