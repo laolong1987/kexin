@@ -7,8 +7,7 @@ import com.utils.DateUtil;
 import com.utils.StringUtil;
 import com.web.entity.RecordInfo;
 import com.web.model.*;
-import com.web.service.EnterpriseService;
-import com.web.service.RecordInfoService;
+import com.web.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +23,9 @@ public class EnterpriseController {
 
     @Autowired
     private RecordInfoService recordInfoService;
+
+    @Autowired
+        private FileListService fileListService;
 
     @RequestMapping(value = "search", method = RequestMethod.GET)
     public List<EnterpriseModel> search(@RequestParam(required = false) String keywords, @RequestParam(required = false) String page, @RequestParam(required = false) String pageSize) {
@@ -72,7 +74,8 @@ public class EnterpriseController {
             }else{
                 model.setHave_site(false);
             }
-            model.setReg_certificate("http://www.ecdata.org.cn/srv/mShowPartyPicAction.action?fileName=&type=1002&recordNo=" + recordInfo.getRecord_no());
+            List<String> filePathList = fileListService.findFilePathList(record_no,"1002");
+            model.setReg_certificate(filePathList);
             if (userid != null && !"".equals(userid)) {
                 String collected = recordInfoService.findCollect(recordInfo.getUsername(), 1, userid);
                 if ("0".equals(collected)) {
@@ -81,8 +84,12 @@ public class EnterpriseController {
                     model.setCollected(true);
                 }
             }
+            if(recordInfo.getValid_period()==null){
+                model.setValid_period("-");
+            }else{
+                model.setValid_period(DateUtil.FormatUIDate(recordInfo.getValid_period()));
+            }
 
-            model.setValid_period(DateUtil.FormatUIDate(recordInfo.getValid_period()));
         }
         List<CertificateModel> certificateList = enterpriseService.findCertificateByRecordNo(record_no);
         model.setCertificateModels(certificateList);

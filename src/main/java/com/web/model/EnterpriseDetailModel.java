@@ -33,7 +33,7 @@ public class EnterpriseDetailModel {
 
     private String valid_period;
 
-    private String reg_certificate;
+    private List<String> reg_certificate;
 
     private boolean have_site;
 
@@ -171,11 +171,11 @@ public class EnterpriseDetailModel {
         this.certificateModels = certificateModels;
     }
 
-    public String getReg_certificate() {
+    public List<String> getReg_certificate() {
         return reg_certificate;
     }
 
-    public void setReg_certificate(String reg_certificate) {
+    public void setReg_certificate(List<String> reg_certificate) {
         this.reg_certificate = reg_certificate;
     }
 
