@@ -47,6 +47,18 @@ public class EnterpriseDetailModel {
 
     private String real_business_scope;
 
+    private boolean have_site;
+
+    private String site_icp_no;
+
+    private String domain;
+
+    private String site_in_charge;
+
+    private String site_issue_date;
+
+    private String real_business_scope;
+
     private List<CertificateModel> certificateModels;
 
     private boolean collected;
