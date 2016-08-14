@@ -1,5 +1,7 @@
 package com.web.model;
 
+import java.util.List;
+
 /**
  * Created by sukey on 2016/7/12.
  */
@@ -17,7 +19,7 @@ public class CertificateModel {
 
     private String certificateNo;
 
-    private String certificateImg;
+    private List<String> certificateImg;
 
     private String range;
 
@@ -70,11 +72,11 @@ public class CertificateModel {
         this.certificateNo = certificateNo;
     }
 
-    public String getCertificateImg() {
+    public List<String> getCertificateImg() {
         return certificateImg;
     }
 
-    public void setCertificateImg(String certificateImg) {
+    public void setCertificateImg(List<String> certificateImg) {
         this.certificateImg = certificateImg;
     }
 
