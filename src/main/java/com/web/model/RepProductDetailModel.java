@@ -14,6 +14,15 @@ public class RepProductDetailModel {
     private String license;
     private String evaluation;
     private String iscollect;
+    private String iscomment;
+
+    public String getIscomment() {
+        return iscomment;
+    }
+
+    public void setIscomment(String iscomment) {
+        this.iscomment = iscomment;
+    }
 
     private List<String> productimg;
 

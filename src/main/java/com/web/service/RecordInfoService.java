@@ -410,6 +410,9 @@ public class RecordInfoService {
     public String findCollect(String sourceid,int type,String userid){
         return recordInfoDao.findCollect(sourceid,type,userid);
     }
+    public String findComment(String productid,String userid){
+        return recordInfoDao.findComment(productid,userid);
+    }
 
     public void setlog(String userid,int type,String sourceid){
         Loginfo loginfo=new Loginfo();

@@ -128,7 +128,14 @@ public class ProductController {
             if(!"0".equals(userid)){
                 productDetailModel.setIscollect(recordInfoService.findCollect(id,2,userid));
 
+                //判断是否评论 0 无评论 1 有评论
+                productDetailModel.setIscomment(recordInfoService.findComment(id,userid));
+
             }
+
+
+
+
             //记录日志
             recordInfoService.setlog(userid,2,id);
         }

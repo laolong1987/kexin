@@ -42,6 +42,8 @@ public class ReportProduct {
     private int status;
     @Column(name = "description")
     private String description;
+    @Column(name = "address")
+    private String address;
     @Column(name = "uuid")
     private String uuid;
     @Column(name = "code")
@@ -52,6 +54,14 @@ public class ReportProduct {
     private Date create_time;
     @Column(name = "update_time")
     private Date update_time;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public void setId(String id) {
         this.id = id;

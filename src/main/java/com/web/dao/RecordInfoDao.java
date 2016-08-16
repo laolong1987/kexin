@@ -338,6 +338,19 @@ public class RecordInfoDao extends BaseDao {
         }
     }
 
+    public String findComment(String productid,String userid){
+        StringBuffer sql=new StringBuffer();
+        sql.append("select count(id) from product_comment where productid=:productid and userid=:userid");
+        Map map=new HashMap();
+        map.put("userid",userid);
+        map.put("productid",productid);
+        String result=String.valueOf(super.getUniqueResult(sql.toString(),map));
+        if("0".equals(result)){
+            return "0";
+        }else{
+            return "1";
+        }
+    }
 
     /**
      * 查询企业收藏

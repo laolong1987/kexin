@@ -46,6 +46,7 @@ public class ReportController {
         reportProduct.setCreate_time(new Date());
         reportProduct.setUpdate_time(new Date());
         reportProduct.setUser_id(reportProductModel.getUser_id());
+        reportProduct.setAddress(reportProductModel.getAddress());
         recordInfoService.saveReportProduct(reportProduct);
 
         if(reportProductModel.getFileids().size()>0) {
@@ -163,6 +164,7 @@ public class ReportController {
             reportProductModel.setCompany_name(reportProduct.getCompany_name());
             reportProductModel.setProduct_name(reportProduct.getProduct_name());
             reportProductModel.setId(reportProduct.getId());
+            reportProductModel.setAddress(reportProduct.getAddress());
             List<FileModel> lists=new ArrayList<>();
 
             List<Uploadfile> list = uploadFileService.findUploadfileByReportId(reportProduct.getId(),"2");

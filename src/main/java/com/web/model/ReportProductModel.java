@@ -16,7 +16,17 @@ public class ReportProductModel {
     private String uuid;
     private String code;
     private String user_id;
+    private String address;
+
     private List<String> fileids;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public List<String> getFileids() {
         return fileids;

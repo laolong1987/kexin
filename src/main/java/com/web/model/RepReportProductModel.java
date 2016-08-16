@@ -14,6 +14,15 @@ public class RepReportProductModel {
     private String uuid;
     private String code;
     private String id;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getId() {
         return id;
