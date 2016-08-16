@@ -20,6 +20,9 @@ public class EnterpriseService {
     @Autowired
     private EnterpriseDao enterpriseDao;
 
+    @Autowired
+    private FileListService fileListService;
+
     /**
      * 通过关键词查询企业信息
      *
@@ -93,8 +96,9 @@ public class EnterpriseService {
             model.setValid_period(StringUtil.safeToString(map.get("VALID_PERIOD"), ""));
             model.setPermit_name(StringUtil.safeToString(map.get("PERMIT_NAME"), ""));
             model.setIssue_date(StringUtil.safeToString(map.get("ISSUE_DATE"), ""));
-            String certificate_order=StringUtil.safeToString(map.get("CERTIFICATE_ORDER"), "");
-            model.setCertificateImg("http://www.ecdata.org.cn/srv/mShowPartyPicAction.action?fileName=&type=&recordNo=" + record_no +"&order=" +certificate_order);
+            String certificate_order = StringUtil.safeToString(map.get("CERTIFICATE_ORDER"), "");
+            List<String> filePathList = fileListService.findFilePathList(record_no,certificate_order);
+            model.setCertificateImg(filePathList);
             model.setRange(StringUtil.safeToString(map.get("RANGE"), ""));
             models.add(model);
         }
