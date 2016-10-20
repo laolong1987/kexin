@@ -16,6 +16,16 @@ public class RepProductDetailModel {
     private String iscollect;
     private String iscomment;
 
+    private Date passtime;
+
+    public Date getPasstime() {
+        return passtime;
+    }
+
+    public void setPasstime(Date passtime) {
+        this.passtime = passtime;
+    }
+
     public String getIscomment() {
         return iscomment;
     }

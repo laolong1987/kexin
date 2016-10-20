@@ -134,7 +134,7 @@ public class ProductController {
             }
 
 
-
+            productDetailModel.setPasstime(product.getPass_time());
 
             //记录日志
             recordInfoService.setlog(userid,2,id);
