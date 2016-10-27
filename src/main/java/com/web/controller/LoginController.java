@@ -187,7 +187,7 @@ public class LoginController {
 //        return "success";
 //       }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public LoginModel register(@RequestParam String username, @RequestParam String password, @RequestParam String token) {
 
         UserOutToken uot = userOutTokenService.getUserTokenByToken(token);
