@@ -32,6 +32,7 @@ public class ProductController {
     @RequestMapping(value = "/search-product", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<RepProductModel> listproduct(@RequestParam(required=false ) String productname,@RequestParam(required=false ) String page,@RequestParam(required=false ) String pageSize){
+//        recordInfoService.send();
         List<RepProductModel> result=new ArrayList<>();
         Map p=new HashMap();
         p.put("productname",ConvertUtil.safeToString(productname,""));

@@ -9,6 +9,7 @@ import com.web.component.message.MessageSenderImpl;
 import com.web.dao.RecordInfoDao;
 import com.web.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -163,12 +164,35 @@ public class RecordInfoService {
         return result.toString();
     }
 
+
+    @Async
+    private void sendemail(String email,String title,String content){
+        try {
+            SentEmailUtils.sentEmailNullFile(email,title,content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Async
+    private void sendsms(String content,String phone){
+        messageSender.batchSend(content, phone);
+    }
+
+//    public void send(){
+////        sendemail("232886019@qq.com","ceshi","neirong");
+//        sendsms("ce2222222shi","15800531997");
+//        messageSender.batchSend("111111", "15800531997");
+//
+//    }
+
     public void runreminde(String productname,String companyname,String title,String content){
         List<ReportReminder> list=recordInfoDao.findReportReminder();
         for (ReportReminder remider:list ) {
             if(null!=remider.getEmail() && !"".equals(remider.getEmail())){
                 try {
-                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,getcontent(productname,companyname,title,content));
+                      sendemail(remider.getEmail(),TITLE,getcontent(productname,companyname,title,content));
+//                    SentEmailUtils.sentEmailNullFile(remider.getEmail(),TITLE,getcontent(productname,companyname,title,content));
 //                    mailSender.batchSend(TITLE,CONTENT,false,remider.getEmail());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -177,7 +201,7 @@ public class RecordInfoService {
             if(null!=remider.getPhone() && !"".equals(remider.getPhone())){
                 if(reportRules(remider.getDay(),remider.getTime())){
                     //发送短信
-                    messageSender.batchSend("您有1条新的质量投诉信息要处理。", remider.getPhone());
+                    sendsms("您有1条新的质量投诉信息要处理。", remider.getPhone());
                 }else{
                     //保存到数据库
                     ReportSms sms=new ReportSms();
@@ -217,7 +241,7 @@ public class RecordInfoService {
 
         for (Map.Entry<String, Integer> entry : sendmap.entrySet()) {
             //发送短信
-            messageSender.batchSend("您有"+entry.getValue()+"条新的质量投诉信息要处理。", entry.getKey());
+            sendsms("您有"+entry.getValue()+"条新的质量投诉信息要处理。", entry.getKey());
         }
 
         for(String s:dellist){
@@ -298,7 +322,8 @@ public class RecordInfoService {
     public void sendmessage(ProductReminder reminder,String content){
         if(null!=reminder.getEmail() && !"".equals(reminder.getEmail())){
             try {
-                SentEmailUtils.sentEmailNullFile(reminder.getEmail(),TITLE2,content);
+//                SentEmailUtils.sentEmailNullFile(reminder.getEmail(),TITLE2,content);
+                sendemail(reminder.getEmail(),TITLE2,content);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -306,7 +331,7 @@ public class RecordInfoService {
         if(null!=reminder.getPhone() && !"".equals(reminder.getPhone())){
             if(reportRules(reminder.getDay(),reminder.getTime())){
                 //发送短信
-                messageSender.batchSend("您有1条新的评论信息要处理。", reminder.getPhone());
+                sendsms("您有1条新的评论信息要处理。", reminder.getPhone());
             }else{
                 //保存到数据库
                 ProductSms sms=new ProductSms();
@@ -346,7 +371,7 @@ public class RecordInfoService {
 
         for (Map.Entry<String, Integer> entry : sendmap.entrySet()) {
             //发送短信
-            messageSender.batchSend("您有"+entry.getValue()+"条新的商品评论信息要处理。", entry.getKey());
+            sendsms("您有"+entry.getValue()+"条新的商品评论信息要处理。", entry.getKey());
         }
 
         for(String s:dellist){
